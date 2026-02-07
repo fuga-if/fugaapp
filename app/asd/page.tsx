@@ -22,7 +22,7 @@ export default function AsdTopPage() {
           </h1>
           
           <p className="text-lg text-blue-500 font-medium mb-4">
-             独自の視点は才能。あなたのコミュニケーションスタイル診断
+            🔷 独自の視点は才能。あなたのコミュニケーションスタイル診断
           </p>
           
           <p className="text-gray-600 mb-8 leading-relaxed">
@@ -35,7 +35,7 @@ export default function AsdTopPage() {
 
           <div className="bg-blue-50 rounded-2xl p-4 mb-8 border border-blue-100">
             <p className="text-blue-600 text-sm">
-               人口の約1〜2%がASDとされています（CDC, 2020）
+              📊 人口の約1〜2%がASDとされています（CDC, 2020）
             </p>
           </div>
 
@@ -43,7 +43,7 @@ export default function AsdTopPage() {
             href="/asd/quiz"
             className="inline-block w-full px-8 py-4 rounded-full font-bold text-lg shadow-lg bg-gradient-to-r from-blue-400 to-cyan-400 text-white hover:from-blue-500 hover:to-cyan-500 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
-            チェックをはじめる 
+            チェックをはじめる 🔹
           </Link>
 
           <p className="mt-6 text-sm text-gray-400">

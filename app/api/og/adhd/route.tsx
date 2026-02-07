@@ -16,12 +16,12 @@ function getTypeColor(type: string): string {
 
 function getTypeEmoji(type: string): string {
   switch (type) {
-    case "type-a": return "";
-    case "type-b": return "";
-    case "type-c": return "";
-    case "type-d": return "";
-    case "type-e": return "";
-    default: return "";
+    case "type-a": return "🚀";
+    case "type-b": return "⚡";
+    case "type-c": return "💫";
+    case "type-d": return "🌿";
+    case "type-e": return "🏔️";
+    default: return "🧠";
   }
 }
 
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const title = searchParams.get("title") || "ADHD傾向チェック";
 
   const color = type ? getTypeColor(type) : "#F97316";
-  const emoji = type ? getTypeEmoji(type) : "";
+  const emoji = type ? getTypeEmoji(type) : "🧠";
   const isResult = !!type;
   
   const imageFile = type || "main";
@@ -68,7 +68,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               marginBottom: "16px",
             }}
           >
-             ADHD傾向チェック
+            🧠 ADHD傾向チェック
           </div>
 
           {isResult ? (

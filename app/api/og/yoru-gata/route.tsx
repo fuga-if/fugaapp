@@ -49,7 +49,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             textShadow: "0 4px 6px rgba(0,0,0,0.3)",
           }}
         >
-           夜型オタク診断
+          🌙 夜型オタク診断
         </div>
 
         <div

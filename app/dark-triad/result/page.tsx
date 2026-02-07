@@ -38,7 +38,7 @@ export default function ResultPage(): React.ReactElement {
       fallback={
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-purple-400 animate-pulse">
-             闇を解析中...
+            🖤 闇を解析中...
           </div>
         </div>
       }

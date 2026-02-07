@@ -22,7 +22,7 @@ export default function HspTopPage() {
           </h1>
           
           <p className="text-lg text-purple-500 font-medium mb-4">
-             繊細さは才能。あなたの感受性レベルをチェック
+            🌸 繊細さは才能。あなたの感受性レベルをチェック
           </p>
           
           <p className="text-gray-600 mb-8 leading-relaxed">
@@ -35,7 +35,7 @@ export default function HspTopPage() {
 
           <div className="bg-purple-50 rounded-2xl p-4 mb-8 border border-purple-100">
             <p className="text-purple-600 text-sm">
-               人口の約15〜20%がHSP気質を持つと言われています
+              📊 人口の約15〜20%がHSP気質を持つと言われています
             </p>
           </div>
 
@@ -43,7 +43,7 @@ export default function HspTopPage() {
             href="/hsp/quiz"
             className="inline-block w-full px-8 py-4 rounded-full font-bold text-lg shadow-lg bg-gradient-to-r from-purple-400 to-pink-400 text-white hover:from-purple-500 hover:to-pink-500 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
-            診断をはじめる 
+            診断をはじめる 🌿
           </Link>
 
           <p className="mt-6 text-sm text-gray-400">

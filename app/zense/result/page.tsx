@@ -30,7 +30,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
 export default function ResultPage(): React.ReactElement {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-amber-300 animate-pulse"> 魂の記憶を読み取っています... </div></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-amber-300 animate-pulse">✦ 魂の記憶を読み取っています... ✦</div></div>}>
       <ZenseResultContent />
     </Suspense>
   );

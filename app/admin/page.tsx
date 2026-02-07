@@ -20,7 +20,7 @@ export default async function AdminPage({ searchParams }: Props) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4"> 認証が必要です</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">🔒 認証が必要です</h1>
           <p className="text-gray-500">URLパラメータに正しいキーを指定してください</p>
         </div>
       </div>

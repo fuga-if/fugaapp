@@ -40,7 +40,7 @@ export default function AboutPage() {
           {/* About */}
           <section>
             <h2 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <span></span> サイトについて
+              <span>🎯</span> サイトについて
             </h2>
             <p className="text-gray-600 leading-relaxed">
               fugaappは、誰でも気軽に楽しめる診断アプリをまとめたサイトです。
@@ -56,7 +56,7 @@ export default function AboutPage() {
           {/* Operator */}
           <section>
             <h2 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <span></span> 運営者
+              <span>👤</span> 運営者
             </h2>
             <div className="bg-gray-50 rounded-xl p-4">
               <p className="text-gray-700 font-medium">fuga</p>
@@ -67,7 +67,7 @@ export default function AboutPage() {
           {/* Contact */}
           <section>
             <h2 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <span></span> お問い合わせ
+              <span>✉️</span> お問い合わせ
             </h2>
             <p className="text-gray-600 leading-relaxed">
               ご意見・ご要望・お問い合わせは、X（旧Twitter）のDMにてお気軽にどうぞ。
@@ -85,7 +85,7 @@ export default function AboutPage() {
           {/* Policy */}
           <section>
             <h2 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <span></span> ポリシー
+              <span>📋</span> ポリシー
             </h2>
             <p className="text-gray-600 leading-relaxed">
               当サイトのプライバシーポリシーについては

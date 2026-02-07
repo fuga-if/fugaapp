@@ -21,17 +21,17 @@ export default function SainouHome(): React.ReactElement {
             onClick={() => router.push("/sainou/quiz")}
             className="px-12 py-5 rounded-xl font-bold text-xl shadow-lg bg-gradient-to-r from-amber-500 to-purple-500 hover:from-amber-400 hover:to-purple-400 text-white transition-all transform hover:scale-105 active:scale-95"
           >
-             診断スタート
+            💎 診断スタート
           </button>
           <p className="text-sm text-gray-400 mt-4">※ 全10問・約2分で完了</p>
         </div>
 
         <div className="pt-4">
-          <p className="text-xs text-gray-400 mb-3"> 他の診断もやってみる？</p>
+          <p className="text-xs text-gray-400 mb-3">▼ 他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
-            <Link href="/motivation" className="text-amber-500/70 hover:text-amber-500 text-sm"> モチベーション源泉診断 →</Link>
-            <Link href="/shikou-type" className="text-amber-500/70 hover:text-amber-500 text-sm"> 思考タイプ診断 →</Link>
-            <Link href="/commu-style" className="text-amber-500/70 hover:text-amber-500 text-sm"> コミュニケーションスタイル診断 →</Link>
+            <Link href="/motivation" className="text-amber-500/70 hover:text-amber-500 text-sm">⚡ モチベーション源泉診断 →</Link>
+            <Link href="/shikou-type" className="text-amber-500/70 hover:text-amber-500 text-sm">🧠 思考タイプ診断 →</Link>
+            <Link href="/commu-style" className="text-amber-500/70 hover:text-amber-500 text-sm">💬 コミュニケーションスタイル診断 →</Link>
           </div>
         </div>
       </div>

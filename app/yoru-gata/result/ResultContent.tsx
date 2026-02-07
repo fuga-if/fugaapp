@@ -19,7 +19,7 @@ export function YoruGataResultContent(): React.ReactElement {
   const topTypes = getTopTypes(scores, 3);
 
   const handleShare = async () => {
-    const text = `【夜型オタク診断】\n私は「${result.title}」タイプでした！\n${result.quote}\n\n#夜型オタク診断 #fugaapp`;
+    const text = `【夜型オタク診断】\n私は「${result.title}」タイプでした！🌙\n${result.quote}\n\n#夜型オタク診断 #fugaapp`;
     const url = `https://fugaapp.site/yoru-gata/result?${new URLSearchParams(Object.entries(scores).map(([k,v])=>[k,v.toString()])).toString()}`;
     if (navigator.share) { try { await navigator.share({ text: text + '\n' + url }); return; } catch {} }
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
@@ -37,8 +37,8 @@ export function YoruGataResultContent(): React.ReactElement {
           <p className="text-indigo-200 leading-relaxed mb-6">{result.description}</p>
 
           <div className="bg-indigo-500/10 rounded-2xl p-5 mb-6 text-left border border-indigo-500/20">
-            <p className="text-indigo-400 font-bold text-sm mb-3 text-center"> こんな夜更かし...?</p>
-            <ul className="space-y-2">{result.traits.map((t, i) => (<li key={i} className="flex items-start gap-2 text-indigo-200 text-sm"><span className="text-indigo-400 mt-0.5"></span><span>{t}</span></li>))}</ul>
+            <p className="text-indigo-400 font-bold text-sm mb-3 text-center">🌙 こんな夜更かし...?</p>
+            <ul className="space-y-2">{result.traits.map((t, i) => (<li key={i} className="flex items-start gap-2 text-indigo-200 text-sm"><span className="text-indigo-400 mt-0.5">✓</span><span>{t}</span></li>))}</ul>
           </div>
           <div className="bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-2xl p-4 mb-6 border border-indigo-500/20"><p className="text-white text-lg font-bold">{result.quote}</p></div>
 
@@ -62,7 +62,7 @@ export function YoruGataResultContent(): React.ReactElement {
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-indigo-500/30">
-              <p className="text-xs text-gray-400 mb-3"> この診断をもっと深く知る</p>
+              <p className="text-xs text-gray-400 mb-3">📚 この診断をもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -77,9 +77,9 @@ export function YoruGataResultContent(): React.ReactElement {
           <div className="mt-8 pt-6 border-t border-indigo-500/30">
             <p className="text-xs text-indigo-600 mb-3">次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/yami-zokusei" className="px-6 py-3 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-full text-red-400 font-medium transition-colors text-center"> 闇属性診断 →</Link>
-              <Link href="/menhera" className="px-6 py-3 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-full text-pink-400 font-medium transition-colors text-center"> メンヘラ度診断 →</Link>
-              <Link href="/gacha" className="px-6 py-3 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-full text-amber-400 font-medium transition-colors text-center"> 課金スタイル診断 →</Link>
+              <Link href="/yami-zokusei" className="px-6 py-3 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-full text-red-400 font-medium transition-colors text-center">⚔️ 闇属性診断 →</Link>
+              <Link href="/menhera" className="px-6 py-3 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-full text-pink-400 font-medium transition-colors text-center">🖤 メンヘラ度診断 →</Link>
+              <Link href="/gacha" className="px-6 py-3 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-full text-amber-400 font-medium transition-colors text-center">💰 課金スタイル診断 →</Link>
             </div>
           </div>
         </div>

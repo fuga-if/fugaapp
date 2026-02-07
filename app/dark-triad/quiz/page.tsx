@@ -67,9 +67,9 @@ export default function QuizPage(): React.ReactElement {
     P: "サイコパシー",
   };
   const axisEmoji: Record<DarkTriadAxis, string> = {
-    M: "",
-    N: "",
-    P: "",
+    M: "🦊",
+    N: "👑",
+    P: "🧊",
   };
 
   return (

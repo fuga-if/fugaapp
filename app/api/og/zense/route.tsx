@@ -17,13 +17,13 @@ function getTypeColor(type: string): string {
 
 function getTypeEmoji(type: string): string {
   switch (type) {
-    case "type-a": return "";
-    case "type-b": return "";
-    case "type-c": return "";
-    case "type-d": return "";
-    case "type-e": return "";
-    case "type-f": return "";
-    default: return "";
+    case "type-a": return "⚔️";
+    case "type-b": return "🔮";
+    case "type-c": return "🎭";
+    case "type-d": return "🌸";
+    case "type-e": return "📜";
+    case "type-f": return "🏴‍☠️";
+    default: return "🔮";
   }
 }
 
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const title = searchParams.get("title") || "前世診断";
 
   const color = type ? getTypeColor(type) : "#FCD34D";
-  const emoji = type ? getTypeEmoji(type) : "";
+  const emoji = type ? getTypeEmoji(type) : "🔮";
   const isResult = !!type;
 
   return new ImageResponse(
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               textShadow: "0 2px 12px rgba(252,211,77,0.3)",
             }}
           >
-             前世診断
+            🔮 前世診断
           </div>
 
           {isResult ? (
@@ -107,7 +107,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                   marginBottom: "12px",
                 }}
               >
-                 あなたの前世は... 
+                ✦ あなたの前世は... ✦
               </div>
               <div
                 style={{

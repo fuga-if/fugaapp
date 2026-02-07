@@ -5,15 +5,15 @@ export const runtime = "edge";
 
 function getTypeEmoji(type: string): string {
   switch (type) {
-    case "saint": return "";
-    case "strategist": return "";
-    case "king": return "";
-    case "cold": return "";
-    case "charisma": return "";
-    case "dark-hero": return "";
-    case "psycho-king": return "";
-    case "dark-triad": return "";
-    default: return "";
+    case "saint": return "😇";
+    case "strategist": return "🦊";
+    case "king": return "👑";
+    case "cold": return "🧊";
+    case "charisma": return "✨";
+    case "dark-hero": return "🦇";
+    case "psycho-king": return "💀";
+    case "dark-triad": return "🖤";
+    default: return "🖤";
   }
 }
 
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const p = searchParams.get("p");
 
   const color = type ? getTypeColor(type) : "#A855F7";
-  const emoji = type ? getTypeEmoji(type) : "";
+  const emoji = type ? getTypeEmoji(type) : "🖤";
   const isResult = !!type;
   const hasScores = m && n && p;
 
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               textShadow: "0 2px 12px rgba(168,85,247,0.3)",
             }}
           >
-             ダークサイド診断
+            🖤 ダークサイド診断
           </div>
 
           {isResult ? (
@@ -105,7 +105,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                   marginBottom: "12px",
                 }}
               >
-                 あなたのダークサイドは... 
+                ▸ あなたのダークサイドは... ◂
               </div>
               <div style={{ fontSize: "48px", marginBottom: "8px" }}>{emoji}</div>
               <div
@@ -128,13 +128,13 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                   }}
                 >
                   <div style={{ color: "#C4B5FD", display: "flex" }}>
-                     M:{m}%
+                    🦊 M:{m}%
                   </div>
                   <div style={{ color: "#C4B5FD", display: "flex" }}>
-                     N:{n}%
+                    👑 N:{n}%
                   </div>
                   <div style={{ color: "#C4B5FD", display: "flex" }}>
-                     P:{p}%
+                    🧊 P:{p}%
                   </div>
                 </div>
               )}

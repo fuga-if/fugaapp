@@ -63,7 +63,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             gap: "8px",
           }}
         >
-           10秒チャレンジ
+          ⏱️ 10秒チャレンジ
         </div>
 
         {hasResult ? (
@@ -154,7 +154,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                 marginBottom: "16px",
               }}
             >
-              
+              ⏱️
             </div>
             <div
               style={{

@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const payload = {
       embeds: [
         {
-          title: " 修正依頼",
+          title: "🐛 修正依頼",
           description: message,
           fields: [
             {

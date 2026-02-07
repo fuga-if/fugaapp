@@ -46,7 +46,7 @@ export function TrolleyResultContent(): React.ReactElement {
         <div className="bg-slate-800/50 backdrop-blur-sm border border-amber-500/30 rounded-2xl p-8 shadow-[0_0_40px_rgba(245,158,11,0.1)]">
           {/* タイプ */}
           <p className="text-amber-300/70 text-sm font-medium mb-2">
-             あなたの思考タイプは...
+            ⚖️ あなたの思考タイプは...
           </p>
           <div className="text-6xl mb-4">{result.emoji}</div>
           <h1 className="text-3xl font-bold mb-2 text-amber-300">
@@ -54,7 +54,7 @@ export function TrolleyResultContent(): React.ReactElement {
           </h1>
           {result.isHidden && (
             <span className="inline-block px-3 py-1 bg-yellow-900/40 border border-yellow-500/50 rounded-full text-yellow-400 text-xs font-bold mb-2">
-               隠し結果
+              🏆 隠し結果
             </span>
           )}
           <p className="text-lg mb-4 text-amber-200/80">{result.subtitle}</p>
@@ -65,11 +65,11 @@ export function TrolleyResultContent(): React.ReactElement {
           {/* スペクトラムバー */}
           <div className="bg-slate-700/30 rounded-xl p-5 mb-6 border border-amber-500/20">
             <p className="text-amber-300 font-bold text-sm mb-3 text-center">
-               あなたの正義のスペクトラム
+              ⚖️ あなたの正義のスペクトラム
             </p>
             <div className="flex justify-between text-xs text-slate-300 mb-2">
-              <span> 功利主義 {uPercent}%</span>
-              <span> 義務論 {dPercent}%</span>
+              <span>📊 功利主義 {uPercent}%</span>
+              <span>📜 義務論 {dPercent}%</span>
             </div>
             <div className="w-full h-6 bg-slate-800 rounded-full overflow-hidden flex">
               <div
@@ -86,7 +86,7 @@ export function TrolleyResultContent(): React.ReactElement {
           {/* 特徴 */}
           <div className="bg-slate-700/30 rounded-xl p-5 mb-6 text-left border border-amber-500/20">
             <p className="text-amber-300 font-bold text-sm mb-3 text-center">
-               あなたの特徴
+              📋 あなたの特徴
             </p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
@@ -104,7 +104,7 @@ export function TrolleyResultContent(): React.ReactElement {
           {/* 回答の振り返り */}
           <div className="bg-slate-700/30 rounded-xl p-5 mb-6 border border-amber-500/20">
             <p className="text-amber-300 font-bold text-sm mb-3 text-center">
-               あなたの選択
+              🔍 あなたの選択
             </p>
             <div className="space-y-2 text-left">
               {questions.map((q, i) => {
@@ -149,7 +149,7 @@ export function TrolleyResultContent(): React.ReactElement {
               onClick={() => (window.location.href = "/trolley-test")}
               className="w-full px-8 py-4 rounded-xl font-bold text-lg shadow-lg bg-slate-700/30 text-amber-300 border border-amber-400/50 hover:border-amber-400 hover:bg-slate-600/30 transition-all hover:scale-105 active:scale-95"
             >
-               もう一度診断する
+              ⚖️ もう一度診断する
             </button>
           </div>
 
@@ -157,7 +157,7 @@ export function TrolleyResultContent(): React.ReactElement {
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-amber-500/20">
               <p className="text-xs text-amber-400/50 mb-3">
-                 この診断をもっと深く知る
+                📚 この診断をもっと深く知る
               </p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map((post) => (
@@ -176,26 +176,26 @@ export function TrolleyResultContent(): React.ReactElement {
           {/* 他の診断 */}
           <div className="mt-8 pt-6 border-t border-amber-500/20">
             <p className="text-xs text-amber-400/40 mb-3">
-               次の診断もやってみる？
+              ▼ 次の診断もやってみる？
             </p>
             <div className="flex flex-col gap-2">
               <Link
                 href="/liar-test"
                 className="px-6 py-3 bg-slate-700/30 hover:bg-slate-600/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-amber-500/10"
               >
-                 嘘つき度診断 →
+                🎭 嘘つき度診断 →
               </Link>
               <Link
                 href="/shikou-type"
                 className="px-6 py-3 bg-slate-700/30 hover:bg-slate-600/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-amber-500/10"
               >
-                 思考タイプ診断 →
+                🧠 思考タイプ診断 →
               </Link>
               <Link
                 href="/inkya-youkya"
                 className="px-6 py-3 bg-slate-700/30 hover:bg-slate-600/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-amber-500/10"
               >
-                 陰キャ陽キャ診断 →
+                🌓 陰キャ陽キャ診断 →
               </Link>
             </div>
           </div>

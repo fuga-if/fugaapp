@@ -21,7 +21,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type");
   const title = searchParams.get("title") || "潜在意識テスト";
-  const emoji = searchParams.get("emoji") || "";
+  const emoji = searchParams.get("emoji") || "👁️";
   const isRare = searchParams.get("rare") === "1";
   const isResult = !!type;
 
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               color: "#EAB308",
               marginBottom: "8px",
             }}>
-               レアタイプ！
+              🎯 レアタイプ！
             </div>
           )}
 
@@ -107,7 +107,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               textShadow: "0 2px 12px rgba(99,102,241,0.3)",
             }}
           >
-             潜在意識テスト
+            👁️ 潜在意識テスト
           </div>
 
           {isResult ? (
@@ -125,7 +125,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                   marginBottom: "12px",
                 }}
               >
-                 あなたの潜在意識タイプは... 
+                ◈ あなたの潜在意識タイプは... ◈
               </div>
               <div
                 style={{

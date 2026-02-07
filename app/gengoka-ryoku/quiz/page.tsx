@@ -51,7 +51,7 @@ export default function QuizPage(): React.ReactElement {
         )}
         <div className="w-full max-w-md mx-auto mb-8">
           <div className="flex justify-between text-sm text-cyan-300 mb-2">
-            <span> 問い {currentIndex + 1} / {questions.length}</span>
+            <span>✦ 問い {currentIndex + 1} / {questions.length}</span>
             <span>{Math.round(percentage)}%</span>
           </div>
           <div className="w-full h-3 bg-cyan-900/50 rounded-full overflow-hidden border border-cyan-500/30">

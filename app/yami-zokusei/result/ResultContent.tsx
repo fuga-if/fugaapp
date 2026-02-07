@@ -28,7 +28,7 @@ export function YamiZokuseiResultContent(): React.ReactElement {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
       <div className="w-full max-w-lg text-center animate-bounce-in">
-        <div className="mb-6"><button onClick={() => router.push("/yami-zokusei")} className="w-full bg-gradient-to-r from-red-800 via-red-700 to-red-900 text-white font-bold py-4 px-6 rounded-full shadow-lg shadow-red-900/50 hover:opacity-90 transition-opacity animate-pulse border border-red-600/50"> タップして属性を覚醒！</button></div>
+        <div className="mb-6"><button onClick={() => router.push("/yami-zokusei")} className="w-full bg-gradient-to-r from-red-800 via-red-700 to-red-900 text-white font-bold py-4 px-6 rounded-full shadow-lg shadow-red-900/50 hover:opacity-90 transition-opacity animate-pulse border border-red-600/50">👆 タップして属性を覚醒！</button></div>
         <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-red-900/50">
           <div className="mb-6"><Image src={result.image} priority alt={result.title} width={180} height={180} className="mx-auto drop-shadow-[0_0_20px_rgba(255,0,0,0.3)]" /></div>
           <p className="text-red-400 text-sm font-medium mb-2">あなたの魂に宿る属性は...</p>
@@ -38,8 +38,8 @@ export function YamiZokuseiResultContent(): React.ReactElement {
           <p className="text-red-200 leading-relaxed mb-6">{result.description}</p>
 
           <div className="bg-red-900/20 rounded-2xl p-5 mb-6 text-left border border-red-900/30">
-            <p className="text-red-400 font-bold text-sm mb-3 text-center"> この属性の特徴</p>
-            <ul className="space-y-2">{result.traits.map((t, i) => (<li key={i} className="flex items-start gap-2 text-red-200 text-sm"><span className="text-red-500 mt-0.5"></span><span>{t}</span></li>))}</ul>
+            <p className="text-red-400 font-bold text-sm mb-3 text-center">⚔️ この属性の特徴</p>
+            <ul className="space-y-2">{result.traits.map((t, i) => (<li key={i} className="flex items-start gap-2 text-red-200 text-sm"><span className="text-red-500 mt-0.5">✓</span><span>{t}</span></li>))}</ul>
           </div>
           <div className="bg-gradient-to-r from-red-900/40 to-red-800/30 rounded-2xl p-4 mb-6 border border-red-800/30"><p className="text-white text-lg font-bold">{result.quote}</p></div>
 
@@ -63,7 +63,7 @@ export function YamiZokuseiResultContent(): React.ReactElement {
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-red-900/50">
-              <p className="text-xs text-gray-400 mb-3"> この診断をもっと深く知る</p>
+              <p className="text-xs text-gray-400 mb-3">📚 この診断をもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -78,9 +78,9 @@ export function YamiZokuseiResultContent(): React.ReactElement {
           <div className="mt-8 pt-6 border-t border-red-900/50">
             <p className="text-xs text-red-800 mb-3">次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/yoru-gata" className="px-6 py-3 bg-red-900/20 hover:bg-red-900/30 rounded-full text-indigo-400 font-medium transition-colors text-center"> 夜型オタク診断 →</Link>
-              <Link href="/menhera" className="px-6 py-3 bg-red-900/20 hover:bg-red-900/30 rounded-full text-pink-400 font-medium transition-colors text-center"> メンヘラ度診断 →</Link>
-              <Link href="/gacha" className="px-6 py-3 bg-red-900/20 hover:bg-red-900/30 rounded-full text-amber-400 font-medium transition-colors text-center"> 課金スタイル診断 →</Link>
+              <Link href="/yoru-gata" className="px-6 py-3 bg-red-900/20 hover:bg-red-900/30 rounded-full text-indigo-400 font-medium transition-colors text-center">🌙 夜型オタク診断 →</Link>
+              <Link href="/menhera" className="px-6 py-3 bg-red-900/20 hover:bg-red-900/30 rounded-full text-pink-400 font-medium transition-colors text-center">🖤 メンヘラ度診断 →</Link>
+              <Link href="/gacha" className="px-6 py-3 bg-red-900/20 hover:bg-red-900/30 rounded-full text-amber-400 font-medium transition-colors text-center">💰 課金スタイル診断 →</Link>
             </div>
           </div>
         </div>

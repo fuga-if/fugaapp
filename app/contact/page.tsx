@@ -34,7 +34,7 @@ export default function ContactPage() {
       {/* Content */}
       <main className="max-w-2xl mx-auto px-4 py-16">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">
-           お問い合わせ
+          📩 お問い合わせ
         </h1>
 
         <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8 text-center">

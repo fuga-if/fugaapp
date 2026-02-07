@@ -40,18 +40,18 @@ export function MenheraResultContent(): React.ReactElement {
           <p className="text-gray-600 leading-relaxed mb-6">{result.description}</p>
 
           <div className="bg-pink-50/50 rounded-2xl p-5 mb-6 text-left">
-            <p className="text-pink-500 font-bold text-sm mb-3 text-center"> こんなことしがち...?</p>
+            <p className="text-pink-500 font-bold text-sm mb-3 text-center">💭 こんなことしがち...?</p>
             <ul className="space-y-2">
               {result.traits.map((trait, i) => (
                 <li key={i} className="flex items-start gap-2 text-gray-600 text-sm">
-                  <span className="text-pink-400 mt-0.5"></span><span>{trait}</span>
+                  <span className="text-pink-400 mt-0.5">✓</span><span>{trait}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-4 mb-8">
-            <p className="text-gray-700 text-sm font-medium"> {result.advice}</p>
+            <p className="text-gray-700 text-sm font-medium">💝 {result.advice}</p>
           </div>
 
           <div className="space-y-4">
@@ -70,7 +70,7 @@ export function MenheraResultContent(): React.ReactElement {
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-pink-100">
-              <p className="text-xs text-gray-400 mb-3"> この診断をもっと深く知る</p>
+              <p className="text-xs text-gray-400 mb-3">📚 この診断をもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -85,8 +85,8 @@ export function MenheraResultContent(): React.ReactElement {
           <div className="mt-8 pt-6 border-t border-pink-100">
             <p className="text-xs text-gray-400 mb-3">次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/oshi" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-pink-500 font-medium transition-colors"> 推し活タイプ診断 →</Link>
-              <Link href="/gacha" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-amber-500 font-medium transition-colors"> 課金スタイル診断 →</Link>
+              <Link href="/oshi" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-pink-500 font-medium transition-colors">💖 推し活タイプ診断 →</Link>
+              <Link href="/gacha" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-amber-500 font-medium transition-colors">💰 課金スタイル診断 →</Link>
             </div>
           </div>
         </div>

@@ -16,12 +16,12 @@ function getTypeColor(type: string): string {
 
 function getTypeEmoji(type: string): string {
   switch (type) {
-    case "type-a": return "";
-    case "type-b": return "";
-    case "type-c": return "";
-    case "type-d": return "";
-    case "type-e": return "";
-    default: return "";
+    case "type-a": return "🔷";
+    case "type-b": return "🔹";
+    case "type-c": return "💠";
+    case "type-d": return "🌊";
+    case "type-e": return "🌈";
+    default: return "🔷";
   }
 }
 
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const title = searchParams.get("title") || "ASD傾向チェック";
 
   const color = type ? getTypeColor(type) : "#3B82F6";
-  const emoji = type ? getTypeEmoji(type) : "";
+  const emoji = type ? getTypeEmoji(type) : "🔷";
   const isResult = !!type;
   
   const imageFile = type || "main";
@@ -68,7 +68,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               marginBottom: "16px",
             }}
           >
-             ASD傾向チェック
+            🔷 ASD傾向チェック
           </div>
 
           {isResult ? (

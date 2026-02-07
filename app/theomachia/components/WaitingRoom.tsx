@@ -130,7 +130,7 @@ export function WaitingRoom({
         <div style={styles.modalOverlay} onClick={() => setShowDeckModal(false)}>
           <div style={styles.waitingDeckModal} onClick={(e) => e.stopPropagation()}>
             <div style={styles.modalHeader}>
-              <h2 style={styles.modalTitle}> デッキ一覧</h2>
+              <h2 style={styles.modalTitle}>デッキ一覧</h2>
               <button onClick={() => setShowDeckModal(false)} style={styles.closeBtn}>
                 
               </button>

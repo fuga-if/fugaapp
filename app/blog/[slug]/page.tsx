@@ -112,7 +112,7 @@ export default async function BlogPostPage({ params }: Props) {
         {/* CTA */}
         <div className="mt-12 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 text-center border border-purple-100">
           <p className="text-lg font-bold text-gray-800 mb-4">
-             あなたも診断してみよう！
+            🔍 あなたも診断してみよう！
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {post.relatedDiagnoses.map((d) => (

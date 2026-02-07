@@ -17,13 +17,13 @@ function getTypeColor(type: string): string {
 
 function getTypeEmoji(type: string): string {
   switch (type) {
-    case "type-a": return "";
-    case "type-b": return "";
-    case "type-c": return "";
-    case "type-d": return "";
-    case "type-e": return "";
-    case "type-f": return "";
-    default: return "";
+    case "type-a": return "✨";
+    case "type-b": return "📊";
+    case "type-c": return "🎯";
+    case "type-d": return "👂";
+    case "type-e": return "🔮";
+    case "type-f": return "🤫";
+    default: return "📝";
   }
 }
 
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const title = searchParams.get("title") || "言語化力診断";
 
   const color = type ? getTypeColor(type) : "#06B6D4";
-  const emoji = type ? getTypeEmoji(type) : "";
+  const emoji = type ? getTypeEmoji(type) : "📝";
   const isResult = !!type;
 
   return new ImageResponse(
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               textShadow: "0 2px 12px rgba(34,211,238,0.3)",
             }}
           >
-             言語化力診断
+            📝 言語化力診断
           </div>
 
           {isResult ? (
@@ -107,7 +107,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                   marginBottom: "12px",
                 }}
               >
-                 あなたの言語化タイプは... 
+                ✦ あなたの言語化タイプは... ✦
               </div>
               <div
                 style={{

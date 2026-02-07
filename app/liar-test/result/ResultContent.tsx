@@ -32,7 +32,7 @@ export function LiarTestResultContent(): React.ReactElement {
   const maxTime = Math.max(...analysis.timesMs);
 
   const handleShare = async () => {
-    const text = `【嘘つき度診断】\n嘘つき度 ${result.liarScore}%「${result.title}」でした！${result.emoji}\n${result.hidden === "instinct" ? " 隠し称号「直感の鬼」獲得！" : result.hidden === "yesman" ? " 隠し称号「イエスマン」獲得！" : result.hidden === "rebel" ? " 隠し称号「反逆者」獲得！" : ""}\n\n#嘘つき度診断 #fugaapp`;
+    const text = `【嘘つき度診断】\n嘘つき度 ${result.liarScore}%「${result.title}」でした！${result.emoji}\n${result.hidden === "instinct" ? "🏆 隠し称号「直感の鬼」獲得！" : result.hidden === "yesman" ? "🏆 隠し称号「イエスマン」獲得！" : result.hidden === "rebel" ? "🏆 隠し称号「反逆者」獲得！" : ""}\n\n#嘘つき度診断 #fugaapp`;
     const url = `https://fugaapp.site/liar-test/result?${searchParams.toString()}`;
     if (navigator.share) {
       try {
@@ -55,7 +55,7 @@ export function LiarTestResultContent(): React.ReactElement {
         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-600/50 rounded-2xl p-8 shadow-[0_0_40px_rgba(156,163,175,0.1)]">
           {/* 嘘つき度メーター */}
           <p className="text-gray-400 text-sm font-mono mb-2">
-             ANALYSIS COMPLETE
+            ▶ ANALYSIS COMPLETE
           </p>
           <div className="mb-6">
             <p className="text-gray-400 text-sm mb-2">嘘つき度</p>
@@ -91,7 +91,7 @@ export function LiarTestResultContent(): React.ReactElement {
           {result.hidden && (
             <div className="bg-yellow-900/30 border border-yellow-500/50 rounded-xl p-4 mb-6 animate-pulse">
               <p className="text-yellow-400 font-bold text-sm mb-1">
-                 隠し称号を獲得！
+                🏆 隠し称号を獲得！
               </p>
               <p className="text-yellow-300 text-lg font-bold">
                 {result.hidden === "instinct" && "「直感の鬼」"}
@@ -121,7 +121,7 @@ export function LiarTestResultContent(): React.ReactElement {
           {/* 特徴 */}
           <div className="bg-gray-700/30 rounded-xl p-5 mb-6 text-left border border-gray-600/30">
             <p className="text-gray-300 font-bold text-sm mb-3 text-center">
-               あなたの特徴
+              📋 あなたの特徴
             </p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
@@ -139,7 +139,7 @@ export function LiarTestResultContent(): React.ReactElement {
           {/* 回答時間グラフ */}
           <div className="bg-gray-700/30 rounded-xl p-5 mb-6 border border-gray-600/30">
             <p className="text-gray-300 font-bold text-sm mb-4 text-center">
-               回答時間グラフ
+              ⏱ 回答時間グラフ
             </p>
             <div className="space-y-2">
               {analysis.timesMs.map((timeMs, i) => {
@@ -204,7 +204,7 @@ export function LiarTestResultContent(): React.ReactElement {
           {/* 各質問の振り返り */}
           <div className="bg-gray-700/30 rounded-xl p-5 mb-6 border border-gray-600/30">
             <p className="text-gray-300 font-bold text-sm mb-3 text-center">
-               回答の振り返り
+              🔍 回答の振り返り
             </p>
             <div className="space-y-2 text-left">
               {questions.map((q, i) => {
@@ -234,7 +234,7 @@ export function LiarTestResultContent(): React.ReactElement {
                     </div>
                     {isAboveAvg && (
                       <p className="text-red-400/70 text-xs mt-1">
-                         この質問で迷ってますね...？（
+                        💭 この質問で迷ってますね...？（
                         {(analysis.timesMs[i] / 1000).toFixed(1)}s）
                       </p>
                     )}
@@ -263,7 +263,7 @@ export function LiarTestResultContent(): React.ReactElement {
               onClick={() => (window.location.href = "/liar-test")}
               className="w-full px-8 py-4 rounded-xl font-bold text-lg shadow-lg bg-gray-700/30 text-gray-300 border border-gray-500/50 hover:border-gray-400 hover:bg-gray-600/30 transition-all hover:scale-105 active:scale-95"
             >
-               もう一度診断する
+              🔍 もう一度診断する
             </button>
           </div>
 
@@ -271,7 +271,7 @@ export function LiarTestResultContent(): React.ReactElement {
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-gray-600/30">
               <p className="text-xs text-gray-500/60 mb-3">
-                 この診断をもっと深く知る
+                📚 この診断をもっと深く知る
               </p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map((post) => (
@@ -290,26 +290,26 @@ export function LiarTestResultContent(): React.ReactElement {
           {/* 他の診断 */}
           <div className="mt-8 pt-6 border-t border-gray-600/30">
             <p className="text-xs text-gray-500/50 mb-3">
-               次の診断もやってみる？
+              ▼ 次の診断もやってみる？
             </p>
             <div className="flex flex-col gap-2">
               <Link
                 href="/hsp"
                 className="px-6 py-3 bg-gray-700/30 hover:bg-gray-600/30 rounded-xl text-gray-400/70 hover:text-gray-300 font-medium transition-colors text-center border border-gray-600/20"
               >
-                 HSP診断 →
+                🌸 HSP診断 →
               </Link>
               <Link
                 href="/inkya-youkya"
                 className="px-6 py-3 bg-gray-700/30 hover:bg-gray-600/30 rounded-xl text-gray-400/70 hover:text-gray-300 font-medium transition-colors text-center border border-gray-600/20"
               >
-                 陰キャ陽キャ診断 →
+                🌓 陰キャ陽キャ診断 →
               </Link>
               <Link
                 href="/commu-style"
                 className="px-6 py-3 bg-gray-700/30 hover:bg-gray-600/30 rounded-xl text-gray-400/70 hover:text-gray-300 font-medium transition-colors text-center border border-gray-600/20"
               >
-                 コミュスタイル診断 →
+                💬 コミュスタイル診断 →
               </Link>
             </div>
           </div>

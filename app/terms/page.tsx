@@ -33,7 +33,7 @@ export default function TermsPage() {
       {/* Content */}
       <main className="max-w-3xl mx-auto px-4 py-16">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12">
-           利用規約
+          📜 利用規約
         </h1>
 
         <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8 md:p-12 space-y-8 text-gray-700 leading-relaxed">

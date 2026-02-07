@@ -41,18 +41,18 @@ export function AdhdResultContent(): React.ReactElement {
           <p className="text-gray-600 leading-relaxed mb-6">{result.description}</p>
 
           <div className="bg-orange-50 rounded-2xl p-5 mb-6 text-left border border-orange-100">
-            <p className="text-orange-500 font-bold text-sm mb-3 text-center"> このタイプの特徴</p>
+            <p className="text-orange-500 font-bold text-sm mb-3 text-center">🚀 このタイプの特徴</p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
                 <li key={i} className="flex items-start gap-2 text-gray-600 text-sm">
-                  <span className="text-orange-500 mt-0.5"></span><span>{t}</span>
+                  <span className="text-orange-500 mt-0.5">✓</span><span>{t}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="bg-gradient-to-r from-orange-100 to-yellow-100 rounded-2xl p-4 mb-6 border border-orange-200">
-            <p className="text-gray-800 text-lg font-bold"> {result.advice}</p>
+            <p className="text-gray-800 text-lg font-bold">💡 {result.advice}</p>
           </div>
 
           <div className="mb-8">
@@ -93,9 +93,9 @@ export function AdhdResultContent(): React.ReactElement {
           <div className="mt-8 pt-6 border-t border-orange-100">
             <p className="text-xs text-gray-400 mb-3">次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/shikou-type" className="px-6 py-3 bg-orange-50 hover:bg-orange-100 rounded-full text-blue-500 font-medium transition-colors text-center"> 思考タイプ診断 →</Link>
-              <Link href="/stress-taisho" className="px-6 py-3 bg-orange-50 hover:bg-orange-100 rounded-full text-green-500 font-medium transition-colors text-center"> ストレス対処法タイプ診断 →</Link>
-              <Link href="/motivation" className="px-6 py-3 bg-orange-50 hover:bg-orange-100 rounded-full text-purple-500 font-medium transition-colors text-center"> モチベーション源泉診断 →</Link>
+              <Link href="/shikou-type" className="px-6 py-3 bg-orange-50 hover:bg-orange-100 rounded-full text-blue-500 font-medium transition-colors text-center">🧠 思考タイプ診断 →</Link>
+              <Link href="/stress-taisho" className="px-6 py-3 bg-orange-50 hover:bg-orange-100 rounded-full text-green-500 font-medium transition-colors text-center">🌿 ストレス対処法タイプ診断 →</Link>
+              <Link href="/motivation" className="px-6 py-3 bg-orange-50 hover:bg-orange-100 rounded-full text-purple-500 font-medium transition-colors text-center">⚡ モチベーション源泉診断 →</Link>
             </div>
           </div>
         </div>

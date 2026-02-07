@@ -13,12 +13,12 @@ const rankColors: Record<string, string> = {
 };
 
 const rankThresholds: { rank: string; title: string; threshold: number; emoji: string }[] = [
-  { rank: "S", title: "連打の神", threshold: 100, emoji: "" },
-  { rank: "A", title: "高速タッパー", threshold: 80, emoji: "" },
-  { rank: "B", title: "なかなかの腕前", threshold: 60, emoji: "" },
-  { rank: "C", title: "まあまあ", threshold: 45, emoji: "" },
-  { rank: "D", title: "のんびりタッパー", threshold: 30, emoji: "" },
-  { rank: "E", title: "省エネモード", threshold: 0, emoji: "" },
+  { rank: "S", title: "連打の神", threshold: 100, emoji: "🏆" },
+  { rank: "A", title: "高速タッパー", threshold: 80, emoji: "⚡" },
+  { rank: "B", title: "なかなかの腕前", threshold: 60, emoji: "🔥" },
+  { rank: "C", title: "まあまあ", threshold: 45, emoji: "👆" },
+  { rank: "D", title: "のんびりタッパー", threshold: 30, emoji: "🐌" },
+  { rank: "E", title: "省エネモード", threshold: 0, emoji: "😴" },
 ];
 
 function getRankFromScore(score: number) {
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             gap: "8px",
           }}
         >
-           タップ速度テスト
+          👆 タップ速度テスト
         </div>
 
         {hasResult && rankInfo ? (
@@ -143,7 +143,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               alignItems: "center",
             }}
           >
-            <div style={{ fontSize: "80px", marginBottom: "16px" }}></div>
+            <div style={{ fontSize: "80px", marginBottom: "16px" }}>👆</div>
             <div
               style={{
                 fontSize: "48px",

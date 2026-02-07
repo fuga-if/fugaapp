@@ -30,7 +30,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
 export default function ResultPage(): React.ReactElement {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-cyan-300 animate-pulse"> あなたの言語化タイプを分析中... </div></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-cyan-300 animate-pulse">✦ あなたの言語化タイプを分析中... ✦</div></div>}>
       <GengokaResultContent />
     </Suspense>
   );

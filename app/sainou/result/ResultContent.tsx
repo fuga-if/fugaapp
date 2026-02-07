@@ -38,11 +38,11 @@ export function SainouResultContent(): React.ReactElement {
 
           {/* 特徴 */}
           <div className="bg-amber-50/80 rounded-xl p-5 mb-6 text-left border border-amber-100">
-            <p className="text-amber-600 font-bold text-sm mb-3 text-center"> あなたの才能の特徴</p>
+            <p className="text-amber-600 font-bold text-sm mb-3 text-center">💎 あなたの才能の特徴</p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
                 <li key={i} className="flex items-start gap-2 text-gray-700 text-sm">
-                  <span className="text-amber-500 mt-0.5"></span><span>{t}</span>
+                  <span className="text-amber-500 mt-0.5">✦</span><span>{t}</span>
                 </li>
               ))}
             </ul>
@@ -64,7 +64,7 @@ export function SainouResultContent(): React.ReactElement {
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-amber-100">
-              <p className="text-xs text-gray-400 mb-3"> この診断をもっと深く知る</p>
+              <p className="text-xs text-gray-400 mb-3">📚 この診断をもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -78,11 +78,11 @@ export function SainouResultContent(): React.ReactElement {
 
           {/* 他の診断 */}
           <div className="mt-8 pt-6 border-t border-amber-100">
-            <p className="text-xs text-gray-400 mb-3"> 次の診断もやってみる？</p>
+            <p className="text-xs text-gray-400 mb-3">▼ 次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/motivation" className="px-6 py-3 bg-amber-50 hover:bg-amber-100 rounded-xl text-amber-600 hover:text-amber-700 font-medium transition-colors text-center border border-amber-100"> モチベーション源泉診断 →</Link>
-              <Link href="/shikou-type" className="px-6 py-3 bg-amber-50 hover:bg-amber-100 rounded-xl text-amber-600 hover:text-amber-700 font-medium transition-colors text-center border border-amber-100"> 思考タイプ診断 →</Link>
-              <Link href="/commu-style" className="px-6 py-3 bg-amber-50 hover:bg-amber-100 rounded-xl text-amber-600 hover:text-amber-700 font-medium transition-colors text-center border border-amber-100"> コミュニケーションスタイル診断 →</Link>
+              <Link href="/motivation" className="px-6 py-3 bg-amber-50 hover:bg-amber-100 rounded-xl text-amber-600 hover:text-amber-700 font-medium transition-colors text-center border border-amber-100">⚡ モチベーション源泉診断 →</Link>
+              <Link href="/shikou-type" className="px-6 py-3 bg-amber-50 hover:bg-amber-100 rounded-xl text-amber-600 hover:text-amber-700 font-medium transition-colors text-center border border-amber-100">🧠 思考タイプ診断 →</Link>
+              <Link href="/commu-style" className="px-6 py-3 bg-amber-50 hover:bg-amber-100 rounded-xl text-amber-600 hover:text-amber-700 font-medium transition-colors text-center border border-amber-100">💬 コミュニケーションスタイル診断 →</Link>
             </div>
           </div>
         </div>

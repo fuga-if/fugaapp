@@ -36,7 +36,7 @@ export function HspResultContent(): React.ReactElement {
 
           {/* HSP度メーター */}
           <div className="bg-purple-50 rounded-2xl p-5 mb-6 border border-purple-100">
-            <p className="text-purple-500 font-bold text-sm mb-3 text-center"> あなたのHSP度</p>
+            <p className="text-purple-500 font-bold text-sm mb-3 text-center">🌸 あなたのHSP度</p>
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-500 w-16">タフ</span>
               <div className="flex-1 bg-gray-200 rounded-full h-4 overflow-hidden">
@@ -51,18 +51,18 @@ export function HspResultContent(): React.ReactElement {
           </div>
 
           <div className="bg-purple-50 rounded-2xl p-5 mb-6 text-left border border-purple-100">
-            <p className="text-purple-500 font-bold text-sm mb-3 text-center"> このタイプの特徴</p>
+            <p className="text-purple-500 font-bold text-sm mb-3 text-center">🌿 このタイプの特徴</p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
                 <li key={i} className="flex items-start gap-2 text-gray-600 text-sm">
-                  <span className="text-purple-500 mt-0.5"></span><span>{t}</span>
+                  <span className="text-purple-500 mt-0.5">✓</span><span>{t}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-4 mb-6 border border-purple-200">
-            <p className="text-gray-800 text-lg font-bold"> {result.advice}</p>
+            <p className="text-gray-800 text-lg font-bold">💭 {result.advice}</p>
           </div>
 
           <div className="space-y-4">
@@ -78,7 +78,7 @@ export function HspResultContent(): React.ReactElement {
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-purple-100">
-              <p className="text-xs text-gray-400 mb-3"> HSPをもっと深く知る</p>
+              <p className="text-xs text-gray-400 mb-3">📚 HSPをもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -93,9 +93,9 @@ export function HspResultContent(): React.ReactElement {
           <div className="mt-8 pt-6 border-t border-purple-100">
             <p className="text-xs text-gray-400 mb-3">次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/stress-taisho" className="px-6 py-3 bg-purple-50 hover:bg-purple-100 rounded-full text-green-600 font-medium transition-colors text-center"> ストレス対処法タイプ診断 →</Link>
-              <Link href="/inkya-youkya" className="px-6 py-3 bg-purple-50 hover:bg-purple-100 rounded-full text-purple-600 font-medium transition-colors text-center"> 陰キャ陽キャスペクトラム診断 →</Link>
-              <Link href="/menhera" className="px-6 py-3 bg-purple-50 hover:bg-purple-100 rounded-full text-pink-500 font-medium transition-colors text-center"> メンヘラ度診断 →</Link>
+              <Link href="/stress-taisho" className="px-6 py-3 bg-purple-50 hover:bg-purple-100 rounded-full text-green-600 font-medium transition-colors text-center">🌿 ストレス対処法タイプ診断 →</Link>
+              <Link href="/inkya-youkya" className="px-6 py-3 bg-purple-50 hover:bg-purple-100 rounded-full text-purple-600 font-medium transition-colors text-center">🌓 陰キャ陽キャスペクトラム診断 →</Link>
+              <Link href="/menhera" className="px-6 py-3 bg-purple-50 hover:bg-purple-100 rounded-full text-pink-500 font-medium transition-colors text-center">🖤 メンヘラ度診断 →</Link>
             </div>
           </div>
         </div>

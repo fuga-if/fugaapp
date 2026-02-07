@@ -63,7 +63,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             gap: "8px",
           }}
         >
-           モグラ叩き
+          🔨 モグラ叩き
         </div>
 
         {hasResult ? (
@@ -153,7 +153,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                 fontSize: "60px",
               }}
             >
-              
+              🐹
             </div>
             <div
               style={{

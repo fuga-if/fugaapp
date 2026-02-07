@@ -5,13 +5,13 @@ export const runtime = "edge";
 
 function getTypeEmoji(type: string): string {
   switch (type) {
-    case "type-a": return "";
-    case "type-b": return "";
-    case "type-c": return "";
-    case "type-d": return "";
-    case "type-e": return "";
-    case "type-f": return "";
-    default: return "";
+    case "type-a": return "✍️";
+    case "type-b": return "📊";
+    case "type-c": return "💝";
+    case "type-d": return "🎨";
+    case "type-e": return "🔍";
+    case "type-f": return "👑";
+    default: return "💎";
   }
 }
 
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const title = searchParams.get("title") || "隠れ才能診断";
 
   const color = type ? getTypeColor(type) : "#F59E0B";
-  const emoji = type ? getTypeEmoji(type) : "";
+  const emoji = type ? getTypeEmoji(type) : "💎";
   const isResult = !!type;
 
   return new ImageResponse(
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               marginBottom: "20px",
             }}
           >
-             隠れ才能診断
+            💎 隠れ才能診断
           </div>
 
           {isResult ? (

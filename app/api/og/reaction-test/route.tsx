@@ -63,7 +63,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             gap: "8px",
           }}
         >
-           反射神経テスト
+          ⚡ 反射神経テスト
         </div>
 
         {hasResult ? (
@@ -145,7 +145,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                 marginBottom: "16px",
               }}
             >
-              
+              ⚡
             </div>
             <div
               style={{

@@ -19,7 +19,7 @@ export default function AdhdHome(): React.ReactElement {
           onClick={() => router.push("/adhd/quiz")}
           className="px-12 py-5 rounded-full font-bold text-xl shadow-lg bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-white transition-all transform hover:scale-105 active:scale-95 mb-6"
         >
-          診断スタート 
+          診断スタート 🚀
         </button>
         <p className="text-sm text-gray-400 mb-8">※ 全10問・約2分で完了</p>
         
@@ -32,9 +32,9 @@ export default function AdhdHome(): React.ReactElement {
         <div className="pt-6 border-t border-gray-200 mt-6">
           <p className="text-xs text-gray-400 mb-3">他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
-            <Link href="/shikou-type" className="text-blue-500 hover:text-blue-600 text-sm"> 思考タイプ診断 →</Link>
-            <Link href="/stress-taisho" className="text-green-500 hover:text-green-600 text-sm"> ストレス対処法タイプ診断 →</Link>
-            <Link href="/motivation" className="text-purple-500 hover:text-purple-600 text-sm"> モチベーション源泉診断 →</Link>
+            <Link href="/shikou-type" className="text-blue-500 hover:text-blue-600 text-sm">🧠 思考タイプ診断 →</Link>
+            <Link href="/stress-taisho" className="text-green-500 hover:text-green-600 text-sm">🌿 ストレス対処法タイプ診断 →</Link>
+            <Link href="/motivation" className="text-purple-500 hover:text-purple-600 text-sm">⚡ モチベーション源泉診断 →</Link>
           </div>
         </div>
       </div>

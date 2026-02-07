@@ -25,7 +25,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
         }}
       >
         <div style={{ fontSize: "80px", marginBottom: "16px" }}>
-          
+          👁️
         </div>
         {hasResult ? (
           <>

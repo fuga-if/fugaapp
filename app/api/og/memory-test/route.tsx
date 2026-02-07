@@ -4,12 +4,12 @@ import { NextRequest } from "next/server";
 export const runtime = "edge";
 
 const rankThresholds = [
-  { rank: "S", title: "超記憶脳", threshold: 15, emoji: "", color: "#FFD700" },
-  { rank: "A", title: "カメラアイ", threshold: 11, emoji: "", color: "#FF6B35" },
-  { rank: "B", title: "記憶上手", threshold: 8, emoji: "", color: "#4ECDC4" },
-  { rank: "C", title: "ふつうの脳", threshold: 5, emoji: "", color: "#45B7D1" },
-  { rank: "D", title: "サカナ並み？", threshold: 3, emoji: "", color: "#96CEB4" },
-  { rank: "E", title: "瞬間記憶…", threshold: 0, emoji: "", color: "#A8A8A8" },
+  { rank: "S", title: "超記憶脳", threshold: 15, emoji: "🧠", color: "#FFD700" },
+  { rank: "A", title: "カメラアイ", threshold: 11, emoji: "📸", color: "#FF6B35" },
+  { rank: "B", title: "記憶上手", threshold: 8, emoji: "💡", color: "#4ECDC4" },
+  { rank: "C", title: "ふつうの脳", threshold: 5, emoji: "🌱", color: "#45B7D1" },
+  { rank: "D", title: "サカナ並み？", threshold: 3, emoji: "🐟", color: "#96CEB4" },
+  { rank: "E", title: "瞬間記憶…", threshold: 0, emoji: "💨", color: "#A8A8A8" },
 ];
 
 function getRankFromScore(score: number) {
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             gap: "8px",
           }}
         >
-           記憶力テスト
+          🧠 記憶力テスト
         </div>
 
         {hasResult && rankInfo ? (

@@ -16,12 +16,12 @@ function getTypeColor(type: string): string {
 
 function getTypeEmoji(type: string): string {
   switch (type) {
-    case "type-a": return "";
-    case "type-b": return "";
-    case "type-c": return "";
-    case "type-d": return "";
-    case "type-e": return "";
-    default: return "";
+    case "type-a": return "🌸";
+    case "type-b": return "🌿";
+    case "type-c": return "🍀";
+    case "type-d": return "🌻";
+    case "type-e": return "🌞";
+    default: return "🌸";
   }
 }
 
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const title = searchParams.get("title") || "HSP診断";
 
   const color = type ? getTypeColor(type) : "#A78BFA";
-  const emoji = type ? getTypeEmoji(type) : "";
+  const emoji = type ? getTypeEmoji(type) : "🌸";
   const isResult = !!type;
   
   // 画像URL（結果タイプがあればそのタイプ、なければmain）
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               marginBottom: "16px",
             }}
           >
-             HSP診断
+            🌸 HSP診断
           </div>
 
           {isResult ? (

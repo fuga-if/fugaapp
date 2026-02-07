@@ -46,7 +46,7 @@ export default async function BlogPage({ searchParams }: Props) {
       {/* Header */}
       <header className="pt-12 pb-8 px-4 text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-           ブログ
+          📝 ブログ
         </h1>
         <p className="text-gray-500 max-w-md mx-auto">
           診断に関連するコラムや豆知識をお届けします
@@ -104,7 +104,7 @@ export default async function BlogPage({ searchParams }: Props) {
                         key={d.slug}
                         className="text-xs bg-purple-50 text-purple-500 px-2 py-0.5 rounded-full"
                       >
-                         {d.title}
+                        🔗 {d.title}
                       </span>
                     ))}
                   </div>
