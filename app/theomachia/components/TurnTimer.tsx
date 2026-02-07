@@ -9,7 +9,7 @@
 import { useState, useEffect, useRef, CSSProperties } from "react";
 import type { TimerState } from "../hooks/useGameConnection";
 
-const TURN_TIME_LIMIT = 30000;
+const TURN_TIME_LIMIT = 120000; // 2分
 
 interface TurnTimerProps {
   /** タイマー状態（サーバーから受信） */
@@ -20,7 +20,7 @@ interface TurnTimerProps {
 
 /**
  * ターンタイマー表示コンポーネント。
- * プログレスバーとカウントダウン秒数を表示する。
+ * ゲージバーで残り時間を表示する（数字なし）。
  */
 export function TurnTimer({ timerState, isMyTurn }: TurnTimerProps) {
   const [displayTime, setDisplayTime] = useState(TURN_TIME_LIMIT);
@@ -40,12 +40,10 @@ export function TurnTimer({ timerState, isMyTurn }: TurnTimerProps) {
     const { turnTimeRemaining, turnPaused, receivedAt } = timerState;
 
     if (turnPaused) {
-      // 一時停止中は固定表示
       setDisplayTime(turnTimeRemaining);
       return;
     }
 
-    // カウントダウン開始
     const updateTimer = () => {
       const elapsed = Date.now() - receivedAt;
       const remaining = Math.max(0, turnTimeRemaining - elapsed);
@@ -67,24 +65,20 @@ export function TurnTimer({ timerState, isMyTurn }: TurnTimerProps) {
     };
   }, [timerState]);
 
-  const seconds = Math.ceil(displayTime / 1000);
   const progress = displayTime / TURN_TIME_LIMIT;
+  const seconds = Math.ceil(displayTime / 1000);
 
-  // 色の決定
+  // 色: 残量で変化
   let barColor: string;
-  let textColor: string;
-  if (seconds > 20) {
-    barColor = "#4CAF50"; // 緑
-    textColor = "#4CAF50";
-  } else if (seconds > 10) {
-    barColor = "#FFC107"; // 黄色
-    textColor = "#FFC107";
+  if (progress > 0.5) {
+    barColor = "#4CAF50"; // 緑（50%以上）
+  } else if (progress > 0.15) {
+    barColor = "#FFC107"; // 黄色（15-50%）
   } else {
-    barColor = "#F44336"; // 赤
-    textColor = "#F44336";
+    barColor = "#F44336"; // 赤（15%以下 = 18秒以下）
   }
 
-  const isUrgent = seconds <= 10 && seconds > 0;
+  const isUrgent = seconds <= 15 && seconds > 0;
 
   return (
     <div style={styles.container}>
@@ -95,22 +89,14 @@ export function TurnTimer({ timerState, isMyTurn }: TurnTimerProps) {
             width: `${progress * 100}%`,
             background: barColor,
             transition: "width 0.1s linear",
+            animation: isUrgent ? "timerBlink 0.5s ease-in-out infinite" : "none",
           }}
         />
       </div>
-      <span
-        style={{
-          ...styles.timeText,
-          color: textColor,
-          animation: isUrgent ? "timerBlink 0.5s ease-in-out infinite" : "none",
-        }}
-      >
-        {seconds}s
-      </span>
       <style>{`
         @keyframes timerBlink {
           0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
+          50% { opacity: 0.4; }
         }
       `}</style>
     </div>
@@ -124,7 +110,7 @@ interface ShieldTimerProps {
 
 /**
  * 打ち消しタイマー表示コンポーネント。
- * 打ち消し判定中にカウントダウンを表示する。
+ * 打ち消し判定中にゲージで表示する。
  */
 export function ShieldTimer({ timerState }: ShieldTimerProps) {
   const [displayTime, setDisplayTime] = useState(0);
@@ -166,12 +152,20 @@ export function ShieldTimer({ timerState }: ShieldTimerProps) {
 
   if (!timerState?.shieldActive || displayTime <= 0) return null;
 
-  const seconds = Math.ceil(displayTime / 1000);
+  const progress = displayTime / (timerState.shieldTimeLimit || 15000);
 
   return (
     <div style={styles.shieldContainer}>
       <span style={styles.shieldIcon}>🛡️</span>
-      <span style={styles.shieldTime}>{seconds}s</span>
+      <div style={styles.shieldBarBg}>
+        <div
+          style={{
+            ...styles.shieldBarFill,
+            width: `${progress * 100}%`,
+            transition: "width 0.1s linear",
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -215,17 +209,10 @@ const styles: Record<string, CSSProperties> = {
     height: "100%",
     borderRadius: 2,
   },
-  timeText: {
-    fontSize: 11,
-    fontWeight: 700,
-    fontFamily: "monospace",
-    minWidth: 24,
-    textAlign: "right" as const,
-  },
   shieldContainer: {
     display: "flex",
     alignItems: "center",
-    gap: 4,
+    gap: 6,
     padding: "2px 8px",
     background: "rgba(201, 162, 39, 0.15)",
     borderRadius: 4,
@@ -234,11 +221,17 @@ const styles: Record<string, CSSProperties> = {
   shieldIcon: {
     fontSize: 12,
   },
-  shieldTime: {
-    fontSize: 12,
-    fontWeight: 700,
-    color: "#C9A227",
-    fontFamily: "monospace",
+  shieldBarBg: {
+    width: 60,
+    height: 3,
+    background: "rgba(201, 162, 39, 0.2)",
+    borderRadius: 2,
+    overflow: "hidden",
+  },
+  shieldBarFill: {
+    height: "100%",
+    background: "#C9A227",
+    borderRadius: 2,
   },
   processingContainer: {
     position: "fixed" as const,

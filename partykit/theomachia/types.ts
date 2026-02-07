@@ -146,7 +146,7 @@ export const COUNTER_SHIELD_COST = 2;
 export const MAX_OPTIONAL_CARDS = 14;
 
 /** ターンタイマー制限時間（ms） */
-export const TURN_TIME_LIMIT = 30000;
+export const TURN_TIME_LIMIT = 120000;
 
 /** 打ち消しタイマー制限時間（ms） */
 export const SHIELD_TIME_LIMIT = 15000;
