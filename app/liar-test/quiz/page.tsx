@@ -119,7 +119,12 @@ export default function QuizPage(): React.ReactElement {
               </button>
             </div>
 
-            {/* 回答時間は裏で計測（表示しない） */}
+            {/* タイマー表示（ユーザーにプレッシャーを与える演出） */}
+            <div className="mt-6 text-center">
+              <p className="text-gray-600 text-xs font-mono animate-pulse">
+                ⏱ 回答時間を計測中...
+              </p>
+            </div>
           </div>
         </div>
       </div>
