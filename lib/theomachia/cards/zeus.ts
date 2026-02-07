@@ -9,6 +9,7 @@
  */
 
 import { SummonCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class ZeusCard extends SummonCard {
   readonly damage = 4;
@@ -21,5 +22,24 @@ export class ZeusCard extends SummonCard {
       description: "最高神。ターン開始時に4ダメージ。儀式でのみ召喚可能。",
       color: "#FFD700",
     });
+  }
+
+  /** ゼウスは降臨カード経由でのみ召喚可能 */
+  get canDirectPlay(): boolean {
+    return false;
+  }
+
+  /**
+   * ゼウスは直接プレイ不可。降臨カード経由でのみ召喚される。
+   */
+  canExecute(): boolean {
+    return false;
+  }
+
+  /**
+   * 場に召喚する。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.summonToField("zeus");
   }
 }

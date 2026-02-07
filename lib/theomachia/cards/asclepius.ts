@@ -10,6 +10,7 @@
  */
 
 import { SummonCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class AsclepiusCard extends SummonCard {
   readonly damage = 0;
@@ -23,5 +24,12 @@ export class AsclepiusCard extends SummonCard {
       color: "#88DDAA",
       optional: true,
     });
+  }
+
+  /**
+   * アスクレピオスを場に出す。回復効果はターン処理で自動実行される。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.summonToField("asclepius");
   }
 }

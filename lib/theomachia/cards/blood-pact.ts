@@ -11,6 +11,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class BloodPactCard extends SkillCard {
   constructor() {
@@ -23,5 +24,21 @@ export class BloodPactCard extends SkillCard {
     });
   }
 
-  get effect() { return "bloodPact"; }
+  /**
+   * ソウル1以上必要。
+   */
+  canExecute(effects: GameEffects): boolean {
+    return effects.player.souls >= 1;
+  }
+
+  /**
+   * 自傷1ダメージ + 3枚ドロー。
+   */
+  protected onExecute(effects: GameEffects): void {
+    const damaged = effects.selfDamage(1);
+    if (damaged) {
+      effects.log(`${effects.player.name}が1ダメージを受けた（血の契約のコスト）`);
+    }
+    effects.draw(3);
+  }
 }

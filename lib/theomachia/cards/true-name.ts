@@ -9,6 +9,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class TrueNameCard extends SkillCard {
   constructor() {
@@ -20,5 +21,10 @@ export class TrueNameCard extends SkillCard {
     });
   }
 
-  get effect() { return "guess"; }
+  /**
+   * カード名宣言を要求する。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.requestGuess();
+  }
 }

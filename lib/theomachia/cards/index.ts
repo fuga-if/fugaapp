@@ -23,6 +23,7 @@
 
 import type { BaseCard, CardType } from "./base";
 export type { BaseCard, SummonCard, SpellCard, SkillCard, CardType } from "./base";
+export type { GameEffects, DamageResult } from "./base";
 
 // --- カードクラスのインポート ---
 import { ZeusCard } from "./zeus";
@@ -148,6 +149,42 @@ export class CardRegistry {
 // ===========================================
 
 /**
+ * 旧API互換: カードIDから effect 文字列へのマッピング。
+ * クライアント側のUI処理（ターゲット選択等）で使用される。
+ *
+ * @deprecated 新しいコードでは CardRegistry のインスタンスメソッドを使用してください。
+ */
+const EFFECT_MAP: Record<string, string> = {
+  keraunos: "damage",
+  piercingArrow: "damage",
+  ascension: "summon",
+  necromancy: "revive",
+  metamorphose: "swap",
+  tartarus: "remove",
+  ambrosia: "draw3discard2",
+  nectar: "draw2discard2play1",
+  oracle: "search",
+  hermesLetter: "retrieve",
+  clairvoyance: "peep",
+  trueName: "guess",
+  aegis: "shield",
+  godspeed: "extraPlays",
+  equilibrium: "destroyAll",
+  usurp: "usurp",
+  protection: "protection",
+  bloodPact: "bloodPact",
+  prayer: "prayer",
+};
+
+/**
+ * 旧API互換: カードIDから value 数値へのマッピング。
+ */
+const VALUE_MAP: Record<string, number> = {
+  keraunos: 2,
+  piercingArrow: 1,
+};
+
+/**
  * 旧API互換の CARDS 定義オブジェクト。
  * 既存のコードとの後方互換性を維持する。
  *
@@ -166,9 +203,13 @@ function buildCardsObject(): Record<string, any> {
       color: card.color,
     };
     if (card.optional) entry.optional = true;
-    if (card.unblockable) entry.unblockable = true;
-    if (card.effect !== undefined) entry.effect = card.effect;
-    if (card.value !== undefined) entry.value = card.value;
+    if (!card.isCounterable) entry.unblockable = true;
+
+    // 旧API互換: effect / value マッピングから取得
+    const effect = EFFECT_MAP[card.id];
+    if (effect !== undefined) entry.effect = effect;
+    const value = VALUE_MAP[card.id];
+    if (value !== undefined) entry.value = value;
 
     // SummonCard 固有プロパティ
     if (card.type === "summon") {

@@ -8,6 +8,7 @@
  */
 
 import { SpellCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class TartarusCard extends SpellCard {
   constructor() {
@@ -19,5 +20,21 @@ export class TartarusCard extends SpellCard {
     });
   }
 
-  get effect() { return "remove"; }
+  /**
+   * 場にカードがあれば "field"、なければ "none" を返す。
+   */
+  getTargetType(effects: GameEffects): "summon" | "field" | "discard" | "none" {
+    return (effects.player.field.length > 0 || effects.opponent.field.length > 0) ? "field" : "none";
+  }
+
+  /**
+   * ターゲットの場のカードを墓地へ送る。
+   */
+  protected onExecute(effects: GameEffects, target?: string): void {
+    if (target) {
+      effects.removeFromField(target);
+    } else {
+      effects.log("→ 場にカードがないため効果なし");
+    }
+  }
 }

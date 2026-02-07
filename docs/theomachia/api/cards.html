@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>テオマキア カードリファレンス</title>
+<style>
+  :root { --bg: #1a1a2e; --card-bg: #16213e; --gold: #C9A227; --text: #e0e0e0; --muted: #888; --border: rgba(201,162,39,0.2); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding: 24px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { color: var(--gold); font-size: 2em; letter-spacing: 4px; text-align: center; margin: 32px 0 16px; text-shadow: 0 0 20px rgba(201,162,39,0.3); }
+  h2 { color: var(--gold); font-size: 1.5em; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { color: #fff; font-size: 1.2em; margin: 32px 0 8px; }
+  h4 { color: var(--gold); font-size: 1em; margin: 20px 0 8px; }
+  p { margin: 8px 0; }
+  blockquote { border-left: 3px solid var(--gold); padding-left: 16px; color: var(--muted); font-style: italic; margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; background: var(--card-bg); border-radius: 8px; overflow: hidden; }
+  th { background: rgba(201,162,39,0.15); color: var(--gold); padding: 10px 14px; text-align: left; font-size: 0.9em; }
+  td { padding: 8px 14px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.9em; }
+  tr:hover { background: rgba(201,162,39,0.05); }
+  code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 3px; font-size: 0.85em; font-family: 'Consolas', 'Courier New', monospace; }
+  pre { background: var(--card-bg); padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; border: 1px solid var(--border); }
+  pre code { background: none; padding: 0; }
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+  ul, ol { margin: 8px 0 8px 24px; }
+  li { margin: 4px 0; }
+  strong { color: #fff; }
+  em { color: var(--muted); }
+  .back-link { text-align: center; margin: 24px 0; }
+  .back-link a { background: rgba(201,162,39,0.15); padding: 8px 20px; border-radius: 6px; border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="back-link"><a href="index.html">← API ドキュメントに戻る</a></div>
+<h1>テオマキア カードリファレンス</h1>
+<p><em>全23枚 — 基本16枚 + オプション7枚</em></p>
+<hr>
+<h2>目次</h2>
+<h3>召喚獣（Summon）</h3>
+<p>場に残り、毎ターン開始時に自動攻撃する。</p>
+<table>
+<thead>
+<tr>
+<th>カード</th>
+<th>ダメージ</th>
+<th>特殊能力</th>
+<th>基本/Opt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="#%E3%82%BC%E3%82%A6%E3%82%B9-zeus">ゼウス</a></td>
+<td>4</td>
+<td>儀式でのみ召喚</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E3%82%A8%E3%83%AA%E3%82%B9-eris">エリス</a></td>
+<td>1</td>
+<td>—</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E3%83%A1%E3%83%87%E3%83%A5%E3%83%BC%E3%82%B5-medusa">メデューサ</a></td>
+<td>0</td>
+<td>ダメージ反射</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E3%82%A2%E3%82%B9%E3%82%AF%E3%83%AC%E3%83%94%E3%82%AA%E3%82%B9-asclepius">アスクレピオス</a></td>
+<td>0</td>
+<td>毎ターン回復</td>
+<td>Opt</td>
+</tr>
+</tbody></table>
+<h3>儀式（Spell）</h3>
+<p>召喚に関連する効果を持つ。使用後は捨て札へ。</p>
+<table>
+<thead>
+<tr>
+<th>カード</th>
+<th>効果</th>
+<th>基本/Opt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="#%E9%99%8D%E8%87%A8-ascension">降臨</a></td>
+<td>手札の召喚獣を場に出す</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E5%86%A5%E7%95%8C%E3%81%AE%E9%96%80-necromancy">冥界の門</a></td>
+<td>捨て札から召喚獣を復活</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E5%A4%89%E8%BA%AB%E3%81%AE%E7%A7%98%E8%A1%93-metamorphose">変身の秘術</a></td>
+<td>ゼウスとエリスを入れ替え</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E5%A5%88%E8%90%BD%E9%80%81%E3%82%8A-tartarus">奈落送り</a></td>
+<td>場のカード1枚を除去</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E5%9D%87%E8%A1%A1-equilibrium">均衡</a></td>
+<td>場の全カード除去</td>
+<td>Opt</td>
+</tr>
+</tbody></table>
+<h3>スキル（Skill）</h3>
+<p>各種補助効果。使用後は捨て札へ。</p>
+<table>
+<thead>
+<tr>
+<th>カード</th>
+<th>効果</th>
+<th>基本/Opt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="#%E9%9B%B7%E9%9C%86-keraunos">雷霆</a></td>
+<td>2ダメージ</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E7%A5%9E%E3%80%85%E3%81%AE%E7%B3%A7-ambrosia">神々の糧</a></td>
+<td>3枚引いて2枚捨て</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E7%A5%9E%E9%85%92-nectar">神酒</a></td>
+<td>2枚引いて2枚捨て+1プレイ</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E7%A5%9E%E8%A8%97-oracle">神託</a></td>
+<td>山札から1枚選ぶ</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E5%86%A5%E5%BA%9C%E3%81%AE%E6%89%8B%E7%B4%99-hermes-letter">冥府の手紙</a></td>
+<td>捨て札から1枚回収</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E5%8D%83%E9%87%8C%E7%9C%BC-clairvoyance">千里眼</a></td>
+<td>相手の手札を見て1枚捨てさせる</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E7%9C%9F%E5%90%8D%E7%9C%8B%E7%A0%B4-true-name">真名看破</a></td>
+<td>カード名宣言、当たれば奪取</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E7%A5%9E%E7%9B%BE-aegis">神盾</a></td>
+<td>GUARD獲得（手札公開）</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E7%A5%9E%E9%80%9F-godspeed">神速</a></td>
+<td>追加2枚プレイ</td>
+<td>基本</td>
+</tr>
+<tr>
+<td><a href="#%E8%B2%AB%E9%80%9A%E3%81%AE%E7%9F%A2-piercing-arrow">貫通の矢</a></td>
+<td>打ち消し不可1ダメージ</td>
+<td>Opt</td>
+</tr>
+<tr>
+<td><a href="#%E7%B0%92%E5%A5%AA-usurp">簒奪</a></td>
+<td>ソウル-2で相手のカード奪取</td>
+<td>Opt</td>
+</tr>
+<tr>
+<td><a href="#%E5%8A%A0%E8%AD%B7-protection">加護</a></td>
+<td>ダメージ1回無効化</td>
+<td>Opt</td>
+</tr>
+<tr>
+<td><a href="#%E8%A1%80%E3%81%AE%E5%A5%91%E7%B4%84-blood-pact">血の契約</a></td>
+<td>ソウル-1で3枚ドロー</td>
+<td>Opt</td>
+</tr>
+<tr>
+<td><a href="#%E7%A5%88%E3%82%8A-prayer">祈り</a></td>
+<td>ソウル1回復+1枚ドロー</td>
+<td>Opt</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>召喚獣</h2>
+<hr>
+<h3>ゼウス (Zeus)</h3>
+<blockquote>
+<p><em>最高神。ゲーム中最強の召喚獣。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>召喚獣</td>
+</tr>
+<tr>
+<td><strong>ダメージ</strong></td>
+<td>4（実質即死）</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#FFD700（金）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>ZeusCard extends SummonCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/zeus.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>ターン開始時に<strong>4ダメージ</strong>（HP4なので実質即死）</li>
+<li><strong>直接プレイ不可</strong> — 「降臨」カード経由でのみ召喚できる</li>
+<li>メデューサの反射を<strong>無視</strong>する</li>
+<li>GUARDでしか防げない</li>
+</ul>
+<h4>相互作用</h4>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>メデューサ（反射）</td>
+<td>❌ 無視（ゼウスは反射されない）</td>
+</tr>
+<tr>
+<td>GUARD（打ち消し）</td>
+<td>✅ 唯一の防御手段</td>
+</tr>
+<tr>
+<td>加護</td>
+<td>❌ 無視（ゼウスは加護を貫通）</td>
+</tr>
+<tr>
+<td>奈落送り</td>
+<td>✅ 場から除去可能</td>
+</tr>
+<tr>
+<td>均衡</td>
+<td>✅ 場から除去可能</td>
+</tr>
+<tr>
+<td>変身の秘術</td>
+<td>✅ エリスと入れ替わる</td>
+</tr>
+</tbody></table>
+<h4>戦略メモ</h4>
+<ul>
+<li>デッキの最強カード。「降臨」とセットで運用が基本</li>
+<li>相手がゼウスを出したら、GUARDを温存しておく必要がある</li>
+<li>「変身の秘術」で自分のエリスをゼウスに変えるコンボも強力</li>
+</ul>
+<hr>
+<h3>エリス (Eris)</h3>
+<blockquote>
+<p><em>争いの女神。基本的な攻撃型召喚獣。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>召喚獣</td>
+</tr>
+<tr>
+<td><strong>ダメージ</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#9B59B6（紫）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>ErisCard extends SummonCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/eris.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>ターン開始時に<strong>1ダメージ</strong></li>
+<li>直接プレイで場に召喚可能（「降臨」不要）</li>
+</ul>
+<h4>相互作用</h4>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>メデューサ（反射）</td>
+<td>✅ 1ダメージが自分に返ってくる</td>
+</tr>
+<tr>
+<td>GUARD</td>
+<td>✅ 打ち消し可能</td>
+</tr>
+<tr>
+<td>変身の秘術</td>
+<td>✅ ゼウスと入れ替わる</td>
+</tr>
+<tr>
+<td>奈落送り</td>
+<td>✅ 場から除去可能</td>
+</tr>
+</tbody></table>
+<h4>戦略メモ</h4>
+<ul>
+<li>序盤に出して地道にダメージを稼ぐ基本カード</li>
+<li>相手がメデューサを出してたら注意（反射で自傷する）</li>
+<li>「変身の秘術」でゼウスに化けさせるのが最強コンボ</li>
+</ul>
+<hr>
+<h3>メデューサ (Medusa)</h3>
+<blockquote>
+<p><em>ダメージ反射能力を持つ守備型召喚獣。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>召喚獣</td>
+</tr>
+<tr>
+<td><strong>ダメージ</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>特殊能力</strong></td>
+<td>ダメージ反射</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#2ECC71（緑）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>MedusaCard extends SummonCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/medusa.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>ダメージを与えない（攻撃力0）</li>
+<li><strong>ダメージ反射</strong>: 自分が受けるスキルダメージを相手に跳ね返す</li>
+<li>ゼウスのダメージは反射<strong>できない</strong></li>
+</ul>
+<h4>反射判定表</h4>
+<table>
+<thead>
+<tr>
+<th>攻撃元</th>
+<th>反射</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>エリス</td>
+<td>✅ 1ダメージ反射</td>
+</tr>
+<tr>
+<td>雷霆</td>
+<td>✅ 2ダメージ反射</td>
+</tr>
+<tr>
+<td>ゼウス</td>
+<td>❌ 反射不可</td>
+</tr>
+<tr>
+<td>貫通の矢</td>
+<td>✅ 1ダメージ反射</td>
+</tr>
+</tbody></table>
+<h4>戦略メモ</h4>
+<ul>
+<li>相手がエリスを出してきたら、メデューサを出すと毎ターン逆にダメージを与えられる</li>
+<li>雷霆を使う前に相手の場にメデューサがいないか確認</li>
+<li>攻撃力0なので単体では火力不足</li>
+</ul>
+<hr>
+<h3>アスクレピオス (Asclepius)</h3>
+<blockquote>
+<p><em>医術の神。回復型召喚獣。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>召喚獣</td>
+</tr>
+<tr>
+<td><strong>ダメージ</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#27AE60（深緑）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td><strong>オプション</strong></td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>AsclepiusCard extends SummonCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/asclepius.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>ダメージを与えない（攻撃力0）</li>
+<li><strong>毎ターン開始時にソウルを1回復</strong>（最大4まで）</li>
+<li>直接プレイで召喚可能</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>持久戦向けのカード。エリスの1ダメージを実質無効化</li>
+<li>ゼウスの4ダメージには焼け石に水</li>
+<li>他の攻撃手段と併用して粘り勝ちを狙う</li>
+</ul>
+<hr>
+<h2>儀式</h2>
+<hr>
+<h3>降臨 (Ascension)</h3>
+<blockquote>
+<p><em>手札の召喚獣を場に出す儀式。ゼウスを召喚する唯一の方法。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>儀式</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#F39C12（オレンジ）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>AscensionCard extends SpellCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/ascension.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>手札の召喚獣1体を場に出す</li>
+<li><strong>ゼウスを場に出す唯一の手段</strong></li>
+<li>ターゲット選択: 手札の召喚獣カード</li>
+</ul>
+<h4>使用条件</h4>
+<ul>
+<li>手札に召喚獣カードが必要（なければ効果なし）</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>ゼウス+降臨のコンボが最強ムーブ</li>
+<li>エリスやメデューサを出すのにも使える（直接プレイでもOKだが）</li>
+<li>手札に召喚獣がない状態で使うと無駄撃ちになる</li>
+</ul>
+<hr>
+<h3>冥界の門 (Necromancy)</h3>
+<blockquote>
+<p><em>捨て札から召喚獣を復活させる儀式。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>儀式</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#F39C12（オレンジ）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>NecromancyCard extends SpellCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/necromancy.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>捨て札から召喚獣1体を選んで場に出す</li>
+<li>ターゲット選択: 捨て札の召喚獣カード</li>
+</ul>
+<h4>使用条件</h4>
+<ul>
+<li>捨て札に召喚獣カードが必要</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>奈落送りで倒されたゼウスを蘇生するコンボが強力</li>
+<li>中盤以降に真価を発揮するカード</li>
+</ul>
+<hr>
+<h3>変身の秘術 (Metamorphose)</h3>
+<blockquote>
+<p><em>ゼウスとエリスをゲーム全体で入れ替える儀式。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>儀式</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#F39C12（オレンジ）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>MetamorphoseCard extends SpellCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/metamorphose.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>ゼウスとエリスをどこにあっても入れ替える</strong></li>
+<li>手札・場・捨て札・山札すべてが対象</li>
+<li>両プレイヤーのカードが対象</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>自分の場にエリスがいる → 使うとゼウスに変化（超強力）</li>
+<li>相手の場にゼウスがいる → 使うとエリスに弱体化</li>
+<li>状況によって攻撃にも防御にもなる万能カード</li>
+</ul>
+<hr>
+<h3>奈落送り (Tartarus)</h3>
+<blockquote>
+<p><em>場のカードを除去する儀式。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>儀式</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#F39C12（オレンジ）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>TartarusCard extends SpellCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/tartarus.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>場のカード1枚を選んで捨て札に送る</li>
+<li>自分・相手どちらの場も対象</li>
+<li>ターゲット選択: 場のカード</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>相手のゼウスを除去する最重要カード</li>
+<li>メデューサの除去にも使える</li>
+<li>自分の場のカードも対象にできる（稀に使うケースあり）</li>
+</ul>
+<hr>
+<h3>均衡 (Equilibrium)</h3>
+<blockquote>
+<p><em>場の全カードを一掃する儀式。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>儀式</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#F39C12（オレンジ）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td><strong>オプション</strong></td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>EquilibriumCard extends SpellCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/equilibrium.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>お互いの場のカードをすべて捨て札に送る</strong></li>
+<li>自分のカードも巻き込まれる</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>相手の場にゼウスがいて自分の場に何もない時に最強</li>
+<li>自分も場のカードを失うリスクあり</li>
+<li>奈落送りと違ってターゲット選択不要（全除去）</li>
+</ul>
+<hr>
+<h2>スキル</h2>
+<hr>
+<h3>雷霆 (Keraunos)</h3>
+<blockquote>
+<p><em>直接ダメージスキル。ゼウスの雷。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>ダメージ</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>KeraunosCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/keraunos.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>相手に<strong>2ダメージ</strong></li>
+<li>メデューサがいると<strong>反射される</strong></li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>高火力のダメージスキル（HP4中2点）</li>
+<li>メデューサ反射に要注意。先にメデューサを除去してから使いたい</li>
+</ul>
+<hr>
+<h3>神々の糧 (Ambrosia)</h3>
+<blockquote>
+<p><em>ドロー＋ディスカードスキル。手札入れ替え。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>AmbrosiaCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/ambrosia.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>3枚引いて2枚捨てる</strong></li>
+<li>実質手札+1（不要カードを入れ替え）</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>手札の質を上げたい時に使う</li>
+<li>ゼウスや降臨を探しに行ける</li>
+<li>捨てるカードの選択が重要（冥界の門で蘇生できるカードを捨てるのもアリ）</li>
+</ul>
+<hr>
+<h3>神酒 (Nectar)</h3>
+<blockquote>
+<p><em>ドロー＋捨て＋追加プレイスキル。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>NectarCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/nectar.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>2枚引いて2枚捨てる</li>
+<li><strong>追加で1枚プレイ可能</strong></li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>手札入れ替え+アクション追加のハイブリッド</li>
+<li>神速と組み合わせると大量プレイが可能</li>
+</ul>
+<hr>
+<h3>神託 (Oracle)</h3>
+<blockquote>
+<p><em>山札サーチスキル。好きなカードを手札に。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>OracleCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/oracle.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>山札を全部見て1枚選んで手札に加える</strong></li>
+</ul>
+<h4>使用条件</h4>
+<ul>
+<li>山札にカードが1枚以上必要</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>最強のサーチカード。欲しいカードを確実に手に入れられる</li>
+<li>ゼウスや降臨を引きに行くのが定番</li>
+</ul>
+<hr>
+<h3>冥府の手紙 (Hermes Letter)</h3>
+<blockquote>
+<p><em>墓地回収スキル。捨て札を再利用。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>HermesLetterCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/hermes-letter.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>捨て札から1枚選んで手札に加える</strong></li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>使い終わったカードをもう一度使える</li>
+<li>雷霆を回収して再利用が強い</li>
+</ul>
+<hr>
+<h3>千里眼 (Clairvoyance)</h3>
+<blockquote>
+<p><em>手札確認＋破壊スキル。情報アドバンテージ。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>ClairvoyanceCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/clairvoyance.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>相手の手札を全部見る</strong></li>
+<li><strong>1枚選んで捨てさせる</strong></li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>情報アドバンテージ+ハンデス（手札破壊）の強カード</li>
+<li>ゼウスや降臨を落とせれば大きい</li>
+<li>真名看破の前に使って情報を得るコンボも有効</li>
+</ul>
+<hr>
+<h3>真名看破 (True Name)</h3>
+<blockquote>
+<p><em>カード名宣言スキル。当たれば奪取。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>TrueNameCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/true-name.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>カード名を1つ宣言する</li>
+<li>相手の手札にそのカードがあれば<strong>奪い取る</strong></li>
+<li>外れた場合は効果なし</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>千里眼で手札を見た後に使うと確実にヒットする</li>
+<li>ゼウスを奪えれば試合がひっくり返る</li>
+<li>読みが当たった時の快感は最高</li>
+</ul>
+<hr>
+<h3>神盾 (Aegis)</h3>
+<blockquote>
+<p><em>シールド獲得スキル。GUARDを増やす。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>AegisCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/aegis.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>ストックからGUARDを1つ獲得</strong></li>
+<li>代償として<strong>自分の手札を相手に公開</strong>する</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>GUARDはゼウスを防ぐ唯一の手段なので重要</li>
+<li>手札公開のデメリットは大きい（相手に情報を与える）</li>
+<li>ストックが空だと効果なし</li>
+</ul>
+<hr>
+<h3>神速 (Godspeed)</h3>
+<blockquote>
+<p><em>追加プレイスキル。ターン中のアクション数を増やす。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td>基本</td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>GodspeedCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/godspeed.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>追加で2枚プレイ可能</strong>（通常2枚 → 最大4枚）</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>大量展開のキーカード</li>
+<li>神速 → 降臨+ゼウス → 雷霆 のような連続コンボが可能</li>
+<li>手札が少ない時に使っても意味が薄い</li>
+</ul>
+<hr>
+<h3>貫通の矢 (Piercing Arrow)</h3>
+<blockquote>
+<p><em>打ち消し不可のダメージスキル。確実に通る一撃。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>ダメージ</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>特殊</strong></td>
+<td><strong>打ち消し不可</strong></td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#E74C3C（赤）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td><strong>オプション</strong></td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>PiercingArrowCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/piercing-arrow.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li>相手に<strong>1ダメージ</strong></li>
+<li><strong>GUARDで打ち消せない</strong></li>
+<li>メデューサの反射は受ける</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>GUARDを気にせず確実にダメージを与えられる</li>
+<li>ダメージ量は控えめ（1点）</li>
+<li>トドメの一撃に最適</li>
+</ul>
+<hr>
+<h3>簒奪 (Usurp)</h3>
+<blockquote>
+<p><em>相手の場のカードを奪取するスキル。ハイリスク・ハイリターン。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>自傷ダメージ</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#E74C3C（赤）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td><strong>オプション</strong></td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>UsurpCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/usurp.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>自分のソウルを2減らす</strong></li>
+<li><strong>相手の場のカード1枚を自分の手札に加える</strong></li>
+</ul>
+<h4>使用条件</h4>
+<ul>
+<li>ソウルが2以上必要</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>HP半分を犠牲にして相手の場を奪う超ハイリスクカード</li>
+<li>相手のゼウスを奪えれば逆転の一手</li>
+<li>HP2以下だと使えないので序盤向き</li>
+</ul>
+<hr>
+<h3>加護 (Protection)</h3>
+<blockquote>
+<p><em>ダメージ無効化スキル。1回だけ身を守る。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#3498DB（青）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td><strong>オプション</strong></td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>ProtectionCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/protection.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>次に受けるダメージを1回無効化</strong></li>
+<li><strong>ゼウスのダメージは無効化できない</strong></li>
+</ul>
+<h4>使用条件</h4>
+<ul>
+<li>既に加護が付与されている場合は使用不可</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>エリスや雷霆を1回防げる</li>
+<li>ゼウスには効かないので過信は禁物</li>
+<li>保険として持っておくと安心</li>
+</ul>
+<hr>
+<h3>血の契約 (Blood Pact)</h3>
+<blockquote>
+<p><em>自傷＋大量ドロースキル。命を削ってカードを得る。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>自傷ダメージ</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>ドロー</strong></td>
+<td>3枚</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#8E44AD（紫）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td><strong>オプション</strong></td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>BloodPactCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/blood-pact.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>自分のソウルを1減らす</strong></li>
+<li><strong>3枚ドロー</strong></li>
+</ul>
+<h4>使用条件</h4>
+<ul>
+<li>ソウルが1以上必要</li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>HP1点で3枚ドローは破格のアドバンテージ</li>
+<li>残りHP1で使うと死亡リスクが一気に上がる</li>
+<li>序盤に使ってキーカードを揃えるのが有効</li>
+</ul>
+<hr>
+<h3>祈り (Prayer)</h3>
+<blockquote>
+<p><em>回復＋ドロースキル。安定のユーティリティ。</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タイプ</strong></td>
+<td>スキル</td>
+</tr>
+<tr>
+<td><strong>回復</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>ドロー</strong></td>
+<td>1枚</td>
+</tr>
+<tr>
+<td><strong>色</strong></td>
+<td>#F1C40F（黄）</td>
+</tr>
+<tr>
+<td><strong>カテゴリ</strong></td>
+<td><strong>オプション</strong></td>
+</tr>
+<tr>
+<td><strong>クラス</strong></td>
+<td><code>PrayerCard extends SkillCard</code></td>
+</tr>
+<tr>
+<td><strong>ファイル</strong></td>
+<td><code>lib/theomachia/cards/prayer.ts</code></td>
+</tr>
+</tbody></table>
+<h4>効果</h4>
+<ul>
+<li><strong>ソウルを1回復</strong>（最大4まで）</li>
+<li><strong>1枚ドロー</strong></li>
+</ul>
+<h4>戦略メモ</h4>
+<ul>
+<li>回復+ドローの安定カード</li>
+<li>血の契約のデメリットを帳消しにできる</li>
+<li>地味だが腐りにくい万能カード</li>
+</ul>
+<hr>
+<h2>カード追加ガイド</h2>
+<p>新しいカードを追加するには以下の3ステップ:</p>
+<h3>1. カードクラスを作成</h3>
+<pre><code class="language-typescript">// lib/theomachia/cards/sacred-fire.ts
+import { SkillCard } from &quot;./base&quot;;
+
+export class SacredFireCard extends SkillCard {
+  constructor() {
+    super({
+      id: &quot;sacredFire&quot;,
+      name: &quot;聖火&quot;,
+      description: &quot;相手に1ダメージ。自分のソウルを1回復。&quot;,
+      color: &quot;#FF8800&quot;,
+      optional: true,
+    });
+  }
+
+  get effect() { return &quot;sacredFire&quot;; }
+}
+</code></pre>
+<h3>2. レジストリに登録</h3>
+<pre><code class="language-typescript">// lib/theomachia/cards/index.ts
+import { SacredFireCard } from &quot;./sacred-fire&quot;;
+// ALL_CARD_INSTANCES に追加:
+new SacredFireCard(),
+</code></pre>
+<h3>3. サーバー側に効果を実装</h3>
+<pre><code class="language-typescript">// theomachia/src/card-effects.ts
+sacredFire: {
+  canPlay: () =&gt; true,
+  play: (player, opponent, actions) =&gt; {
+    actions.dealDamage(opponent, player, 1);
+    if (player.souls &lt; 4) {
+      player.souls += 1;
+      actions.logAction(`${player.name}のソウルが1回復`);
+    }
+  },
+  needsTarget: () =&gt; &quot;none&quot;,
+},
+</code></pre>
+<h3>4. カードイラストを追加（任意）</h3>
+<pre><code>public/theomachia/cards/sacredFire.webp
+</code></pre>
+<hr>
+<p><em>最終更新: 2026-02-07</em></p>
+
+
+<div class="back-link"><a href="index.html">← API ドキュメントに戻る</a></div>
+</div>
+</body>
+</html>

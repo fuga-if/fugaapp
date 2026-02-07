@@ -8,6 +8,7 @@
  */
 
 import { SpellCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class NecromancyCard extends SpellCard {
   constructor() {
@@ -19,5 +20,24 @@ export class NecromancyCard extends SpellCard {
     });
   }
 
-  get effect() { return "revive"; }
+  /**
+   * 墓地に召喚獣があれば "discard"、なければ "none" を返す。
+   */
+  getTargetType(effects: GameEffects): "summon" | "field" | "discard" | "none" {
+    const summonIds = ["zeus", "eris", "medusa", "asclepius"];
+    return effects.state.discard.some((id) => summonIds.includes(id)) ? "discard" : "none";
+  }
+
+  /**
+   * 墓地から召喚獣を復活させ場に出す。
+   */
+  protected onExecute(effects: GameEffects, target?: string): void {
+    if (target) {
+      if (effects.reviveFromDiscard(target)) {
+        effects.log(`→ 「${target}」を復活`);
+      }
+    } else {
+      effects.log("→ 墓地に召喚獣がないため効果なし");
+    }
+  }
 }

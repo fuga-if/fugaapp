@@ -9,6 +9,7 @@
  */
 
 import { SummonCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class MedusaCard extends SummonCard {
   readonly damage = 0;
@@ -21,5 +22,12 @@ export class MedusaCard extends SummonCard {
       description: "ダメージを反射。ただしゼウスの攻撃は防げない。",
       color: "#33CC33",
     });
+  }
+
+  /**
+   * 場に召喚する。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.summonToField("medusa");
   }
 }

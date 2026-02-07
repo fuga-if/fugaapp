@@ -10,6 +10,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class PiercingArrowCard extends SkillCard {
   constructor() {
@@ -19,10 +20,18 @@ export class PiercingArrowCard extends SkillCard {
       description: "打ち消し不可。相手に1ダメージ。",
       color: "#FF4444",
       optional: true,
-      unblockable: true,
     });
   }
 
-  get effect() { return "damage"; }
-  get value() { return 1; }
+  /** 打ち消し不可 */
+  get isCounterable(): boolean {
+    return false;
+  }
+
+  /**
+   * 打ち消し不可で相手に1ダメージを与える。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.dealDamage(1);
+  }
 }

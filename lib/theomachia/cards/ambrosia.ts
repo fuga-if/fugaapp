@@ -8,6 +8,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class AmbrosiaCard extends SkillCard {
   constructor() {
@@ -19,5 +20,11 @@ export class AmbrosiaCard extends SkillCard {
     });
   }
 
-  get effect() { return "draw3discard2"; }
+  /**
+   * 3枚ドロー → 2枚捨てる選択を要求。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.draw(3);
+    effects.discard(2);
+  }
 }

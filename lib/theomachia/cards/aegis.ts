@@ -8,6 +8,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class AegisCard extends SkillCard {
   constructor() {
@@ -19,5 +20,14 @@ export class AegisCard extends SkillCard {
     });
   }
 
-  get effect() { return "shield"; }
+  /**
+   * GUARDを獲得し、代償として手札を相手に公開する。
+   */
+  protected onExecute(effects: GameEffects): void {
+    if (effects.gainShield()) {
+      effects.peekHand(`${effects.player.name}の手札が公開された`);
+    } else {
+      effects.log("→ ストックが空のため効果なし");
+    }
+  }
 }

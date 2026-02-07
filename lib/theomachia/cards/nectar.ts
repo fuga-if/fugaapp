@@ -7,6 +7,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class NectarCard extends SkillCard {
   constructor() {
@@ -18,5 +19,12 @@ export class NectarCard extends SkillCard {
     });
   }
 
-  get effect() { return "draw2discard2play1"; }
+  /**
+   * 2枚ドロー → 追加1プレイ → 2枚捨てる選択を要求。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.draw(2);
+    effects.addExtraPlays(1);
+    effects.discard(2);
+  }
 }

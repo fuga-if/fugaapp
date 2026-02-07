@@ -8,6 +8,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class HermesLetterCard extends SkillCard {
   constructor() {
@@ -19,5 +20,23 @@ export class HermesLetterCard extends SkillCard {
     });
   }
 
-  get effect() { return "retrieve"; }
+  /**
+   * 墓地にカードがあれば "discard"、なければ "none" を返す。
+   */
+  getTargetType(effects: GameEffects): "summon" | "field" | "discard" | "none" {
+    return effects.state.discard.length > 0 ? "discard" : "none";
+  }
+
+  /**
+   * 墓地からカードを手札に回収する。
+   */
+  protected onExecute(effects: GameEffects, target?: string): void {
+    if (target) {
+      if (effects.retrieveFromDiscard(target)) {
+        effects.log(`→ 「${target}」を回収`);
+      }
+    } else {
+      effects.log("→ 墓地が空のため効果なし");
+    }
+  }
 }

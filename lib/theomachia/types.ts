@@ -158,4 +158,5 @@ export type MessageFromServer =
   | { type: "requestTarget"; targetType: "summon" | "field" | "discard" }
   | { type: "requestGuess" }
   | { type: "peekHand"; hand: CardId[]; message: string }
-  | { type: "attack"; card: CardId; damage: number; isReflect?: boolean };
+  | { type: "attack"; card: CardId; damage: number; isReflect?: boolean }
+  | { type: "timer"; turnTimeRemaining: number; turnPaused: boolean; shieldActive: boolean; shieldTimeLimit: number };

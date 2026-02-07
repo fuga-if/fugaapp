@@ -8,6 +8,7 @@
  */
 
 import { SummonCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class ErisCard extends SummonCard {
   readonly damage = 1;
@@ -19,5 +20,12 @@ export class ErisCard extends SummonCard {
       description: "争いの女神。ターン開始時に1ダメージ。",
       color: "#9966FF",
     });
+  }
+
+  /**
+   * 場に召喚する。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.summonToField("eris");
   }
 }

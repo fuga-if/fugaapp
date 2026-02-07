@@ -8,6 +8,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class ClairvoyanceCard extends SkillCard {
   constructor() {
@@ -19,5 +20,13 @@ export class ClairvoyanceCard extends SkillCard {
     });
   }
 
-  get effect() { return "peep"; }
+  /**
+   * 相手の手札を公開し、1枚捨てさせる。
+   */
+  protected onExecute(effects: GameEffects): void {
+    if (effects.opponent.hand.length > 0) {
+      effects.showOpponentHand();
+      effects.requestDiscardFromOpponent();
+    }
+  }
 }

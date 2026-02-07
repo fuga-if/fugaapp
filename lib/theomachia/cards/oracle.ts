@@ -8,6 +8,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class OracleCard extends SkillCard {
   constructor() {
@@ -19,5 +20,18 @@ export class OracleCard extends SkillCard {
     });
   }
 
-  get effect() { return "search"; }
+  /**
+   * 山札が空ならプレイ不可。
+   */
+  canExecute(effects: GameEffects): boolean {
+    return effects.state.deck.length > 0;
+  }
+
+  /**
+   * 山札を公開してカード選択を要求する。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.showDeck();
+    effects.requestSelectFromDeck();
+  }
 }

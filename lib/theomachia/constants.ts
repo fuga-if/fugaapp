@@ -48,7 +48,7 @@ export const COUNTER_SHIELD_COST = 2;
 // ===========================================
 
 /** 追加カードの最大選択枚数 */
-export const MAX_OPTIONAL_CARDS = 4;
+export const MAX_OPTIONAL_CARDS = 14;
 
 // ===========================================
 // カードタイプの表示色

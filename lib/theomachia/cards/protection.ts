@@ -11,6 +11,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class ProtectionCard extends SkillCard {
   constructor() {
@@ -23,5 +24,18 @@ export class ProtectionCard extends SkillCard {
     });
   }
 
-  get effect() { return "protection"; }
+  /**
+   * 既に加護状態ならプレイ不可。
+   */
+  canExecute(effects: GameEffects): boolean {
+    return !effects.player.isProtected;
+  }
+
+  /**
+   * プレイヤーに加護を付与する。
+   * 実際のprotected状態の変更はサーバー側で処理される。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.log(`${effects.player.name}に加護が付与された`);
+  }
 }

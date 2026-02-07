@@ -8,6 +8,7 @@
  */
 
 import { SpellCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class MetamorphoseCard extends SpellCard {
   constructor() {
@@ -19,5 +20,10 @@ export class MetamorphoseCard extends SpellCard {
     });
   }
 
-  get effect() { return "swap"; }
+  /**
+   * ゼウスとエリスを全ての場所で入れ替える。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.swapZeusAndEris();
+  }
 }

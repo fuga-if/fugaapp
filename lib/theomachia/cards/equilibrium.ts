@@ -10,6 +10,7 @@
  */
 
 import { SpellCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class EquilibriumCard extends SpellCard {
   constructor() {
@@ -22,5 +23,23 @@ export class EquilibriumCard extends SpellCard {
     });
   }
 
-  get effect() { return "destroyAll"; }
+  /**
+   * お互いの場のカードを全て墓地へ送る。
+   */
+  protected onExecute(effects: GameEffects): void {
+    const playerField = [...effects.player.field];
+    const opponentField = [...effects.opponent.field];
+    const hasCards = playerField.length > 0 || opponentField.length > 0;
+
+    if (hasCards) {
+      for (const cardId of playerField) {
+        effects.removeFromField(cardId);
+      }
+      for (const cardId of opponentField) {
+        effects.removeFromField(cardId);
+      }
+    } else {
+      effects.log("→ 場にカードがないため効果なし");
+    }
+  }
 }

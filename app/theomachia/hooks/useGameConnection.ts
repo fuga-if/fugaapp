@@ -16,6 +16,20 @@ const PARTYKIT_HOST = process.env.NEXT_PUBLIC_PARTYKIT_HOST || "127.0.0.1:1999";
 /** エラー表示の自動消去までの時間（ms） */
 const ERROR_DISPLAY_DURATION = 3000;
 
+/** タイマー状態 */
+export interface TimerState {
+  /** ターンタイマー残り時間（ms） */
+  turnTimeRemaining: number;
+  /** ターンタイマーが一時停止中かどうか */
+  turnPaused: boolean;
+  /** 打ち消しタイマーがアクティブかどうか */
+  shieldActive: boolean;
+  /** 打ち消しタイマー制限時間（ms） */
+  shieldTimeLimit: number;
+  /** タイマー情報を受信した時刻 */
+  receivedAt: number;
+}
+
 /**
  * useGameConnection の返り値。
  */
@@ -40,6 +54,8 @@ export interface UseGameConnectionReturn {
   showCardList: boolean;
   /** 攻撃カットインデータ */
   cutin: { card: CardId; damage: number; isReflect?: boolean } | null;
+  /** タイマー状態 */
+  timerState: TimerState | null;
   /** サーバーにメッセージを送信する */
   send: (msg: MessageToServer) => void;
   /** 相手の手札表示をクリア */
@@ -100,6 +116,7 @@ export function useGameConnection({
   const [waitingForTarget, setWaitingForTarget] = useState<string | null>(null);
   const [showCardList, setShowCardList] = useState(false);
   const [cutin, setCutin] = useState<{ card: CardId; damage: number; isReflect?: boolean } | null>(null);
+  const [timerState, setTimerState] = useState<TimerState | null>(null);
 
   const hasJoinedRef = useRef(false);
 
@@ -150,6 +167,15 @@ export function useGameConnection({
         case "attack":
           setCutin({ card: data.card, damage: data.damage, isReflect: data.isReflect });
           break;
+        case "timer":
+          setTimerState({
+            turnTimeRemaining: data.turnTimeRemaining,
+            turnPaused: data.turnPaused,
+            shieldActive: data.shieldActive,
+            shieldTimeLimit: data.shieldTimeLimit,
+            receivedAt: Date.now(),
+          });
+          break;
       }
     },
   });
@@ -186,6 +212,7 @@ export function useGameConnection({
     waitingForTarget,
     showCardList,
     cutin,
+    timerState,
     send,
     clearOpponentHand: () => setShowOpponentHand(null),
     clearDeck: () => setShowDeck(null),

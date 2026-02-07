@@ -17,6 +17,7 @@ import { StatusGauge } from "./components/StatusGauge";
 import { AttackCutin } from "./components/AttackCutin";
 import { WaitingRoom } from "./components/WaitingRoom";
 import { GameResult } from "./components/GameResult";
+import { TurnTimer, ShieldTimer, ProcessingIndicator } from "./components/TurnTimer";
 import { useGameConnection } from "./hooks/useGameConnection";
 import { useGameActions } from "./hooks/useGameActions";
 import { CARDS, BASE_DECK, type CardId } from "@/lib/theomachia/cards";
@@ -46,7 +47,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
   const {
     gameState, myId, isConnected, error,
     showOpponentHand, showDeck, pendingDiscard,
-    waitingForTarget, showCardList, cutin,
+    waitingForTarget, showCardList, cutin, timerState,
     send, clearOpponentHand, clearDeck, clearPendingDiscard,
     clearWaitingForTarget, clearShowCardList, clearCutin,
     setGameState, setWaitingForTarget,
@@ -181,6 +182,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
           {isMyTurn && (
             <StatusGauge type="action" current={gameState.playsRemaining} max={2} size="sm" />
           )}
+          <TurnTimer timerState={timerState} isMyTurn={isMyTurn} />
         </div>
 
         <div style={styles.topRight}>
@@ -260,6 +262,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
                 {CARDS[gameState.pendingShield.cardId].description}
               </p>
             </div>
+            <ShieldTimer timerState={timerState} />
             <p style={styles.shieldQuestion}>打ち消しますか？</p>
             <div style={styles.shieldHandPreview}>
               <p style={styles.handLabel}>あなたの手札:</p>
@@ -298,6 +301,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
             <p style={styles.shieldCardName}>
               {CARDS[gameState.pendingCounter.cardId].name}
             </p>
+            <ShieldTimer timerState={timerState} />
             <p style={styles.shieldQuestion}>打ち消されました！打ち消し返しますか？</p>
             <div style={styles.shieldButtons}>
               <button onClick={() => send({ type: "passCounter" })} style={styles.passButton}>
@@ -546,6 +550,9 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
         <CardDetail cardId={showCardDetail} onClose={() => setShowCardDetail(null)} />
       )}
 
+      {/* 処理中インジケーター */}
+      <ProcessingIndicator visible={!!(timerState?.turnPaused)} />
+
       {/* 攻撃カットイン */}
       {cutin && (
         <AttackCutin
@@ -615,13 +622,13 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
 const styles: Record<string, CSSProperties> = {
   container: {
     height: "100dvh",
-    maxHeight: "100dvh",
+    minHeight: "100dvh",
     background: "linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%)",
     color: "#e0e0e0",
     fontFamily: "'Cinzel', 'Noto Serif JP', serif",
     display: "flex",
     flexDirection: "column",
-    overflow: "hidden",
+    overflowY: "auto",
   },
   loading: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16 },
   loadingSpinner: { width: 40, height: 40, border: "3px solid #333", borderTop: "3px solid #C9A227", borderRadius: "50%", animation: "spin 1s linear infinite" },

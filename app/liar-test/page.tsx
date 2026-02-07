@@ -27,7 +27,7 @@ export default function LiarTestHome(): React.ReactElement {
             答えてください。
           </p>
           <p className="text-gray-500/60 text-xs mb-6">
-            ※ 回答内容だけでなく、回答の「迷い」も分析します
+            ※ 深層心理を独自のアルゴリズムで分析します
           </p>
 
           <button

@@ -10,6 +10,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class PrayerCard extends SkillCard {
   constructor() {
@@ -22,5 +23,11 @@ export class PrayerCard extends SkillCard {
     });
   }
 
-  get effect() { return "prayer"; }
+  /**
+   * ソウル1回復 + 1枚ドロー。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.heal(1);
+    effects.draw(1);
+  }
 }

@@ -8,6 +8,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class KeraunosCard extends SkillCard {
   constructor() {
@@ -19,6 +20,13 @@ export class KeraunosCard extends SkillCard {
     });
   }
 
-  get effect() { return "damage"; }
-  get value() { return 2; }
+  /**
+   * 相手に2ダメージを与える。メデューサで反射される可能性あり。
+   */
+  protected onExecute(effects: GameEffects): void {
+    const result = effects.dealDamage(2);
+    if (result.reflected) {
+      effects.log("雷霆がメデューサに反射された！");
+    }
+  }
 }

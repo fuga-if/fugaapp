@@ -8,6 +8,7 @@
  */
 
 import { SkillCard } from "./base";
+import type { GameEffects } from "./base";
 
 export class GodspeedCard extends SkillCard {
   constructor() {
@@ -19,5 +20,10 @@ export class GodspeedCard extends SkillCard {
     });
   }
 
-  get effect() { return "extraPlays"; }
+  /**
+   * 追加で2枚プレイ可能にする。
+   */
+  protected onExecute(effects: GameEffects): void {
+    effects.addExtraPlays(2);
+  }
 }
