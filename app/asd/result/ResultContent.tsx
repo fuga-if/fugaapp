@@ -36,7 +36,7 @@ export function AsdResultContent(): React.ReactElement {
 
           {/* ASD傾向度メーター */}
           <div className="bg-blue-50 rounded-2xl p-5 mb-6 border border-blue-100">
-            <p className="text-blue-500 font-bold text-sm mb-3 text-center">🔷 あなたのASD傾向度</p>
+            <p className="text-blue-500 font-bold text-sm mb-3 text-center"> あなたのASD傾向度</p>
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-500 w-16">低い</span>
               <div className="flex-1 bg-gray-200 rounded-full h-4 overflow-hidden">
@@ -51,18 +51,18 @@ export function AsdResultContent(): React.ReactElement {
           </div>
 
           <div className="bg-blue-50 rounded-2xl p-5 mb-6 text-left border border-blue-100">
-            <p className="text-blue-500 font-bold text-sm mb-3 text-center">🔹 このタイプの特徴</p>
+            <p className="text-blue-500 font-bold text-sm mb-3 text-center"> このタイプの特徴</p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
                 <li key={i} className="flex items-start gap-2 text-gray-600 text-sm">
-                  <span className="text-blue-500 mt-0.5">✓</span><span>{t}</span>
+                  <span className="text-blue-500 mt-0.5"></span><span>{t}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-2xl p-4 mb-6 border border-blue-200">
-            <p className="text-gray-800 text-lg font-bold">💭 {result.advice}</p>
+            <p className="text-gray-800 text-lg font-bold"> {result.advice}</p>
           </div>
 
           <div className="space-y-4">
@@ -78,7 +78,7 @@ export function AsdResultContent(): React.ReactElement {
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-blue-100">
-              <p className="text-xs text-gray-400 mb-3">📚 ASDをもっと深く知る</p>
+              <p className="text-xs text-gray-400 mb-3"> ASDをもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -93,9 +93,9 @@ export function AsdResultContent(): React.ReactElement {
           <div className="mt-8 pt-6 border-t border-blue-100">
             <p className="text-xs text-gray-400 mb-3">次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/hsp" className="px-6 py-3 bg-blue-50 hover:bg-blue-100 rounded-full text-purple-600 font-medium transition-colors text-center">🌸 HSP診断 →</Link>
-              <Link href="/stress-taisho" className="px-6 py-3 bg-blue-50 hover:bg-blue-100 rounded-full text-green-600 font-medium transition-colors text-center">🌿 ストレス対処法タイプ診断 →</Link>
-              <Link href="/shikou-type" className="px-6 py-3 bg-blue-50 hover:bg-blue-100 rounded-full text-blue-600 font-medium transition-colors text-center">🧠 思考タイプ診断 →</Link>
+              <Link href="/hsp" className="px-6 py-3 bg-blue-50 hover:bg-blue-100 rounded-full text-purple-600 font-medium transition-colors text-center"> HSP診断 →</Link>
+              <Link href="/stress-taisho" className="px-6 py-3 bg-blue-50 hover:bg-blue-100 rounded-full text-green-600 font-medium transition-colors text-center"> ストレス対処法タイプ診断 →</Link>
+              <Link href="/shikou-type" className="px-6 py-3 bg-blue-50 hover:bg-blue-100 rounded-full text-blue-600 font-medium transition-colors text-center"> 思考タイプ診断 →</Link>
             </div>
           </div>
         </div>

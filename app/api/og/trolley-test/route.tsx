@@ -7,7 +7,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   const title = searchParams.get("title") || "思考の癖テスト";
-  const emoji = searchParams.get("emoji") || "🧩";
+  const emoji = searchParams.get("emoji") || "";
   const u = searchParams.get("u") ? Number(searchParams.get("u")) : 0;
   const d = searchParams.get("d") ? Number(searchParams.get("d")) : 0;
   const isResult = !!id;
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             display: "flex",
           }}
         >
-          ⚖️
+          
         </div>
 
         {/* メインカード */}
@@ -110,7 +110,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               display: "flex",
             }}
           >
-            🧩 思考の癖テスト
+             思考の癖テスト
           </div>
 
           {isResult ? (
@@ -129,7 +129,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                   display: "flex",
                 }}
               >
-                ✦ あなたの思考タイプは... ✦
+                 あなたの思考タイプは... 
               </div>
               <div
                 style={{
@@ -168,7 +168,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                     display: "flex",
                   }}
                 >
-                  📜 義務論 {d}
+                   義務論 {d}
                 </div>
                 <div
                   style={{
@@ -206,7 +206,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
                     display: "flex",
                   }}
                 >
-                  功利主義 {u} 📊
+                  功利主義 {u} 
                 </div>
               </div>
 

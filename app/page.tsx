@@ -92,7 +92,7 @@ export default function Home(): React.ReactElement {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 pb-16">
-        {/* ⚡ テオマキア - ピックアップ */}
+        {/*  テオマキア - ピックアップ */}
         <section className="mb-10">
           <Link
             href="/theomachia"
@@ -119,11 +119,11 @@ export default function Home(): React.ReactElement {
           </Link>
         </section>
 
-        {/* 🔥 人気診断 */}
+        {/*  人気診断 */}
         {popularDiagnoses.length > 0 && (
           <section className="mb-10">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🔥</span>
+              <span className="text-2xl"></span>
               <h2 className="text-xl font-bold text-gray-800">人気診断</h2>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
@@ -134,11 +134,11 @@ export default function Home(): React.ReactElement {
           </section>
         )}
 
-        {/* 🎮 人気ゲーム */}
+        {/*  人気ゲーム */}
         {popularGames.length > 0 && (
           <section className="mb-10">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🎮</span>
+              <span className="text-2xl"></span>
               <h2 className="text-xl font-bold text-gray-800">人気ゲーム</h2>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
@@ -164,11 +164,11 @@ export default function Home(): React.ReactElement {
           </section>
         )}
 
-        {/* 🎮 ゲーム・テスト */}
+        {/*  ゲーム・テスト */}
         {game.length > 0 && (
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl">🎮</span>
+              <span className="text-3xl"></span>
               <h2 className="text-2xl font-bold text-gray-800">ゲーム・テスト</h2>
               <span className="text-sm text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{game.length}</span>
             </div>
@@ -180,10 +180,10 @@ export default function Home(): React.ReactElement {
           </section>
         )}
 
-        {/* 🔮 診断アプリ */}
+        {/*  診断アプリ */}
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-3xl">🔮</span>
+            <span className="text-3xl"></span>
             <h2 className="text-2xl font-bold text-gray-800">診断アプリ</h2>
             <span className="text-sm text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{shindan.length}</span>
           </div>
@@ -198,7 +198,7 @@ export default function Home(): React.ReactElement {
         <section className="mt-20">
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-              📝 最新の記事
+               最新の記事
             </h2>
             <p className="text-gray-500">診断に関連するコラムや豆知識</p>
           </div>

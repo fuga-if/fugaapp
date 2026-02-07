@@ -16,8 +16,8 @@ export default function VtuberHome(): React.ReactElement {
         <div className="pt-6 border-t border-purple-700">
           <p className="text-xs text-purple-400 mb-3">他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
-            <Link href="/menhera" className="text-pink-400 hover:text-pink-300 text-sm">🖤 メンヘラ度診断 →</Link>
-            <Link href="/oshi" className="text-pink-400 hover:text-pink-300 text-sm">💖 推し活診断 →</Link>
+            <Link href="/menhera" className="text-pink-400 hover:text-pink-300 text-sm"> メンヘラ度診断 →</Link>
+            <Link href="/oshi" className="text-pink-400 hover:text-pink-300 text-sm"> 推し活診断 →</Link>
           </div>
         </div>
       </div>

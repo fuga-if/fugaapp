@@ -52,9 +52,9 @@ const CARD_IMAGES: Record<string, string> = {
 
 // タイプアイコン
 const TYPE_ICONS: Record<string, string> = {
-  summon: "👹",
-  spell: "✨",
-  skill: "⚡",
+  summon: "",
+  spell: "",
+  skill: "",
 };
 
 /**
@@ -100,7 +100,7 @@ export function Card({ cardId, size = "md", onClick, selected, disabled }: CardP
             border: "2px solid #5a5a9a",
           }}
         >
-          <span style={{ fontSize: s.iconSize * 1.2, filter: "drop-shadow(0 0 4px #6a6aba)" }}>⚡</span>
+          <span style={{ fontSize: s.iconSize * 1.2, filter: "drop-shadow(0 0 4px #6a6aba)" }}></span>
         </div>
       </div>
     );
@@ -198,7 +198,7 @@ export function Card({ cardId, size = "md", onClick, selected, disabled }: CardP
             pointerEvents: "none",
           }}
         >
-          <span style={{ fontSize: s.iconSize * 0.6 }}>🔄</span>
+          <span style={{ fontSize: s.iconSize * 0.6 }}></span>
         </div>
       )}
 

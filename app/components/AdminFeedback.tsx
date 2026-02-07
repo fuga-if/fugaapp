@@ -55,7 +55,7 @@ export default function AdminFeedback() {
         className="fixed bottom-6 right-6 z-[9999] w-14 h-14 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg flex items-center justify-center text-2xl transition-all hover:scale-110"
         title="修正依頼"
       >
-        🐛
+        
       </button>
 
       {/* Modal */}
@@ -64,11 +64,11 @@ export default function AdminFeedback() {
           <div className="fixed inset-0 bg-black/30" onClick={() => setIsOpen(false)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-800">🐛 修正依頼</h3>
-              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
+              <h3 className="text-lg font-bold text-gray-800"> 修正依頼</h3>
+              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-600 text-xl"></button>
             </div>
             <div className="mb-3">
-              <p className="text-xs text-gray-400 mb-1">📍 {typeof window !== "undefined" ? window.location.pathname : ""}</p>
+              <p className="text-xs text-gray-400 mb-1"> {typeof window !== "undefined" ? window.location.pathname : ""}</p>
             </div>
             <textarea
               value={message}
@@ -89,7 +89,7 @@ export default function AdminFeedback() {
                 disabled={sending || !message.trim()}
                 className="px-6 py-2 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {sent ? "✓ 送信完了！" : sending ? "送信中..." : "送信"}
+                {sent ? " 送信完了！" : sending ? "送信中..." : "送信"}
               </button>
             </div>
           </div>

@@ -49,7 +49,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             textShadow: "0 4px 6px rgba(0,0,0,0.3)",
           }}
         >
-          ⚔️ 闇属性診断
+           闇属性診断
         </div>
 
         <div

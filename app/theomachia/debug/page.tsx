@@ -246,7 +246,7 @@ export default function DebugPage() {
         {/* P1エリア */}
         <div style={styles.playerArea}>
           <div style={styles.playerHeader}>
-            P1 - 魂:{p1Souls} 盾:{p1Shields} {currentPlayer === 1 && "◀ターン"}
+            P1 - 魂:{p1Souls} 盾:{p1Shields} {currentPlayer === 1 && "ターン"}
           </div>
           <div style={styles.field}>
             場: {p1Field.map(c => CARDS[c].name).join(", ") || "なし"}
@@ -263,7 +263,7 @@ export default function DebugPage() {
         {/* P2エリア */}
         <div style={styles.playerArea}>
           <div style={styles.playerHeader}>
-            P2 - 魂:{p2Souls} 盾:{p2Shields} {currentPlayer === 2 && "◀ターン"}
+            P2 - 魂:{p2Souls} 盾:{p2Shields} {currentPlayer === 2 && "ターン"}
           </div>
           <div style={styles.field}>
             場: {p2Field.map(c => CARDS[c].name).join(", ") || "なし"}

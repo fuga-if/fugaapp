@@ -376,7 +376,7 @@ export default function GameClient() {
   /* ═══════ Render Kotowaza with blank ═══════ */
   const renderKotowaza = (display: string) => {
     return display.split("").map((char, i) => (
-      <span key={i} className={char === "○" ? "blank-char" : ""}>
+      <span key={i} className={char === "" ? "blank-char" : ""}>
         {char}
       </span>
     ));

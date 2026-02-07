@@ -6,12 +6,12 @@ export const runtime = "edge";
 const DEFAULT_SCORE = "---";
 
 const rankThresholds = [
-  { rank: "S", title: "鷹の目", threshold: 25, emoji: "🦅", color: "#FFD700" },
-  { rank: "A", title: "色彩マスター", threshold: 20, emoji: "🎨", color: "#FF6B35" },
-  { rank: "B", title: "目利き", threshold: 15, emoji: "👁️", color: "#4ECDC4" },
-  { rank: "C", title: "カラフル一般人", threshold: 10, emoji: "🌈", color: "#45B7D1" },
-  { rank: "D", title: "ざっくり派", threshold: 5, emoji: "😎", color: "#96CEB4" },
-  { rank: "E", title: "色より形派", threshold: 0, emoji: "🙈", color: "#A8A8A8" },
+  { rank: "S", title: "鷹の目", threshold: 25, emoji: "", color: "#FFD700" },
+  { rank: "A", title: "色彩マスター", threshold: 20, emoji: "", color: "#FF6B35" },
+  { rank: "B", title: "目利き", threshold: 15, emoji: "", color: "#4ECDC4" },
+  { rank: "C", title: "カラフル一般人", threshold: 10, emoji: "", color: "#45B7D1" },
+  { rank: "D", title: "ざっくり派", threshold: 5, emoji: "", color: "#96CEB4" },
+  { rank: "E", title: "色より形派", threshold: 0, emoji: "", color: "#A8A8A8" },
 ];
 
 function getRankFromScore(score: number) {
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             gap: "8px",
           }}
         >
-          🎨 色覚テスト
+           色覚テスト
         </div>
 
         {hasResult && rankInfo ? (

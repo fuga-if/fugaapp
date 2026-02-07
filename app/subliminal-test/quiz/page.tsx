@@ -354,7 +354,7 @@ export default function QuizPage(): React.ReactElement {
         {/* Progress */}
         <div className="w-full max-w-md mx-auto mb-6">
           <div className="flex justify-between text-sm text-indigo-300 mb-2">
-            <span>◈ {currentIndex + 1} / {questions.length}</span>
+            <span> {currentIndex + 1} / {questions.length}</span>
             <span>{Math.round(percentage)}%</span>
           </div>
           <div className="w-full h-2 bg-indigo-900/50 rounded-full overflow-hidden border border-indigo-500/30">
@@ -416,7 +416,7 @@ export default function QuizPage(): React.ReactElement {
           {phase === "transition" && (
             <div className="bg-indigo-900/40 backdrop-blur-sm border border-indigo-500/40 rounded-2xl p-8 shadow-[0_0_40px_rgba(99,102,241,0.15)]">
               <div className="flex items-center justify-center h-64">
-                <div className="text-indigo-300 animate-pulse text-lg">◈</div>
+                <div className="text-indigo-300 animate-pulse text-lg"></div>
               </div>
             </div>
           )}

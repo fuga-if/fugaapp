@@ -145,7 +145,7 @@ function TheoContent() {
                 onClick={() => setTurnChoice("random")}
                 style={turnChoice === "random" ? styles.turnButtonActive : styles.turnButton}
               >
-                🎲
+                
               </button>
               <button
                 onClick={() => setTurnChoice("second")}
@@ -161,7 +161,7 @@ function TheoContent() {
                 onClick={() => setShowDeckModal(true)} 
                 style={styles.infoButton}
               >
-                📜 デッキ一覧
+                 デッキ一覧
                 {selectedOptionalCards.length > 0 && (
                   <span style={styles.badge}>+{selectedOptionalCards.length}</span>
                 )}
@@ -170,7 +170,7 @@ function TheoContent() {
                 onClick={() => setShowRulesModal(true)} 
                 style={styles.infoButton}
               >
-                📖 ルール
+                 ルール
               </button>
             </div>
 
@@ -215,8 +215,8 @@ function TheoContent() {
         <div style={styles.modalOverlay} onClick={() => setShowDeckModal(false)}>
           <div style={styles.modal} onClick={e => e.stopPropagation()}>
             <div style={styles.modalHeader}>
-              <h2 style={styles.modalTitle}>📜 デッキ一覧</h2>
-              <button onClick={() => setShowDeckModal(false)} style={styles.closeButton}>✕</button>
+              <h2 style={styles.modalTitle}> デッキ一覧</h2>
+              <button onClick={() => setShowDeckModal(false)} style={styles.closeButton}></button>
             </div>
             <div style={styles.modalContent}>
               {/* 基本カード */}
@@ -264,7 +264,7 @@ function TheoContent() {
                           {card.type === "summon" ? "召喚" : card.type === "spell" ? "儀式" : "スキル"}
                         </span>
                         <span style={styles.cardName}>
-                          {isSelected && "✓ "}{card.name}
+                          {isSelected && " "}{card.name}
                         </span>
                       </div>
                       <p style={styles.cardDesc}>{card.description}</p>
@@ -282,16 +282,16 @@ function TheoContent() {
         <div style={styles.modalOverlay} onClick={() => setShowRulesModal(false)}>
           <div style={styles.modal} onClick={e => e.stopPropagation()}>
             <div style={styles.modalHeader}>
-              <h2 style={styles.modalTitle}>📖 ルール</h2>
-              <button onClick={() => setShowRulesModal(false)} style={styles.closeButton}>✕</button>
+              <h2 style={styles.modalTitle}> ルール</h2>
+              <button onClick={() => setShowRulesModal(false)} style={styles.closeButton}></button>
             </div>
             <div style={styles.modalContent}>
               <div style={styles.rulesSection}>
-                <h3>🎯 勝利条件</h3>
+                <h3> 勝利条件</h3>
                 <p>相手のソウル（HP）を0にする</p>
               </div>
               <div style={styles.rulesSection}>
-                <h3>⚡ ターンの流れ</h3>
+                <h3> ターンの流れ</h3>
                 <ul style={styles.rulesList}>
                   <li>毎ターン、カードを2枚までプレイ可能</li>
                   <li>2ターン目以降、ターン開始時に1枚ドロー</li>
@@ -299,7 +299,7 @@ function TheoContent() {
                 </ul>
               </div>
               <div style={styles.rulesSection}>
-                <h3>🛡️ GUARD（シールド）</h3>
+                <h3> GUARD（シールド）</h3>
                 <ul style={styles.rulesList}>
                   <li>相手のカードを打ち消せる</li>
                   <li>使用したGUARDはストックに戻る</li>
@@ -307,7 +307,7 @@ function TheoContent() {
                 </ul>
               </div>
               <div style={styles.rulesSection}>
-                <h3>⚔️ カードタイプ</h3>
+                <h3> カードタイプ</h3>
                 <ul style={styles.rulesList}>
                   <li><b>召喚獣</b>：場に出て毎ターン攻撃</li>
                   <li><b>儀式</b>：召喚に関する効果</li>
@@ -315,7 +315,7 @@ function TheoContent() {
                 </ul>
               </div>
               <div style={styles.rulesSection}>
-                <h3>⚡ ゼウス</h3>
+                <h3> ゼウス</h3>
                 <p>最強の召喚獣。儀式でのみ召喚可能。<br/>
                 GUARDでしか防げない即死攻撃！</p>
               </div>

@@ -10,25 +10,25 @@ const resultTypes: Record<
   "type-c": {
     title: "一般型色覚（C型）",
     subtitle: "最も一般的な色の見え方",
-    emoji: "🌈",
+    emoji: "",
     color: "#10B981",
   },
   "type-p": {
     title: "P型傾向",
     subtitle: "赤系が見えにくい傾向",
-    emoji: "🔴",
+    emoji: "",
     color: "#EF4444",
   },
   "type-d": {
     title: "D型傾向",
     subtitle: "緑系が見えにくい傾向",
-    emoji: "🟢",
+    emoji: "",
     color: "#22C55E",
   },
   "type-t": {
     title: "T型傾向",
     subtitle: "青系が見えにくい傾向",
-    emoji: "🔵",
+    emoji: "",
     color: "#3B82F6",
   },
 };
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             gap: "8px",
           }}
         >
-          🌈 色覚多様性チェック
+           色覚多様性チェック
         </div>
 
         {hasResult && result ? (

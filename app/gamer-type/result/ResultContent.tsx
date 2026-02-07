@@ -37,8 +37,8 @@ export function GamerTypeResultContent(): React.ReactElement {
           <p className="text-orange-200 leading-relaxed mb-6">{result.description}</p>
 
           <div className="bg-red-500/10 rounded-2xl p-5 mb-6 text-left border border-red-500/20">
-            <p className="text-orange-400 font-bold text-sm mb-3 text-center">🎮 こんなゲーマー...?</p>
-            <ul className="space-y-2">{result.traits.map((t, i) => (<li key={i} className="flex items-start gap-2 text-orange-200 text-sm"><span className="text-orange-400 mt-0.5">✓</span><span>{t}</span></li>))}</ul>
+            <p className="text-orange-400 font-bold text-sm mb-3 text-center"> こんなゲーマー...?</p>
+            <ul className="space-y-2">{result.traits.map((t, i) => (<li key={i} className="flex items-start gap-2 text-orange-200 text-sm"><span className="text-orange-400 mt-0.5"></span><span>{t}</span></li>))}</ul>
           </div>
           <div className="bg-gradient-to-r from-red-500/30 to-orange-500/30 rounded-2xl p-4 mb-6 border border-red-500/20"><p className="text-white text-lg font-bold">{result.quote}</p></div>
 
@@ -62,7 +62,7 @@ export function GamerTypeResultContent(): React.ReactElement {
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-red-500/30">
-              <p className="text-xs text-gray-400 mb-3">📚 この診断をもっと深く知る</p>
+              <p className="text-xs text-gray-400 mb-3"> この診断をもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -77,9 +77,9 @@ export function GamerTypeResultContent(): React.ReactElement {
           <div className="mt-8 pt-6 border-t border-red-500/30">
             <p className="text-xs text-red-400/60 mb-3">次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/sanzai-type" className="px-6 py-3 bg-red-500/10 hover:bg-red-500/20 rounded-full text-yellow-400 font-medium transition-colors text-center">💸 オタク散財タイプ診断 →</Link>
-              <Link href="/gacha" className="px-6 py-3 bg-red-500/10 hover:bg-red-500/20 rounded-full text-amber-400 font-medium transition-colors text-center">💰 課金スタイル診断 →</Link>
-              <Link href="/menhera" className="px-6 py-3 bg-red-500/10 hover:bg-red-500/20 rounded-full text-pink-400 font-medium transition-colors text-center">🖤 メンヘラ度診断 →</Link>
+              <Link href="/sanzai-type" className="px-6 py-3 bg-red-500/10 hover:bg-red-500/20 rounded-full text-yellow-400 font-medium transition-colors text-center"> オタク散財タイプ診断 →</Link>
+              <Link href="/gacha" className="px-6 py-3 bg-red-500/10 hover:bg-red-500/20 rounded-full text-amber-400 font-medium transition-colors text-center"> 課金スタイル診断 →</Link>
+              <Link href="/menhera" className="px-6 py-3 bg-red-500/10 hover:bg-red-500/20 rounded-full text-pink-400 font-medium transition-colors text-center"> メンヘラ度診断 →</Link>
             </div>
           </div>
         </div>

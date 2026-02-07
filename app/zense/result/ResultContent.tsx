@@ -32,7 +32,7 @@ export function ZenseResultContent(): React.ReactElement {
           </div>
 
           {/* タイトル */}
-          <p className="text-amber-300/70 text-sm font-medium mb-2">✦ あなたの前世は... ✦</p>
+          <p className="text-amber-300/70 text-sm font-medium mb-2"> あなたの前世は... </p>
           <div className="text-5xl mb-4">{result.emoji}</div>
           <h1 className="text-3xl font-bold mb-2 text-amber-300">{result.title}</h1>
           <p className="text-lg mb-4 text-purple-200">{result.subtitle}</p>
@@ -40,11 +40,11 @@ export function ZenseResultContent(): React.ReactElement {
 
           {/* 特徴 */}
           <div className="bg-purple-800/30 rounded-xl p-5 mb-6 text-left border border-purple-500/30">
-            <p className="text-amber-300 font-bold text-sm mb-3 text-center">✦ 前世から受け継いだ特徴 ✦</p>
+            <p className="text-amber-300 font-bold text-sm mb-3 text-center"> 前世から受け継いだ特徴 </p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
                 <li key={i} className="flex items-start gap-2 text-purple-100 text-sm">
-                  <span className="text-amber-300 mt-0.5">✧</span><span>{t}</span>
+                  <span className="text-amber-300 mt-0.5"></span><span>{t}</span>
                 </li>
               ))}
             </ul>
@@ -62,14 +62,14 @@ export function ZenseResultContent(): React.ReactElement {
               結果をシェア
             </button>
             <button onClick={() => window.location.href = "/zense"} className="w-full px-8 py-4 rounded-xl font-bold text-lg shadow-lg bg-purple-800/30 text-amber-300 border border-amber-400/50 hover:border-amber-400 hover:bg-purple-700/30 transition-all hover:scale-105 active:scale-95">
-              🔮 もう一度占う
+               もう一度占う
             </button>
           </div>
 
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-purple-500/30">
-              <p className="text-xs text-purple-400/60 mb-3">📚 この診断をもっと深く知る</p>
+              <p className="text-xs text-purple-400/60 mb-3"> この診断をもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -83,11 +83,11 @@ export function ZenseResultContent(): React.ReactElement {
 
           {/* 他の診断 */}
           <div className="mt-8 pt-6 border-t border-purple-500/30">
-            <p className="text-xs text-purple-400/50 mb-3">▼ 次の診断もやってみる？</p>
+            <p className="text-xs text-purple-400/50 mb-3"> 次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/rpg-job" className="px-6 py-3 bg-purple-800/30 hover:bg-purple-700/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-purple-500/20">⚔️ 人生RPGジョブ診断 →</Link>
-              <Link href="/yami-zokusei" className="px-6 py-3 bg-purple-800/30 hover:bg-purple-700/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-purple-500/20">⚔️ 闇属性診断 →</Link>
-              <Link href="/motivation" className="px-6 py-3 bg-purple-800/30 hover:bg-purple-700/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-purple-500/20">⚡ モチベーション源泉診断 →</Link>
+              <Link href="/rpg-job" className="px-6 py-3 bg-purple-800/30 hover:bg-purple-700/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-purple-500/20"> 人生RPGジョブ診断 →</Link>
+              <Link href="/yami-zokusei" className="px-6 py-3 bg-purple-800/30 hover:bg-purple-700/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-purple-500/20"> 闇属性診断 →</Link>
+              <Link href="/motivation" className="px-6 py-3 bg-purple-800/30 hover:bg-purple-700/30 rounded-xl text-amber-300/70 hover:text-amber-300 font-medium transition-colors text-center border border-purple-500/20"> モチベーション源泉診断 →</Link>
             </div>
           </div>
         </div>

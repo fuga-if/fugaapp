@@ -159,7 +159,7 @@ export function SubliminalResultContent(): React.ReactElement {
   );
 
   const handleShare = async () => {
-    const text = `【潜在意識テスト】\n私の潜在意識タイプは「${result.emoji} ${result.title}」でした！\n${result.subtitle}\n${result.isRare ? "🎯 レアタイプ！" : ""}\n\n#潜在意識テスト #fugaapp`;
+    const text = `【潜在意識テスト】\n私の潜在意識タイプは「${result.emoji} ${result.title}」でした！\n${result.subtitle}\n${result.isRare ? " レアタイプ！" : ""}\n\n#潜在意識テスト #fugaapp`;
     const url = `https://fugaapp.site/subliminal-test/result?${searchParams.toString()}`;
     if (navigator.share) {
       try {
@@ -184,7 +184,7 @@ export function SubliminalResultContent(): React.ReactElement {
           <div className="mb-4 animate-pulse">
             <div className="inline-block px-4 py-2 bg-yellow-500/20 border-2 border-yellow-400 rounded-full">
               <span className="text-yellow-300 font-bold text-sm">
-                🎯 レアタイプ出現！
+                 レアタイプ出現！
               </span>
             </div>
           </div>
@@ -199,7 +199,7 @@ export function SubliminalResultContent(): React.ReactElement {
         >
           {/* Type emoji & title */}
           <p className="text-indigo-300/70 text-sm font-medium mb-2">
-            ◈ あなたの潜在意識タイプは... ◈
+             あなたの潜在意識タイプは... 
           </p>
           <div className="text-6xl mb-4">{result.emoji}</div>
           <h1
@@ -225,7 +225,7 @@ export function SubliminalResultContent(): React.ReactElement {
           {!result.isRare && (
             <div className="bg-indigo-800/20 rounded-xl p-4 mb-6 border border-indigo-500/20">
               <p className="text-indigo-300 font-bold text-sm mb-3">
-                ◈ 潜在意識マップ ◈
+                 潜在意識マップ 
               </p>
               <RadarChart scores={axisScores} />
             </div>
@@ -234,7 +234,7 @@ export function SubliminalResultContent(): React.ReactElement {
           {/* Traits */}
           <div className="bg-indigo-800/20 rounded-xl p-5 mb-6 text-left border border-indigo-500/20">
             <p className="text-indigo-300 font-bold text-sm mb-3 text-center">
-              ◈ あなたの潜在意識の特徴 ◈
+               あなたの潜在意識の特徴 
             </p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
@@ -242,7 +242,7 @@ export function SubliminalResultContent(): React.ReactElement {
                   key={i}
                   className="flex items-start gap-2 text-indigo-100 text-sm"
                 >
-                  <span className="text-purple-300 mt-0.5">◇</span>
+                  <span className="text-purple-300 mt-0.5"></span>
                   <span>{t}</span>
                 </li>
               ))}
@@ -252,7 +252,7 @@ export function SubliminalResultContent(): React.ReactElement {
           {/* Response time stats */}
           <div className="bg-indigo-800/20 rounded-xl p-4 mb-6 border border-indigo-500/20">
             <p className="text-indigo-300 font-bold text-sm mb-2">
-              ⚡ 平均反応速度
+               平均反応速度
             </p>
             <p className="text-2xl font-bold text-white">
               {avgTime}
@@ -288,33 +288,33 @@ export function SubliminalResultContent(): React.ReactElement {
               onClick={() => (window.location.href = "/subliminal-test")}
               className="w-full px-8 py-4 rounded-xl font-bold text-lg shadow-lg bg-indigo-800/30 text-indigo-200 border border-indigo-400/50 hover:border-indigo-400 hover:bg-indigo-700/30 transition-all hover:scale-105 active:scale-95"
             >
-              👁️ もう一度テストする
+               もう一度テストする
             </button>
           </div>
 
           {/* Other diagnoses */}
           <div className="mt-8 pt-6 border-t border-indigo-500/30">
             <p className="text-xs text-indigo-400/40 mb-3">
-              ▼ 次の診断もやってみる？
+               次の診断もやってみる？
             </p>
             <div className="flex flex-col gap-2">
               <Link
                 href="/zense"
                 className="px-6 py-3 bg-indigo-800/20 hover:bg-indigo-700/30 rounded-xl text-purple-300/60 hover:text-purple-300 font-medium transition-colors text-center border border-indigo-500/20"
               >
-                🔮 前世診断 →
+                 前世診断 →
               </Link>
               <Link
                 href="/flash-memory"
                 className="px-6 py-3 bg-indigo-800/20 hover:bg-indigo-700/30 rounded-xl text-purple-300/60 hover:text-purple-300 font-medium transition-colors text-center border border-indigo-500/20"
               >
-                📸 瞬間記憶テスト →
+                 瞬間記憶テスト →
               </Link>
               <Link
                 href="/reaction-test"
                 className="px-6 py-3 bg-indigo-800/20 hover:bg-indigo-700/30 rounded-xl text-purple-300/60 hover:text-purple-300 font-medium transition-colors text-center border border-indigo-500/20"
               >
-                ⚡ 反射神経テスト →
+                 反射神経テスト →
               </Link>
             </div>
           </div>

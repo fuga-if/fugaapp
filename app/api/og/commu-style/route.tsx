@@ -47,7 +47,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             textShadow: "0 2px 4px rgba(0,0,0,0.1)",
           }}
         >
-          💬 コミュニケーションスタイル診断
+           コミュニケーションスタイル診断
         </div>
 
         <div

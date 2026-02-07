@@ -156,7 +156,7 @@ export function ShieldTimer({ timerState }: ShieldTimerProps) {
 
   return (
     <div style={styles.shieldContainer}>
-      <span style={styles.shieldIcon}>🛡️</span>
+      <span style={styles.shieldIcon}></span>
       <div style={styles.shieldBarBg}>
         <div
           style={{

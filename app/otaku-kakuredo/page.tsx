@@ -12,13 +12,13 @@ export default function OtakuKakuredoHome(): React.ReactElement {
         <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">オタクの隠れ度<br />診断</h1>
         <p className="text-orange-200 text-lg mb-6 leading-relaxed">10個の質問に答えて、<br />あなたのオタク隠れ度を診断！</p>
         <button onClick={() => router.push("/otaku-kakuredo/quiz")} className="px-12 py-5 rounded-full font-bold text-xl shadow-lg bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-white transition-all transform hover:scale-105 active:scale-95 mb-6">診断スタート</button>
-        <p className="text-sm text-orange-400 mb-8">※ あなたのオタク、バレてる？🥷</p>
+        <p className="text-sm text-orange-400 mb-8">※ あなたのオタク、バレてる？</p>
         <div className="pt-6 border-t border-orange-800">
           <p className="text-xs text-orange-600 mb-3">他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
-            <Link href="/commu-ryoku" className="text-teal-400 hover:text-teal-300 text-sm">🗣️ オタクコミュ力診断 →</Link>
-            <Link href="/gacha" className="text-amber-400 hover:text-amber-300 text-sm">💰 課金スタイル診断 →</Link>
-            <Link href="/sns-fatigue" className="text-blue-400 hover:text-blue-300 text-sm">📱 SNS疲れ診断 →</Link>
+            <Link href="/commu-ryoku" className="text-teal-400 hover:text-teal-300 text-sm"> オタクコミュ力診断 →</Link>
+            <Link href="/gacha" className="text-amber-400 hover:text-amber-300 text-sm"> 課金スタイル診断 →</Link>
+            <Link href="/sns-fatigue" className="text-blue-400 hover:text-blue-300 text-sm"> SNS疲れ診断 →</Link>
           </div>
         </div>
       </div>

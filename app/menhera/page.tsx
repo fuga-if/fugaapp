@@ -55,10 +55,10 @@ export default function MenheraHome(): React.ReactElement {
           <p className="text-xs text-gray-400 mb-3">他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
             <Link href="/oshi" className="inline-flex items-center justify-center gap-2 text-pink-400 hover:text-pink-500 transition-colors text-sm">
-              💖 推し活タイプ診断 <span className="text-xs">→</span>
+               推し活タイプ診断 <span className="text-xs">→</span>
             </Link>
             <Link href="/gacha" className="inline-flex items-center justify-center gap-2 text-amber-500 hover:text-amber-600 transition-colors text-sm">
-              💰 課金スタイル診断 <span className="text-xs">→</span>
+               課金スタイル診断 <span className="text-xs">→</span>
             </Link>
           </div>
         </div>

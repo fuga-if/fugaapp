@@ -21,17 +21,17 @@ export default function RpgJobHome(): React.ReactElement {
             onClick={() => router.push("/rpg-job/quiz")}
             className="px-12 py-5 rounded font-bold text-xl shadow-lg bg-amber-500 hover:bg-amber-400 text-slate-900 transition-all transform hover:scale-105 active:scale-95"
           >
-            ▶ ぼうけんにでる
+             ぼうけんにでる
           </button>
           <p className="text-sm text-slate-400 mt-4">※ 全10問・約2分で完了</p>
         </div>
 
         <div className="pt-4">
-          <p className="text-xs text-slate-500 mb-3">▼ 他の診断もやってみる？</p>
+          <p className="text-xs text-slate-500 mb-3"> 他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
-            <Link href="/motivation" className="text-amber-400/70 hover:text-amber-400 text-sm">⚡ モチベーション源泉診断 →</Link>
-            <Link href="/gamer-type" className="text-amber-400/70 hover:text-amber-400 text-sm">🎮 ゲーマータイプ診断 →</Link>
-            <Link href="/yami-zokusei" className="text-amber-400/70 hover:text-amber-400 text-sm">⚔️ 闇属性診断 →</Link>
+            <Link href="/motivation" className="text-amber-400/70 hover:text-amber-400 text-sm"> モチベーション源泉診断 →</Link>
+            <Link href="/gamer-type" className="text-amber-400/70 hover:text-amber-400 text-sm"> ゲーマータイプ診断 →</Link>
+            <Link href="/yami-zokusei" className="text-amber-400/70 hover:text-amber-400 text-sm"> 闇属性診断 →</Link>
           </div>
         </div>
       </div>

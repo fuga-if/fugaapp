@@ -19,15 +19,15 @@ export default function MotivationHome(): React.ReactElement {
           onClick={() => router.push("/motivation/quiz")}
           className="px-12 py-5 rounded-full font-bold text-xl shadow-lg bg-gradient-to-r from-purple-500 to-amber-500 hover:from-purple-600 hover:to-amber-600 text-white transition-all transform hover:scale-105 active:scale-95 mb-6"
         >
-          診断スタート ⚡
+          診断スタート 
         </button>
         <p className="text-sm text-gray-400 mb-8">※ 全10問・約2分で完了</p>
         <div className="pt-6 border-t border-gray-200">
           <p className="text-xs text-gray-400 mb-3">他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
-            <Link href="/commu-style" className="text-amber-500 hover:text-amber-600 text-sm">💬 コミュニケーションスタイル診断 →</Link>
-            <Link href="/shikou-type" className="text-blue-500 hover:text-blue-600 text-sm">🧠 思考タイプ診断 →</Link>
-            <Link href="/inkya-youkya" className="text-purple-500 hover:text-purple-600 text-sm">🌓 陰キャ陽キャスペクトラム診断 →</Link>
+            <Link href="/commu-style" className="text-amber-500 hover:text-amber-600 text-sm"> コミュニケーションスタイル診断 →</Link>
+            <Link href="/shikou-type" className="text-blue-500 hover:text-blue-600 text-sm"> 思考タイプ診断 →</Link>
+            <Link href="/inkya-youkya" className="text-purple-500 hover:text-purple-600 text-sm"> 陰キャ陽キャスペクトラム診断 →</Link>
           </div>
         </div>
       </div>

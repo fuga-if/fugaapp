@@ -73,11 +73,11 @@ export function RpgJobResultContent(): React.ReactElement {
 
           {/* 特徴 */}
           <div className="bg-slate-900/60 rounded-lg p-5 mb-6 text-left border border-slate-600">
-            <p className="text-amber-400 font-bold text-sm mb-3 text-center">⚔️ このジョブの特徴</p>
+            <p className="text-amber-400 font-bold text-sm mb-3 text-center"> このジョブの特徴</p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
                 <li key={i} className="flex items-start gap-2 text-slate-300 text-sm">
-                  <span className="text-amber-400 mt-0.5">▶</span><span>{t}</span>
+                  <span className="text-amber-400 mt-0.5"></span><span>{t}</span>
                 </li>
               ))}
             </ul>
@@ -92,17 +92,17 @@ export function RpgJobResultContent(): React.ReactElement {
           <div className="space-y-4">
             <button onClick={handleShare} className="w-full px-8 py-4 rounded font-bold text-lg shadow-lg bg-black text-white hover:bg-gray-800 flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95 border border-slate-600">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
-              ▶ けっかをシェア
+               けっかをシェア
             </button>
             <button onClick={() => router.push("/rpg-job")} className="w-full px-8 py-4 rounded font-bold text-lg shadow-lg bg-slate-700 text-amber-400 border-2 border-amber-400/50 hover:border-amber-400 hover:bg-slate-600 transition-all hover:scale-105 active:scale-95">
-              ▶ もういちど ぼうけんする
+               もういちど ぼうけんする
             </button>
           </div>
 
           {/* 関連ブログ記事 */}
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-slate-600">
-              <p className="text-xs text-slate-500 mb-3">📚 この診断をもっと深く知る</p>
+              <p className="text-xs text-slate-500 mb-3"> この診断をもっと深く知る</p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map(post => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
@@ -116,11 +116,11 @@ export function RpgJobResultContent(): React.ReactElement {
 
           {/* 他の診断 */}
           <div className="mt-8 pt-6 border-t border-slate-600">
-            <p className="text-xs text-slate-500 mb-3">▼ 次の診断もやってみる？</p>
+            <p className="text-xs text-slate-500 mb-3"> 次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/motivation" className="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded text-amber-400/70 hover:text-amber-400 font-medium transition-colors text-center">⚡ モチベーション源泉診断 →</Link>
-              <Link href="/gamer-type" className="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded text-amber-400/70 hover:text-amber-400 font-medium transition-colors text-center">🎮 ゲーマータイプ診断 →</Link>
-              <Link href="/yami-zokusei" className="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded text-amber-400/70 hover:text-amber-400 font-medium transition-colors text-center">⚔️ 闘属性診断 →</Link>
+              <Link href="/motivation" className="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded text-amber-400/70 hover:text-amber-400 font-medium transition-colors text-center"> モチベーション源泉診断 →</Link>
+              <Link href="/gamer-type" className="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded text-amber-400/70 hover:text-amber-400 font-medium transition-colors text-center"> ゲーマータイプ診断 →</Link>
+              <Link href="/yami-zokusei" className="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded text-amber-400/70 hover:text-amber-400 font-medium transition-colors text-center"> 闘属性診断 →</Link>
             </div>
           </div>
         </div>

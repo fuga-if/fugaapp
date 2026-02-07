@@ -17,12 +17,12 @@ export default function OshiHome(): React.ReactElement {
         <div className="space-y-4 mb-6">
           <button onClick={() => router.push("/oshi/quiz")} className="px-12 py-5 rounded-full font-bold text-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-400 hover:to-purple-400 text-white">診断スタート</button>
         </div>
-        <p className="text-sm text-pink-400 mb-8">※ 推しへの愛し方は人それぞれ💖</p>
+        <p className="text-sm text-pink-400 mb-8">※ 推しへの愛し方は人それぞれ</p>
         <div className="pt-6 border-t border-pink-800">
           <p className="text-xs text-pink-600 mb-3">他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
-            <Link href="/menhera" className="text-pink-400 hover:text-pink-300 transition-colors text-sm">🖤 メンヘラ度診断 →</Link>
-            <Link href="/vtuber" className="text-purple-400 hover:text-purple-300 transition-colors text-sm">🎮 Vtuberオタク診断 →</Link>
+            <Link href="/menhera" className="text-pink-400 hover:text-pink-300 transition-colors text-sm"> メンヘラ度診断 →</Link>
+            <Link href="/vtuber" className="text-purple-400 hover:text-purple-300 transition-colors text-sm"> Vtuberオタク診断 →</Link>
           </div>
         </div>
       </div>

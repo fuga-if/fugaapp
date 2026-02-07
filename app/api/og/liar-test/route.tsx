@@ -5,13 +5,13 @@ export const runtime = "edge";
 
 function getTypeEmoji(type: string): string {
   switch (type) {
-    case "honest": return "😇";
-    case "flatterer": return "😊";
-    case "unconscious": return "🤥";
-    case "calculating": return "🧠";
-    case "master": return "🎭";
-    case "chaos": return "🌀";
-    default: return "🎭";
+    case "honest": return "";
+    case "flatterer": return "";
+    case "unconscious": return "";
+    case "calculating": return "";
+    case "master": return "";
+    case "chaos": return "";
+    default: return "";
   }
 }
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
   const scoreStr = searchParams.get("score");
   const score = scoreStr ? parseInt(scoreStr, 10) : 0;
 
-  const emoji = type ? getTypeEmoji(type) : "🎭";
+  const emoji = type ? getTypeEmoji(type) : "";
   const isResult = !!type;
   const scoreColor = getScoreColor(score);
 
@@ -113,7 +113,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
               marginBottom: "20px",
             }}
           >
-            🎭 嘘つき度診断
+             嘘つき度診断
           </div>
 
           {isResult ? (

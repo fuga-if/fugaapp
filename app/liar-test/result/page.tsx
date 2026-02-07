@@ -38,7 +38,7 @@ export default function ResultPage(): React.ReactElement {
       fallback={
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-gray-400 animate-pulse font-mono">
-            ▶ 分析中...嘘を検出しています...
+             分析中...嘘を検出しています...
           </div>
         </div>
       }

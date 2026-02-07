@@ -105,7 +105,7 @@ function RadarChart({
         fontSize="13"
         fontWeight="bold"
       >
-        🦊 M
+         M
       </text>
       <text
         x={labelPoints[0].x}
@@ -126,7 +126,7 @@ function RadarChart({
         fontSize="13"
         fontWeight="bold"
       >
-        👑 N
+         N
       </text>
       <text
         x={labelPoints[1].x}
@@ -147,7 +147,7 @@ function RadarChart({
         fontSize="13"
         fontWeight="bold"
       >
-        🧊 P
+         P
       </text>
       <text
         x={labelPoints[2].x}
@@ -196,7 +196,7 @@ export function DarkTriadResultContent(): React.ReactElement {
         <div className="bg-black/50 backdrop-blur-sm border border-purple-500/40 rounded-2xl p-8 shadow-[0_0_40px_rgba(168,85,247,0.15)]">
           {/* タイトル */}
           <p className="text-purple-400/70 text-sm font-medium mb-2">
-            ▸ あなたのダークサイドは... ◂
+             あなたのダークサイドは... 
           </p>
           <div className="text-6xl mb-4">{result.emoji}</div>
           <h1 className="text-3xl font-bold mb-1 text-white">{result.title}</h1>
@@ -210,9 +210,9 @@ export function DarkTriadResultContent(): React.ReactElement {
           {/* スコアバー */}
           <div className="bg-gray-900/50 rounded-xl p-4 mb-6 border border-purple-500/20">
             <div className="space-y-3">
-              <ScoreBar label="🦊 マキャベリズム" value={m} />
-              <ScoreBar label="👑 ナルシシズム" value={n} />
-              <ScoreBar label="🧊 サイコパシー" value={p} />
+              <ScoreBar label=" マキャベリズム" value={m} />
+              <ScoreBar label=" ナルシシズム" value={n} />
+              <ScoreBar label=" サイコパシー" value={p} />
             </div>
           </div>
 
@@ -224,7 +224,7 @@ export function DarkTriadResultContent(): React.ReactElement {
           {/* 特徴 */}
           <div className="bg-gray-900/50 rounded-xl p-5 mb-6 text-left border border-purple-500/20">
             <p className="text-purple-400 font-bold text-sm mb-3 text-center">
-              ▸ あなたの闇の特徴 ◂
+               あなたの闇の特徴 
             </p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
@@ -232,7 +232,7 @@ export function DarkTriadResultContent(): React.ReactElement {
                   key={i}
                   className="flex items-start gap-2 text-gray-300 text-sm"
                 >
-                  <span className="text-purple-400 mt-0.5">▪</span>
+                  <span className="text-purple-400 mt-0.5"></span>
                   <span>{t}</span>
                 </li>
               ))}
@@ -263,7 +263,7 @@ export function DarkTriadResultContent(): React.ReactElement {
               onClick={() => (window.location.href = "/dark-triad")}
               className="w-full px-8 py-4 rounded-xl font-bold text-lg shadow-lg bg-gray-900/50 text-purple-300 border border-purple-400/50 hover:border-purple-400 hover:bg-gray-800/50 transition-all hover:scale-105 active:scale-95"
             >
-              🖤 もう一度診断する
+               もう一度診断する
             </button>
           </div>
 
@@ -271,7 +271,7 @@ export function DarkTriadResultContent(): React.ReactElement {
           {relatedPosts.length > 0 && (
             <div className="mt-6 pt-4 border-t border-purple-500/30">
               <p className="text-xs text-gray-500 mb-3">
-                📚 この診断をもっと深く知る
+                 この診断をもっと深く知る
               </p>
               <div className="flex flex-col gap-2">
                 {relatedPosts.map((post) => (
@@ -290,26 +290,26 @@ export function DarkTriadResultContent(): React.ReactElement {
           {/* 他の診断 */}
           <div className="mt-8 pt-6 border-t border-purple-500/30">
             <p className="text-xs text-gray-500 mb-3">
-              ▼ 次の診断もやってみる？
+               次の診断もやってみる？
             </p>
             <div className="flex flex-col gap-2">
               <Link
                 href="/hsp"
                 className="px-6 py-3 bg-gray-900/50 hover:bg-gray-800/50 rounded-xl text-purple-400/70 hover:text-purple-400 font-medium transition-colors text-center border border-purple-500/20"
               >
-                🌸 HSP診断 →
+                 HSP診断 →
               </Link>
               <Link
                 href="/adhd"
                 className="px-6 py-3 bg-gray-900/50 hover:bg-gray-800/50 rounded-xl text-purple-400/70 hover:text-purple-400 font-medium transition-colors text-center border border-purple-500/20"
               >
-                🚀 ADHD傾向チェック →
+                 ADHD傾向チェック →
               </Link>
               <Link
                 href="/yami-zokusei"
                 className="px-6 py-3 bg-gray-900/50 hover:bg-gray-800/50 rounded-xl text-purple-400/70 hover:text-purple-400 font-medium transition-colors text-center border border-purple-500/20"
               >
-                ⚔️ 闘属性診断 →
+                 闘属性診断 →
               </Link>
             </div>
           </div>

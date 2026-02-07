@@ -153,7 +153,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
 
       {/* 切断警告 */}
       {!isConnected && (
-        <div style={styles.disconnectWarning}>🔌 接続が切れました。再接続中...</div>
+        <div style={styles.disconnectWarning}>接続が切れました。再接続中...</div>
       )}
 
       {/* 上部バー: ターン表示 + 相手ステータス + 設定 */}
@@ -188,7 +188,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
         <div style={styles.topRight}>
           <div style={styles.opponentStatus}>
             <span style={styles.opponentName}>
-              {opponent?.name || "???"}{opponent?.protected && " ✨"}
+              {opponent?.name || "???"}{opponent?.protected && " GUARD"}
             </span>
             <StatusGauge type="soul" current={opponent?.souls || 0} max={4} size="sm" />
             <StatusGauge type="shield" current={opponent?.shields || 0} max={3} size="sm" />
@@ -246,7 +246,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
             <span style={styles.pileLabel}>墓地</span>
           </button>
           <div style={styles.pile}>
-            <div style={styles.pileCount}>{gameState.shieldStock}🛡️</div>
+            <div style={styles.pileCount}>{gameState.shieldStock}</div>
           </div>
         </div>
         {gameState.lastAction && <div style={styles.lastAction}>{gameState.lastAction}</div>}
@@ -341,7 +341,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
       <div style={styles.bottomBar}>
         <div style={styles.myStatus}>
           <span style={styles.myName}>
-            {me?.name || "???"}{me?.protected && " ✨"}
+            {me?.name || "???"}{me?.protected && " GUARD"}
           </span>
           <StatusGauge type="soul" current={me?.souls || 0} max={4} size="md" />
           <StatusGauge type="shield" current={me?.shields || 0} max={3} size="md" />
@@ -567,25 +567,25 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
       {showSettings && (
         <div style={styles.modalOverlay} onClick={() => setShowSettings(false)}>
           <div style={styles.settingsModal} onClick={(e) => e.stopPropagation()}>
-            <h3 style={styles.settingsTitle}>⚙️ MENU</h3>
+            <h3 style={styles.settingsTitle}>MENU</h3>
             <div style={styles.settingsButtons}>
               <button
                 onClick={() => { setShowSettings(false); setShowRules(true); }}
                 style={styles.settingsItem}
               >
-                📜 ルール
+                ルール
               </button>
               <button
                 onClick={() => { setShowSettings(false); setShowAllCards(true); }}
                 style={styles.settingsItem}
               >
-                🃏 カード一覧
+                カード一覧
               </button>
               <button
                 onClick={() => { setShowSettings(false); setShowLog(true); }}
                 style={styles.settingsItem}
               >
-                📋 ログ
+                ログ
               </button>
             </div>
             <button onClick={() => setShowSettings(false)} style={styles.closeButton}>
@@ -599,7 +599,7 @@ export default function GameClient({ roomId, playerName, turnChoice, optionalCar
       {showLog && (
         <div style={styles.modalOverlay} onClick={() => setShowLog(false)}>
           <div style={styles.logModal} onClick={(e) => e.stopPropagation()}>
-            <h3 style={styles.modalTitle}>📋 ACTION LOG</h3>
+            <h3 style={styles.modalTitle}>ACTION LOG</h3>
             <div style={styles.logContent}>
               {gameState.actionLog.slice(-20).map((log, i) => (
                 <div key={i} style={styles.logEntry}>{log}</div>

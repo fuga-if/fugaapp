@@ -171,14 +171,14 @@ export default function SoloGameClient({ roomId }: SoloGameClientProps) {
         <div style={styles.playersRow}>
           <div style={styles.playerBox}>
             <h3>プレイヤー1</h3>
-            <p>{p1?.ready ? "準備完了 ✓" : "待機中..."}</p>
+            <p>{p1?.ready ? "準備完了 " : "待機中..."}</p>
             {!p1?.ready && (
               <button onClick={() => handleReady(1)} style={styles.readyBtn}>READY</button>
             )}
           </div>
           <div style={styles.playerBox}>
             <h3>プレイヤー2</h3>
-            <p>{p2?.ready ? "準備完了 ✓" : "待機中..."}</p>
+            <p>{p2?.ready ? "準備完了 " : "待機中..."}</p>
             {!p2?.ready && (
               <button onClick={() => handleReady(2)} style={styles.readyBtn}>READY</button>
             )}

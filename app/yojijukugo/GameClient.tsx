@@ -376,7 +376,7 @@ export default function GameClient() {
   /* ═══════ Render Yojijukugo with blank ═══════ */
   const renderYojijukugo = (display: string) => {
     return display.split("").map((char, i) => (
-      <span key={i} className={char === "○" ? "blank-char" : ""}>
+      <span key={i} className={char === "" ? "blank-char" : ""}>
         {char}
       </span>
     ));

@@ -12,13 +12,13 @@ export default function GachaHome(): React.ReactElement {
         <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">ソシャゲ課金<br />スタイル診断</h1>
         <p className="text-amber-200 text-lg mb-6 leading-relaxed">10個の質問に答えて、<br />あなたの課金タイプを診断！</p>
         <button onClick={() => router.push("/gacha/quiz")} className="px-12 py-5 rounded-full font-bold text-xl shadow-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white transition-all transform hover:scale-105 active:scale-95 mb-6">診断スタート</button>
-        <p className="text-sm text-amber-400 mb-8">※ 楽しんでね！お財布は大切に💰</p>
+        <p className="text-sm text-amber-400 mb-8">※ 楽しんでね！お財布は大切に</p>
         <div className="pt-6 border-t border-amber-800">
           <p className="text-xs text-amber-600 mb-3">他の診断もやってみる？</p>
           <div className="flex flex-col gap-2">
-            <Link href="/menhera" className="text-pink-400 hover:text-pink-300 text-sm">🖤 メンヘラ度診断 →</Link>
-            <Link href="/vtuber" className="text-purple-400 hover:text-purple-300 text-sm">🎮 Vtuberオタク診断 →</Link>
-            <Link href="/sns-fatigue" className="text-blue-400 hover:text-blue-300 text-sm">📱 SNS疲れ診断 →</Link>
+            <Link href="/menhera" className="text-pink-400 hover:text-pink-300 text-sm"> メンヘラ度診断 →</Link>
+            <Link href="/vtuber" className="text-purple-400 hover:text-purple-300 text-sm"> Vtuberオタク診断 →</Link>
+            <Link href="/sns-fatigue" className="text-blue-400 hover:text-blue-300 text-sm"> SNS疲れ診断 →</Link>
           </div>
         </div>
       </div>

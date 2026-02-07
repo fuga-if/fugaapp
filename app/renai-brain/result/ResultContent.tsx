@@ -44,11 +44,11 @@ export function RenaiBrainResultContent(): React.ReactElement {
           <p className="text-gray-600 leading-relaxed mb-6">{result.description}</p>
 
           <div className="bg-pink-50 rounded-2xl p-5 mb-6 text-left border border-pink-100">
-            <p className="text-pink-500 font-bold text-sm mb-3 text-center">💘 このタイプの特徴</p>
+            <p className="text-pink-500 font-bold text-sm mb-3 text-center"> このタイプの特徴</p>
             <ul className="space-y-2">
               {result.traits.map((t, i) => (
                 <li key={i} className="flex items-start gap-2 text-gray-600 text-sm">
-                  <span className="text-pink-500 mt-0.5">✓</span><span>{t}</span>
+                  <span className="text-pink-500 mt-0.5"></span><span>{t}</span>
                 </li>
               ))}
             </ul>
@@ -86,9 +86,9 @@ export function RenaiBrainResultContent(): React.ReactElement {
           <div className="mt-8 pt-6 border-t border-pink-100">
             <p className="text-xs text-gray-400 mb-3">次の診断もやってみる？</p>
             <div className="flex flex-col gap-2">
-              <Link href="/menhera" className="px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-pink-500 font-medium transition-colors text-center">🖤 メンヘラ度診断 →</Link>
-              <Link href="/stress-taisho" className="px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-green-500 font-medium transition-colors text-center">🌿 ストレス対処法タイプ診断 →</Link>
-              <Link href="/commu-style" className="px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-amber-500 font-medium transition-colors text-center">💬 コミュニケーションスタイル診断 →</Link>
+              <Link href="/menhera" className="px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-pink-500 font-medium transition-colors text-center"> メンヘラ度診断 →</Link>
+              <Link href="/stress-taisho" className="px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-green-500 font-medium transition-colors text-center"> ストレス対処法タイプ診断 →</Link>
+              <Link href="/commu-style" className="px-6 py-3 bg-pink-50 hover:bg-pink-100 rounded-full text-amber-500 font-medium transition-colors text-center"> コミュニケーションスタイル診断 →</Link>
             </div>
           </div>
         </div>

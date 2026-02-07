@@ -107,14 +107,14 @@ export default function QuizPage(): React.ReactElement {
                 onClick={() => handleAnswer(true)}
                 className="p-5 text-center bg-gray-700/30 hover:bg-gray-600/40 rounded-xl border border-gray-500/30 hover:border-green-400/60 transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.97] group"
               >
-                <span className="text-3xl block mb-2">⭕</span>
+                <span className="text-3xl block mb-2"></span>
                 <span className="text-gray-100 font-bold text-lg">はい</span>
               </button>
               <button
                 onClick={() => handleAnswer(false)}
                 className="p-5 text-center bg-gray-700/30 hover:bg-gray-600/40 rounded-xl border border-gray-500/30 hover:border-red-400/60 transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.97] group"
               >
-                <span className="text-3xl block mb-2">❌</span>
+                <span className="text-3xl block mb-2"></span>
                 <span className="text-gray-100 font-bold text-lg">いいえ</span>
               </button>
             </div>

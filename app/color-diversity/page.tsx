@@ -26,7 +26,7 @@ export default function ColorDiversityPage() {
       <div className="w-full max-w-md">
         {/* ヘッダー */}
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4">🌈</div>
+          <div className="text-6xl mb-4"></div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">
             色覚多様性チェック
           </h1>
@@ -39,18 +39,18 @@ export default function ColorDiversityPage() {
 
         {/* 説明カード */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-          <h2 className="font-bold text-gray-800 mb-3">🔍 テストについて</h2>
+          <h2 className="font-bold text-gray-800 mb-3"> テストについて</h2>
           <ul className="text-sm text-gray-600 space-y-2">
             <li className="flex items-start gap-2">
-              <span className="text-red-400">●</span>
+              <span className="text-red-400"></span>
               <span>石原式風のドットパターンで数字を識別</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-green-400">●</span>
+              <span className="text-green-400"></span>
               <span>全10問、4択形式</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-blue-400">●</span>
+              <span className="text-blue-400"></span>
               <span>P型・D型・T型・C型の傾向をチェック</span>
             </li>
           </ul>
@@ -58,7 +58,7 @@ export default function ColorDiversityPage() {
 
         {/* 色覚タイプの説明 */}
         <div className="bg-white/80 rounded-2xl p-4 mb-6">
-          <h3 className="font-bold text-gray-700 text-sm mb-3">📊 色覚タイプとは？</h3>
+          <h3 className="font-bold text-gray-700 text-sm mb-3"> 色覚タイプとは？</h3>
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div className="bg-emerald-50 rounded-lg p-2">
               <span className="font-bold text-emerald-600">C型</span>

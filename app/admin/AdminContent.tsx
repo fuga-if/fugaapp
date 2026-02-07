@@ -24,7 +24,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "menhera",
     title: "メンヘラ度診断",
-    emoji: "🖤",
+    emoji: "",
     resultType: "score",
     scoreResults: [
       { label: "メンタル鋼鉄タイプ (0%)", score: 10 },
@@ -37,7 +37,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "oshi",
     title: "推し活スタイル診断",
-    emoji: "💖",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["kakin-senshi", "genba-shijou", "sousaku-numa", "data-chuu", "fukyou-shi", "seikan-sei"],
     resultTitles: {
@@ -52,7 +52,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "tanto-fan-oshi",
     title: "担当/ファン/推し診断",
-    emoji: "💜",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["tanto", "fan", "oshi"],
     resultTitles: {
@@ -64,7 +64,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "vtuber",
     title: "Vtuberオタクタイプ診断",
-    emoji: "📺",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["gachi-koi", "hako-oshi", "archive", "shokunin", "teetee", "kosan"],
     resultTitles: {
@@ -79,7 +79,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "gacha",
     title: "ソシャゲ課金スタイル診断",
-    emoji: "💰",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["tenjou-kyouto", "shoudou-kakin", "bi-kakin", "mu-kakin", "gentei-killer", "hai-kakin"],
     resultTitles: {
@@ -94,7 +94,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "sns-fatigue",
     title: "SNS疲れタイプ診断",
-    emoji: "😵",
+    emoji: "",
     resultType: "single-type",
     typeValues: ["A", "B", "C", "D", "E", "F"],
     resultTitles: {
@@ -109,7 +109,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "otaku-kakuredo",
     title: "オタクの隠れ度診断",
-    emoji: "🥷",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -124,7 +124,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "commu-ryoku",
     title: "オタクコミュ力診断",
-    emoji: "🗣️",
+    emoji: "",
     resultType: "score",
     scoreResults: [
       { label: "コミュ力カンスト型", score: 30 },
@@ -138,7 +138,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "gamer-type",
     title: "ゲーマータイプ診断",
-    emoji: "🎮",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["gachi", "enjoy", "story", "collector", "streamer", "numa"],
     resultTitles: {
@@ -153,7 +153,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "sanzai-type",
     title: "オタク散財タイプ診断",
-    emoji: "💸",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["goods", "ensei", "gacha", "doujin", "superchat", "collab"],
     resultTitles: {
@@ -168,7 +168,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "yoru-gata",
     title: "夜型オタク診断",
-    emoji: "🌙",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["anime-ikki", "game-shuukai", "sousaku-engine", "sns-junkai", "kousatsu-fukabori", "kyomu-yofukashi"],
     resultTitles: {
@@ -183,7 +183,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "yami-zokusei",
     title: "闇属性診断",
-    emoji: "⚔️",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["shikkoku-yami", "souen-gouka", "itetsuku-hyouga", "shiden-raikou", "seinaru-hikari", "kyomu-kaze"],
     resultTitles: {
@@ -198,7 +198,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "neko-inu",
     title: "猫派犬派深層診断",
-    emoji: "🐱",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -213,7 +213,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "inkya-youkya",
     title: "陰キャ陽キャスペクトラム診断",
-    emoji: "🌓",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -228,7 +228,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "shikou-type",
     title: "思考タイプ診断",
-    emoji: "🧠",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -243,7 +243,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "sumaho-izon",
     title: "スマホ依存タイプ診断",
-    emoji: "📱",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -258,7 +258,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "motivation",
     title: "モチベーション源泉診断",
-    emoji: "⚡",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -273,7 +273,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "stress-taisho",
     title: "ストレス対処法タイプ診断",
-    emoji: "🌿",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -288,7 +288,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "renai-brain",
     title: "恋愛脳レベル診断",
-    emoji: "💘",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -303,7 +303,7 @@ const diagnosisData: DiagnosisPreview[] = [
   {
     slug: "commu-style",
     title: "コミュニケーションスタイル診断",
-    emoji: "💬",
+    emoji: "",
     resultType: "multi-type",
     typeKeys: ["type-a", "type-b", "type-c", "type-d", "type-e", "type-f"],
     resultTitles: {
@@ -367,7 +367,7 @@ export default function AdminContent({ needSetCookie, adminKey }: Props) {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-gray-800">🔧 Admin - 診断結果プレビュー</h1>
+          <h1 className="text-2xl font-bold text-gray-800"> Admin - 診断結果プレビュー</h1>
           <Link href="/" className="text-sm text-purple-500 hover:underline">← サイトに戻る</Link>
         </div>
 
@@ -397,7 +397,7 @@ export default function AdminContent({ needSetCookie, adminKey }: Props) {
                       {resultKeys.length}タイプ
                     </span>
                   </div>
-                  <span className="text-gray-400">{isExpanded ? "▲" : "▼"}</span>
+                  <span className="text-gray-400">{isExpanded ? "" : ""}</span>
                 </button>
 
                 {isExpanded && (
@@ -455,7 +455,7 @@ export default function AdminContent({ needSetCookie, adminKey }: Props) {
         </div>
 
         <div className="mt-8 text-center text-xs text-gray-400">
-          ⚠️ このページはAdmin専用です。cookieは24時間有効です。
+           このページはAdmin専用です。cookieは24時間有効です。
         </div>
       </div>
     </div>

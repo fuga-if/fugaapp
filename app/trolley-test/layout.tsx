@@ -72,8 +72,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         />
 
         {/* 天秤のモチーフ */}
-        <div className="absolute top-8 right-8 text-4xl opacity-10">⚖️</div>
-        <div className="absolute bottom-16 left-8 text-3xl opacity-10">🚂</div>
+        <div className="absolute top-8 right-8 text-4xl opacity-10"></div>
+        <div className="absolute bottom-16 left-8 text-3xl opacity-10"></div>
       </div>
 
       <main className="flex-grow relative z-10">{children}</main>

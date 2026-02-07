@@ -49,7 +49,7 @@ export async function GET(request: NextRequest): Promise<ImageResponse> {
             textShadow: "0 0 20px rgba(0,229,255,0.5)",
           }}
         >
-          📱 スマホ依存タイプ診断
+           スマホ依存タイプ診断
         </div>
 
         <div
