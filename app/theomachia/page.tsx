@@ -145,11 +145,7 @@ function TheoContent() {
                 onClick={() => setTurnChoice("random")}
                 style={turnChoice === "random" ? styles.turnButtonActive : styles.turnButton}
               >
-<<<<<<< Updated upstream
-                
-=======
                 ランダム
->>>>>>> Stashed changes
               </button>
               <button
                 onClick={() => setTurnChoice("second")}
@@ -268,11 +264,7 @@ function TheoContent() {
                           {card.type === "summon" ? "召喚" : card.type === "spell" ? "儀式" : "スキル"}
                         </span>
                         <span style={styles.cardName}>
-<<<<<<< Updated upstream
-                          {isSelected && " "}{card.name}
-=======
                           {isSelected && ""}{card.name}
->>>>>>> Stashed changes
                         </span>
                       </div>
                       <p style={styles.cardDesc}>{card.description}</p>

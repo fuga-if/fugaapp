@@ -179,11 +179,7 @@ export function WaitingRoom({
                         {card.type === "summon" ? "召喚" : card.type === "spell" ? "儀式" : "スキル"}
                       </span>
                       <span style={styles.cardListName}>
-<<<<<<< Updated upstream
-                        {isSelected && " "}
-=======
                         {isSelected && ""}
->>>>>>> Stashed changes
                         {card.name}
                       </span>
                       <p style={styles.cardListDesc}>{card.description}</p>

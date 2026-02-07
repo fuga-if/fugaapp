@@ -11,7 +11,6 @@
 
 import { CardRegistry } from "../../lib/theomachia/cards";
 import type { GameEffects, DamageResult } from "../../lib/theomachia/cards";
-import { CARD_DATA } from "./cards";
 import type { GameActions } from "./game-actions";
 import type { CardId, GameState } from "./types";
 import type { Player } from "./player";
@@ -102,7 +101,7 @@ class GameEffectsImpl implements GameEffects {
   removeFromField(cardId: string): void {
     const removed = this._actions.removeFromField(cardId as CardId);
     if (removed) {
-      this._actions.logAction(`→ ${CARD_DATA[cardId]?.name ?? cardId}が墓地へ`);
+      this._actions.logAction(`→ ${CardRegistry.get(cardId)?.name ?? cardId}が墓地へ`);
     }
   }
 
@@ -188,7 +187,8 @@ function createCardEffect(cardId: string): CardEffect {
 
       // 特殊処理: 降臨カードは手札からカードを除去してから召喚
       if (cardId === "ascension" && target) {
-        if (CARD_DATA[target]?.type === "summon") {
+        const targetCard = CardRegistry.get(target);
+        if (targetCard?.type === "summon") {
           player.hand.remove(target as CardId);
         }
       }
@@ -201,7 +201,8 @@ function createCardEffect(cardId: string): CardEffect {
         }
         if (opponent.field.remove(target as CardId)) {
           player.hand.add(target as CardId);
-          actions.logAction(`→ 「${CARD_DATA[target as CardId].name}」を奪取！`);
+          const targetCard = CardRegistry.getOrThrow(target);
+          actions.logAction(`→ 「${targetCard.name}」を奪取！`);
         }
         return;
       }

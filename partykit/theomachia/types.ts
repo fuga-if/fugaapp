@@ -12,35 +12,12 @@ import { Deck, Graveyard } from "./zones";
 
 /**
  * カードIDの型。
- * サーバー側では string ベースで管理し、CARD_DATA のキーと一致する。
+ * サーバー側では string ベースで管理し、CardRegistry のキーと一致する。
  */
 export type CardId = string;
 
 /** カードタイプ */
 export type CardType = "summon" | "spell" | "skill";
-
-/**
- * カード定義インターフェース。
- * サーバー側ではエフェクト処理に必要な情報のみを持つ。
- */
-export interface CardDefinition {
-  /** カードの一意識別子 */
-  id: string;
-  /** カードの表示名 */
-  name: string;
-  /** カードのタイプ */
-  type: CardType;
-  /** 召喚獣のターン開始時ダメージ */
-  damage?: number;
-  /** ダメージ反射能力（メデューサ） */
-  reflect?: boolean;
-  /** 儀式でのみ召喚可能フラグ（ゼウス） */
-  summonOnly?: boolean;
-  /** オプションカードフラグ */
-  optional?: boolean;
-  /** 打ち消し不可フラグ（貫通の矢） */
-  unblockable?: boolean;
-}
 
 // ===========================================
 // プレイヤー

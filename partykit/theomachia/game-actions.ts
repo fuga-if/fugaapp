@@ -5,7 +5,7 @@
  * カード効果から呼び出される低レベルなゲームアクションを集約する。
  */
 
-import { CARD_DATA } from "./cards";
+import { CardRegistry } from "../../lib/theomachia/cards";
 import type { CardId, CardType, GameState } from "./types";
 import type { Player } from "./player";
 
@@ -94,7 +94,7 @@ export class GameActions {
   showOpponentHand(playerId: string, opponentId: string): void {
     const opponent = this.state.players[opponentId];
     if (!opponent) return;
-    const handNames = opponent.hand.cards.map((id) => CARD_DATA[id].name).join(", ");
+    const handNames = opponent.hand.cards.map((id) => CardRegistry.getOrThrow(id).name).join(", ");
     this.logAction(`→ ${opponent.name}の手札: ${handNames}`);
     this.sendToPlayer(playerId, { type: "showOpponentHand", hand: opponent.hand.toArray() });
   }
@@ -125,7 +125,7 @@ export class GameActions {
   peekHand(viewerId: string, targetId: string, message: string): void {
     const target = this.state.players[targetId];
     if (!target) return;
-    const handNames = target.hand.cards.map((id) => CARD_DATA[id].name).join(", ");
+    const handNames = target.hand.cards.map((id) => CardRegistry.getOrThrow(id).name).join(", ");
     this.logAction(`→ ${target.name}の手札公開: ${handNames}`);
     this.sendToPlayer(viewerId, { type: "peekHand", hand: target.hand.toArray(), message });
   }
@@ -147,7 +147,7 @@ export class GameActions {
   showDiscard(playerId: string, filter?: CardType): void {
     this.state.pendingAction = { type: "selectFromDiscard", playerId, filter };
     const cards = filter
-      ? this.state.graveyard.cards.filter((id) => CARD_DATA[id].type === filter)
+      ? this.state.graveyard.cards.filter((id) => CardRegistry.getOrThrow(id).type === filter)
       : this.state.graveyard.toArray();
     this.sendToPlayer(playerId, { type: "showDiscard", discard: cards, filter });
   }
@@ -178,7 +178,7 @@ export class GameActions {
       if (this.state.pendingAction.playerId !== playerId) return false;
     }
 
-    const card = CARD_DATA[cardId];
+    const card = CardRegistry.getOrThrow(cardId);
     if (card.type !== "summon") return false;
 
     if (!this.state.graveyard.remove(cardId)) return false;

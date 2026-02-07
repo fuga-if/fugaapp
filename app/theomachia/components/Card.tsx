@@ -58,6 +58,55 @@ const TYPE_ICONS: Record<string, string> = {
 };
 
 /**
+ * カード画像コンポーネント（フォールバック付き）。
+ * 画像が404の場合、カード名+タイプ色グラデーションのフォールバックを表示する。
+ */
+function CardImage({ imageName, cardName, cardColor, width, nameSize }: {
+  imageName: string;
+  cardName: string;
+  cardColor: string;
+  width: number;
+  nameSize: number;
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  if (imgError) {
+    return (
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: `linear-gradient(180deg, ${cardColor || '#333'}40 0%, ${cardColor || '#333'}80 50%, #0a0a0f 100%)`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 8,
+      }}>
+        <span style={{
+          color: cardColor || '#C9A227',
+          fontSize: nameSize * 1.5,
+          fontWeight: 900,
+          textAlign: "center",
+          textShadow: "0 2px 8px rgba(0,0,0,0.8)",
+        }}>
+          {cardName}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={`/theomachia/cards/${imageName}.webp`}
+      alt={cardName}
+      fill
+      style={{ objectFit: "cover" }}
+      sizes={`${width}px`}
+      onError={() => setImgError(true)}
+    />
+  );
+}
+
+/**
  * カード表示コンポーネント。
  * カード画像、名前、タイプアイコンを表示する。裏面表示にも対応。
  *
@@ -134,13 +183,7 @@ export function Card({ cardId, size = "md", onClick, selected, disabled }: CardP
       }}
     >
       {/* カード画像 */}
-      <Image
-        src={`/theomachia/cards/${imageName}.webp`}
-        alt={card.name}
-        fill
-        style={{ objectFit: "cover" }}
-        sizes={`${s.width}px`}
-      />
+      <CardImage imageName={imageName} cardName={card.name} cardColor={card.color} width={s.width} nameSize={s.nameSize} />
       
       {/* 上部グラデーション（名前用） */}
       <div
@@ -261,12 +304,7 @@ export function CardDetail({ cardId, onClose }: { cardId: CardId; onClose: () =>
             position: "relative",
           }}
         >
-          <Image
-            src={`/theomachia/cards/${imageName}.webp`}
-            alt={card.name}
-            fill
-            style={{ objectFit: "cover" }}
-          />
+          <CardImage imageName={imageName} cardName={card.name} cardColor={card.color} width={200} nameSize={20} />
         </div>
 
         {/* カード情報 */}

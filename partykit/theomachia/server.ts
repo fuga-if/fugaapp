@@ -10,7 +10,7 @@
 
 import type * as Party from "partykit/server";
 
-import { CARD_DATA, BASE_DECK, OPTIONAL_CARDS } from "./cards";
+import { BASE_DECK, OPTIONAL_CARDS } from "./cards";
 import { CardEffects } from "./card-effects";
 import { GameActions } from "./game-actions";
 import { CardRegistry } from "../../lib/theomachia/cards";
@@ -401,7 +401,7 @@ export default class TheoMachiaServer implements Party.Server {
     this.state.graveyard.clear();
 
     if (this.state.optionalCards.length > 0) {
-      const cardNames = this.state.optionalCards.map((id) => CARD_DATA[id].name).join("、");
+      const cardNames = this.state.optionalCards.map((id) => CardRegistry.getOrThrow(id).name).join("、");
       this.logAction(`【追加カード】${cardNames}`);
     }
 
@@ -492,22 +492,22 @@ export default class TheoMachiaServer implements Party.Server {
     player.hand.remove(cardId);
 
     const opponent = Object.values(this.state.players).find((p) => p.id !== conn.id);
-    const card = CARD_DATA[cardId];
+    const cardName = cardInstance?.name ?? cardId;
 
     // カードクラスに打ち消し可否を問い合わせ
     if (cardInstance && !cardInstance.isCounterable) {
-      this.logAction(`${player.name}が「${card.name}」をプレイ（打ち消し不可）`);
+      this.logAction(`${player.name}が「${cardName}」をプレイ（打ち消し不可）`);
       this.resolveCard(conn.id, cardId, target);
     } else if (opponent && opponent.shields > 0) {
       // 相手にシールドがある → 打ち消し待機
       this.state.pendingShield = { by: conn.id, cardId, target };
-      this.logAction(`${player.name}が「${card.name}」をプレイ`);
+      this.logAction(`${player.name}が「${cardName}」をプレイ`);
       this.pauseTurnTimer();
       this.broadcastState();
       this.startShieldTimer();
     } else {
       // 直接解決
-      this.logAction(`${player.name}が「${card.name}」をプレイ`);
+      this.logAction(`${player.name}が「${cardName}」をプレイ`);
       this.resolveCard(conn.id, cardId, target);
     }
   }
@@ -538,7 +538,7 @@ export default class TheoMachiaServer implements Party.Server {
       this.state.graveyard.add(cardId);
       this.state.pendingShield = null;
       this.state.playsRemaining -= 1;
-      this.logAction(`${player.name}が「${CARD_DATA[cardId].name}」を打ち消した！`);
+      this.logAction(`${player.name}が「${CardRegistry.getOrThrow(cardId).name}」を打ち消した！`);
       this.broadcastState();
       this.resumeTurnTimer();
       return;
@@ -548,7 +548,7 @@ export default class TheoMachiaServer implements Party.Server {
     this.state.pendingCounter = { by, cardId, target, shieldedBy: conn.id };
     this.state.pendingShield = null;
     this.logAction(
-      `${player.name}が「${CARD_DATA[cardId].name}」を打ち消し！打ち消し返しますか？`
+      `${player.name}が「${CardRegistry.getOrThrow(cardId).name}」を打ち消し！打ち消し返しますか？`
     );
     this.broadcastState();
     this.startShieldTimer();
@@ -602,7 +602,7 @@ export default class TheoMachiaServer implements Party.Server {
     this.state.graveyard.add(cardId);
     this.state.pendingCounter = null;
     this.state.playsRemaining -= 1;
-    this.logAction(`「${CARD_DATA[cardId].name}」が打ち消された`);
+    this.logAction(`「${CardRegistry.getOrThrow(cardId).name}」が打ち消された`);
     this.broadcastState();
     this.resumeTurnTimer();
   }
@@ -630,7 +630,6 @@ export default class TheoMachiaServer implements Party.Server {
     this.state.pendingShield = null;
     this.state.playsRemaining -= 1;
 
-    const card = CARD_DATA[cardId];
     const effect = CardEffects[cardId];
 
     effect.play(player, opponent, this.actions, target);
@@ -676,19 +675,21 @@ export default class TheoMachiaServer implements Party.Server {
         break;
       case "selectFromHand":
         if (this.actions.discardFromOpponentHand(conn.id, opponent.id, cardId)) {
-          this.logAction(`${player.name}が相手の「${CARD_DATA[cardId].name}」を捨てさせた`);
+          this.logAction(`${player.name}が相手の「${CardRegistry.getOrThrow(cardId).name}」を捨てさせた`);
         }
         break;
-      case "selectFromDiscard":
-        if (CARD_DATA[cardId].type === "summon") {
+      case "selectFromDiscard": {
+        const selectedCard = CardRegistry.getOrThrow(cardId);
+        if (selectedCard.type === "summon") {
           if (this.actions.reviveFromDiscard(conn.id, cardId)) {
-            this.logAction(`${player.name}が「${CARD_DATA[cardId].name}」を復活させた`);
+            this.logAction(`${player.name}が「${selectedCard.name}」を復活させた`);
           }
         } else {
           if (this.actions.retrieveFromDiscard(conn.id, cardId)) {
-            this.logAction(`${player.name}が「${CARD_DATA[cardId].name}」を回収した`);
+            this.logAction(`${player.name}が「${selectedCard.name}」を回収した`);
           }
         }
+      }
         break;
     }
 
@@ -711,7 +712,7 @@ export default class TheoMachiaServer implements Party.Server {
     if (!opponent) return;
 
     if (this.actions.guessCard(conn.id, opponent.id, cardId)) {
-      this.logAction(`${player.name}が「${CARD_DATA[cardId].name}」を当てて奪った！`);
+      this.logAction(`${player.name}が「${CardRegistry.getOrThrow(cardId).name}」を当てて奪った！`);
     } else {
       this.logAction(`${player.name}の真名看破は外れた...`);
     }
