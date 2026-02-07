@@ -1,0 +1,37 @@
+import { Suspense } from "react";
+import { Metadata } from "next";
+import { getResultByScores } from "@/lib/gengoka-ryoku/results";
+import { GengokaType } from "@/lib/gengoka-ryoku/questions";
+import { GengokaResultContent } from "./ResultContent";
+
+interface Props { searchParams: Promise<{ [key: string]: string | undefined }>; }
+const typeKeys: GengokaType[] = ['type-a', 'type-b', 'type-c', 'type-d', 'type-e', 'type-f'];
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const params = await searchParams;
+  const scores: Record<GengokaType, number> = { 'type-a': 0, 'type-b': 0, 'type-c': 0, 'type-d': 0, 'type-e': 0, 'type-f': 0 };
+  for (const t of typeKeys) { scores[t] = params[t] ? Number(params[t]) : 0; }
+  const result = getResultByScores(scores);
+  const ogUrl = `/api/og/gengoka-ryoku?type=${encodeURIComponent(result.type)}&title=${encodeURIComponent(result.title)}`;
+  return {
+    title: `${result.title} | 言語化力診断`,
+    description: result.description,
+    openGraph: {
+      title: `私の言語化タイプは「${result.title}」でした！`,
+      images: [{ url: ogUrl, width: 1200, height: 630, type: "image/png" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `私の言語化タイプは「${result.title}」でした！`,
+      images: [{ url: ogUrl, width: 1200, height: 630, type: "image/png" }],
+    },
+  };
+}
+
+export default function ResultPage(): React.ReactElement {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-cyan-300 animate-pulse">✦ あなたの言語化タイプを分析中... ✦</div></div>}>
+      <GengokaResultContent />
+    </Suspense>
+  );
+}

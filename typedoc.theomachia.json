@@ -1,0 +1,20 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "lib/theomachia/cards/index.ts",
+    "lib/theomachia/cards/base.ts",
+    "lib/theomachia/types.ts",
+    "lib/theomachia/constants.ts"
+  ],
+  "out": "docs/theomachia/api",
+  "name": "Theomachia API Documentation",
+  "readme": "docs/theomachia/README.md",
+  "tsconfig": "tsconfig.json",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "categorizeByGroup": true,
+  "sort": ["source-order"],
+  "navigationLinks": {
+    "GitHub": "https://github.com/fuga-if"
+  }
+}

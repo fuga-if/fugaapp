@@ -1,0 +1,389 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Theomachia API Documentation</title><meta name="description" content="Documentation for Theomachia API Documentation"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><a href="index.html" class="title">Theomachia API Documentation</a><div id="tsd-toolbar-links"><a href="https://github.com/fuga-if">GitHub</a></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/><ul role="listbox" id="tsd-search-results"></ul><div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>Theomachia API Documentation</h1></div><div class="tsd-panel tsd-typography"><h1 id="テオマキア（theomachia）アーキテクチャ概要" class="tsd-anchor-link">テオマキア（Theomachia）アーキテクチャ概要<a href="#テオマキア（theomachia）アーキテクチャ概要" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<h2 id="ゲーム概要" class="tsd-anchor-link">ゲーム概要<a href="#ゲーム概要" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>テオマキアは、ギリシャ神話をモチーフにした2人対戦カードゲーム。
+WebSocket（PartyKit）を介したリアルタイム対戦と、ローカルソロモードに対応。</p>
+<h3 id="勝利条件" class="tsd-anchor-link">勝利条件<a href="#勝利条件" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>相手のソウル（HP=4）を0にする。</p>
+<h3 id="ターンの流れ" class="tsd-anchor-link">ターンの流れ<a href="#ターンの流れ" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ol>
+<li>場の召喚獣が自動攻撃</li>
+<li>1枚ドロー（2ターン目以降）</li>
+<li>カードを2枚までプレイ</li>
+<li>ターン終了</li>
+</ol>
+<hr>
+<h2 id="システム構成" class="tsd-anchor-link">システム構成<a href="#システム構成" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code><span class="hl-0">┌──────────────────────────────────┐</span><br/><span class="hl-0">│         </span><span class="hl-1">クライアント</span><span class="hl-0"> (</span><span class="hl-2">Next</span><span class="hl-0">.</span><span class="hl-2">js</span><span class="hl-0">)       │</span><br/><span class="hl-0">│  </span><span class="hl-2">fugaapp</span><span class="hl-0">/</span><span class="hl-2">app</span><span class="hl-0">/</span><span class="hl-2">theomachia</span><span class="hl-0">/          │</span><br/><span class="hl-0">│                                    │</span><br/><span class="hl-0">│  ┌─────────┐  ┌────────────────┐  │</span><br/><span class="hl-0">│  │  </span><span class="hl-2">Lobby</span><span class="hl-0">   │  │  </span><span class="hl-2">GameClient</span><span class="hl-0">    │  │</span><br/><span class="hl-0">│  │ (</span><span class="hl-2">page</span><span class="hl-0">)   │  │  ├ </span><span class="hl-2">useGameConn</span><span class="hl-0"> │  │</span><br/><span class="hl-0">│  └────┬─────┘  │  ├ </span><span class="hl-2">useGameActs</span><span class="hl-0"> │  │</span><br/><span class="hl-0">│       │        │  ├ </span><span class="hl-2">WaitingRoom</span><span class="hl-0"> │  │</span><br/><span class="hl-0">│       │        │  ├ </span><span class="hl-2">GameResult</span><span class="hl-0">  │  │</span><br/><span class="hl-0">│       │        │  └ </span><span class="hl-2">GamePlay</span><span class="hl-0">    │  │</span><br/><span class="hl-0">│       │        └────────────────┘  │</span><br/><span class="hl-0">│       │                            │</span><br/><span class="hl-0">│  ┌────┴──────────────────────────┐ │</span><br/><span class="hl-0">│  │  </span><span class="hl-2">lib</span><span class="hl-0">/</span><span class="hl-2">theomachia</span><span class="hl-0">/              │ │</span><br/><span class="hl-0">│  │  ├ </span><span class="hl-2">cards</span><span class="hl-0">/ (</span><span class="hl-3">OOP</span><span class="hl-0">, </span><span class="hl-2">個別ファイル</span><span class="hl-0">)  │ │</span><br/><span class="hl-0">│  │  ├ </span><span class="hl-2">types</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">                   │ │</span><br/><span class="hl-0">│  │  └ </span><span class="hl-2">constants</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">               │ │</span><br/><span class="hl-0">│  └───────────────────────────────┘ │</span><br/><span class="hl-0">└──────────────┬───────────────────┘</span><br/><span class="hl-0">               │ </span><span class="hl-1">WebSocket</span><span class="hl-0"> (</span><span class="hl-2">PartyKit</span><span class="hl-0">)</span><br/><span class="hl-0">┌──────────────┴───────────────────┐</span><br/><span class="hl-0">│        </span><span class="hl-1">サーバー</span><span class="hl-0"> (</span><span class="hl-2">PartyKit</span><span class="hl-0">)         │</span><br/><span class="hl-0">│  </span><span class="hl-2">theomachia</span><span class="hl-0">/</span><span class="hl-2">src</span><span class="hl-0">/                  │</span><br/><span class="hl-0">│  ├ </span><span class="hl-2">server</span><span class="hl-0">.</span><span class="hl-1">ts</span><span class="hl-0">    (</span><span class="hl-2">メインサーバー</span><span class="hl-0">)   │</span><br/><span class="hl-0">│  ├ </span><span class="hl-2">game</span><span class="hl-0">-</span><span class="hl-2">actions</span><span class="hl-0">.</span><span class="hl-1">ts</span><span class="hl-0"> (</span><span class="hl-2">ゲーム操作</span><span class="hl-0">)   │</span><br/><span class="hl-0">│  ├ </span><span class="hl-2">card</span><span class="hl-0">-</span><span class="hl-2">effects</span><span class="hl-0">.</span><span class="hl-1">ts</span><span class="hl-0"> (</span><span class="hl-2">カード効果</span><span class="hl-0">)   │</span><br/><span class="hl-0">│  ├ </span><span class="hl-2">cards</span><span class="hl-0">.</span><span class="hl-1">ts</span><span class="hl-0">     (</span><span class="hl-2">カードデータ</span><span class="hl-0">)    │</span><br/><span class="hl-0">│  ├ </span><span class="hl-2">types</span><span class="hl-0">.</span><span class="hl-1">ts</span><span class="hl-0">     (</span><span class="hl-2">型定義</span><span class="hl-0">)         │</span><br/><span class="hl-0">│  └ </span><span class="hl-2">utils</span><span class="hl-0">.</span><span class="hl-1">ts</span><span class="hl-0">     (</span><span class="hl-2">ユーティリティ</span><span class="hl-0">)  │</span><br/><span class="hl-0">└──────────────────────────────────┘</span>
+</code><button>Copy</button></pre>
+
+<hr>
+<h2 id="フロントエンド構造" class="tsd-anchor-link">フロントエンド構造<a href="#フロントエンド構造" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="ディレクトリ構成" class="tsd-anchor-link">ディレクトリ構成<a href="#ディレクトリ構成" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code><span class="hl-2">fugaapp</span><span class="hl-0">/</span><br/><span class="hl-0">├── </span><span class="hl-2">app</span><span class="hl-0">/</span><span class="hl-2">theomachia</span><span class="hl-0">/</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">page</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">                 # </span><span class="hl-2">ロビー</span><span class="hl-0">（</span><span class="hl-2">ルーム作成</span><span class="hl-0">/</span><span class="hl-2">参加</span><span class="hl-0">）</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">layout</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">               # </span><span class="hl-2">レイアウト</span><span class="hl-0">（</span><span class="hl-3">OGP</span><span class="hl-0">, </span><span class="hl-2">ビューポート</span><span class="hl-0">）</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">GameClient</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">           # </span><span class="hl-2">メインゲームUI</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">SoloGameClient</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">       # </span><span class="hl-2">ソロモード</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">hooks</span><span class="hl-0">/</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">useGameConnection</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0"> # </span><span class="hl-2">WebSocket接続管理</span><br/><span class="hl-0">│   │   └── </span><span class="hl-2">useGameActions</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">    # </span><span class="hl-2">ゲームアクション</span><br/><span class="hl-0">│   └── </span><span class="hl-2">components</span><span class="hl-0">/</span><br/><span class="hl-0">│       ├── </span><span class="hl-2">Card</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">             # </span><span class="hl-2">カード表示</span><span class="hl-0"> + </span><span class="hl-2">モーダル群</span><br/><span class="hl-0">│       ├── </span><span class="hl-2">StatusGauge</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">      # </span><span class="hl-3">HP</span><span class="hl-0">/</span><span class="hl-2">シールド</span><span class="hl-0">/</span><span class="hl-2">アクションゲージ</span><br/><span class="hl-0">│       ├── </span><span class="hl-2">AttackCutin</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">      # </span><span class="hl-2">攻撃カットインアニメ</span><br/><span class="hl-0">│       ├── </span><span class="hl-2">WaitingRoom</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">      # </span><span class="hl-2">待機画面</span><br/><span class="hl-0">│       └── </span><span class="hl-2">GameResult</span><span class="hl-0">.</span><span class="hl-2">tsx</span><span class="hl-0">       # </span><span class="hl-2">結果画面</span><br/><span class="hl-0">├── </span><span class="hl-2">lib</span><span class="hl-0">/</span><span class="hl-2">theomachia</span><span class="hl-0">/</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">cards</span><span class="hl-0">/                   # </span><span class="hl-2">カード定義</span><span class="hl-0">（</span><span class="hl-3">OOP</span><span class="hl-0">）</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">base</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">              # </span><span class="hl-2">抽象基底クラス</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">index</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">             # </span><span class="hl-2">レジストリ</span><span class="hl-0"> + </span><span class="hl-2">旧API互換</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">zeus</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">              # </span><span class="hl-2">ゼウス</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">eris</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">              # </span><span class="hl-2">エリス</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">medusa</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">            # </span><span class="hl-2">メデューサ</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">keraunos</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">          # </span><span class="hl-2">雷霆</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">ascension</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">         # </span><span class="hl-2">降臨</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">necromancy</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">        # </span><span class="hl-2">冥界の門</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">metamorphose</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">      # </span><span class="hl-2">変身の秘術</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">tartarus</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">          # </span><span class="hl-2">奈落送り</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">ambrosia</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">          # </span><span class="hl-2">神々の糧</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">nectar</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">            # </span><span class="hl-2">神酒</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">oracle</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">            # </span><span class="hl-2">神託</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">hermes</span><span class="hl-0">-</span><span class="hl-2">letter</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">     # </span><span class="hl-2">冥府の手紙</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">clairvoyance</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">      # </span><span class="hl-2">千里眼</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-4">true</span><span class="hl-0">-</span><span class="hl-2">name</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">         # </span><span class="hl-2">真名看破</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">aegis</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">             # </span><span class="hl-2">神盾</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">godspeed</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">          # </span><span class="hl-2">神速</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">asclepius</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">         # </span><span class="hl-1">アスクレピオス</span><span class="hl-0"> (</span><span class="hl-2">opt</span><span class="hl-0">)</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">piercing</span><span class="hl-0">-</span><span class="hl-2">arrow</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">    # </span><span class="hl-1">貫通の矢</span><span class="hl-0"> (</span><span class="hl-2">opt</span><span class="hl-0">)</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">equilibrium</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">       # </span><span class="hl-1">均衡</span><span class="hl-0"> (</span><span class="hl-2">opt</span><span class="hl-0">)</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">usurp</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">             # </span><span class="hl-1">簒奪</span><span class="hl-0"> (</span><span class="hl-2">opt</span><span class="hl-0">)</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">protection</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">        # </span><span class="hl-1">加護</span><span class="hl-0"> (</span><span class="hl-2">opt</span><span class="hl-0">)</span><br/><span class="hl-0">│   │   ├── </span><span class="hl-2">blood</span><span class="hl-0">-</span><span class="hl-2">pact</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">        # </span><span class="hl-1">血の契約</span><span class="hl-0"> (</span><span class="hl-2">opt</span><span class="hl-0">)</span><br/><span class="hl-0">│   │   └── </span><span class="hl-2">prayer</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">            # </span><span class="hl-1">祈り</span><span class="hl-0"> (</span><span class="hl-2">opt</span><span class="hl-0">)</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">types</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">                 # </span><span class="hl-2">共有型定義</span><br/><span class="hl-0">│   └── </span><span class="hl-2">constants</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">             # </span><span class="hl-2">ゲーム定数</span><br/><span class="hl-0">└── </span><span class="hl-2">docs</span><span class="hl-0">/</span><span class="hl-2">theomachia</span><span class="hl-0">/</span><br/><span class="hl-0">    └── </span><span class="hl-3">README</span><span class="hl-0">.</span><span class="hl-2">md</span><span class="hl-0">                # </span><span class="hl-2">このファイル</span>
+</code><button>Copy</button></pre>
+
+<h3 id="カスタムフック" class="tsd-anchor-link">カスタムフック<a href="#カスタムフック" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<h4 id="" class="tsd-anchor-link"><code>useGameConnection</code></h4>
+<p>PartyKit WebSocket接続の管理を担当。</p>
+<ul>
+<li>ゲーム状態の受信・保持</li>
+<li>メッセージ送信</li>
+<li>接続状態監視</li>
+<li>各種モーダル制御のステート管理</li>
+</ul>
+<h4 id="-1" class="tsd-anchor-link"><code>useGameActions</code><a href="#-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<p>ゲーム操作のロジックを担当。</p>
+<ul>
+<li>カードプレイ（確認UI含む）</li>
+<li>ターン終了</li>
+<li>打ち消し</li>
+<li>設定変更（先攻/後攻、オプションカード）</li>
+</ul>
+<h3 id="コンポーネント" class="tsd-anchor-link">コンポーネント<a href="#コンポーネント" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>コンポーネント</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GameClient</code></td>
+<td>メインゲーム画面（3フェーズの分岐）</td>
+</tr>
+<tr>
+<td><code>WaitingRoom</code></td>
+<td>待機画面（プレイヤー一覧、設定、READY）</td>
+</tr>
+<tr>
+<td><code>GameResult</code></td>
+<td>結果画面（勝敗、戦績、リマッチ）</td>
+</tr>
+<tr>
+<td><code>Card</code></td>
+<td>カード表示（表面/裏面、サイズ3種）</td>
+</tr>
+<tr>
+<td><code>CardDetail</code></td>
+<td>カード詳細ポップアップ</td>
+</tr>
+<tr>
+<td><code>CardListModal</code></td>
+<td>カード選択モーダル（真名看破、神託）</td>
+</tr>
+<tr>
+<td><code>DiscardPileModal</code></td>
+<td>捨て札閲覧/選択モーダル</td>
+</tr>
+<tr>
+<td><code>StatusGauge</code></td>
+<td>ステータスゲージ（HP/シールド/アクション）</td>
+</tr>
+<tr>
+<td><code>AttackCutin</code></td>
+<td>攻撃カットインアニメーション</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="カードシステム（oop設計）" class="tsd-anchor-link">カードシステム（OOP設計）<a href="#カードシステム（oop設計）" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="クラス階層" class="tsd-anchor-link">クラス階層<a href="#クラス階層" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code><span class="hl-1">BaseCard</span><span class="hl-0"> (</span><span class="hl-2">abstract</span><span class="hl-0">)</span><br/><span class="hl-0">├── </span><span class="hl-1">SummonCard</span><span class="hl-0"> (</span><span class="hl-2">abstract</span><span class="hl-0">)</span><br/><span class="hl-0">│   ├── </span><span class="hl-1">ZeusCard</span><span class="hl-0">      (</span><span class="hl-2">damage</span><span class="hl-0">: </span><span class="hl-5">4</span><span class="hl-0">, </span><span class="hl-2">summonOnly</span><span class="hl-0">)</span><br/><span class="hl-0">│   ├── </span><span class="hl-1">ErisCard</span><span class="hl-0">      (</span><span class="hl-2">damage</span><span class="hl-0">: </span><span class="hl-5">1</span><span class="hl-0">)</span><br/><span class="hl-0">│   ├── </span><span class="hl-1">MedusaCard</span><span class="hl-0">    (</span><span class="hl-2">damage</span><span class="hl-0">: </span><span class="hl-5">0</span><span class="hl-0">, </span><span class="hl-2">reflect</span><span class="hl-0">)</span><br/><span class="hl-0">│   └── </span><span class="hl-1">AsclepiusCard</span><span class="hl-0"> (</span><span class="hl-2">damage</span><span class="hl-0">: </span><span class="hl-5">0</span><span class="hl-0">, </span><span class="hl-2">optional</span><span class="hl-0">)</span><br/><span class="hl-0">├── </span><span class="hl-1">SpellCard</span><span class="hl-0"> (</span><span class="hl-2">abstract</span><span class="hl-0">)</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">AscensionCard</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">NecromancyCard</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">MetamorphoseCard</span><br/><span class="hl-0">│   ├── </span><span class="hl-2">TartarusCard</span><br/><span class="hl-0">│   └── </span><span class="hl-1">EquilibriumCard</span><span class="hl-0"> (</span><span class="hl-2">optional</span><span class="hl-0">)</span><br/><span class="hl-0">└── </span><span class="hl-1">SkillCard</span><span class="hl-0"> (</span><span class="hl-2">abstract</span><span class="hl-0">)</span><br/><span class="hl-0">    ├── </span><span class="hl-2">KeraunosCard</span><br/><span class="hl-0">    ├── </span><span class="hl-2">AmbrosiaCard</span><br/><span class="hl-0">    ├── </span><span class="hl-2">NectarCard</span><br/><span class="hl-0">    ├── </span><span class="hl-2">OracleCard</span><br/><span class="hl-0">    ├── </span><span class="hl-2">HermesLetterCard</span><br/><span class="hl-0">    ├── </span><span class="hl-2">ClairvoyanceCard</span><br/><span class="hl-0">    ├── </span><span class="hl-2">TrueNameCard</span><br/><span class="hl-0">    ├── </span><span class="hl-2">AegisCard</span><br/><span class="hl-0">    ├── </span><span class="hl-2">GodspeedCard</span><br/><span class="hl-0">    ├── </span><span class="hl-1">PiercingArrowCard</span><span class="hl-0">  (</span><span class="hl-2">optional</span><span class="hl-0">, </span><span class="hl-2">unblockable</span><span class="hl-0">)</span><br/><span class="hl-0">    ├── </span><span class="hl-1">UsurpCard</span><span class="hl-0">          (</span><span class="hl-2">optional</span><span class="hl-0">)</span><br/><span class="hl-0">    ├── </span><span class="hl-1">ProtectionCard</span><span class="hl-0">     (</span><span class="hl-2">optional</span><span class="hl-0">)</span><br/><span class="hl-0">    ├── </span><span class="hl-1">BloodPactCard</span><span class="hl-0">      (</span><span class="hl-2">optional</span><span class="hl-0">)</span><br/><span class="hl-0">    └── </span><span class="hl-1">PrayerCard</span><span class="hl-0">         (</span><span class="hl-2">optional</span><span class="hl-0">)</span>
+</code><button>Copy</button></pre>
+
+<h3 id="新しいカードの追加手順" class="tsd-anchor-link">新しいカードの追加手順<a href="#新しいカードの追加手順" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ol>
+<li><code>lib/theomachia/cards/</code> に新しいファイルを作成</li>
+<li>適切なサブクラスを継承</li>
+<li><code>cards/index.ts</code> の <code>ALL_CARD_INSTANCES</code> 配列にインスタンスを追加</li>
+<li>サーバー側（<code>theomachia/src/</code>）にも対応するデータ・効果を追加</li>
+</ol>
+<p><strong>例: 新しいスキルカード「聖火」を追加する場合</strong></p>
+<pre><code class="typescript"><span class="hl-6">// lib/theomachia/cards/sacred-fire.ts</span><br/><span class="hl-7">import</span><span class="hl-0"> { </span><span class="hl-2">SkillCard</span><span class="hl-0"> } </span><span class="hl-7">from</span><span class="hl-0"> </span><span class="hl-8">&quot;./base&quot;</span><span class="hl-0">;</span><br/><br/><span class="hl-7">export</span><span class="hl-0"> </span><span class="hl-4">class</span><span class="hl-0"> </span><span class="hl-9">SacredFireCard</span><span class="hl-0"> </span><span class="hl-4">extends</span><span class="hl-0"> </span><span class="hl-9">SkillCard</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-4">constructor</span><span class="hl-0">() {</span><br/><span class="hl-0">    </span><span class="hl-4">super</span><span class="hl-0">({</span><br/><span class="hl-0">      </span><span class="hl-2">id:</span><span class="hl-0"> </span><span class="hl-8">&quot;sacredFire&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-2">name:</span><span class="hl-0"> </span><span class="hl-8">&quot;聖火&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-2">description:</span><span class="hl-0"> </span><span class="hl-8">&quot;相手に1ダメージ。自分のソウルを1回復。&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-2">color:</span><span class="hl-0"> </span><span class="hl-8">&quot;#FF8800&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-2">optional:</span><span class="hl-0"> </span><span class="hl-4">true</span><span class="hl-0">,</span><br/><span class="hl-0">    });</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">  </span><span class="hl-4">get</span><span class="hl-0"> </span><span class="hl-1">effect</span><span class="hl-0">() { </span><span class="hl-7">return</span><span class="hl-0"> </span><span class="hl-8">&quot;sacredFire&quot;</span><span class="hl-0">; }</span><br/><span class="hl-0">}</span>
+</code><button type="button">Copy</button></pre>
+
+<pre><code class="typescript"><span class="hl-6">// cards/index.ts に追加</span><br/><span class="hl-7">import</span><span class="hl-0"> { </span><span class="hl-2">SacredFireCard</span><span class="hl-0"> } </span><span class="hl-7">from</span><span class="hl-0"> </span><span class="hl-8">&quot;./sacred-fire&quot;</span><span class="hl-0">;</span><br/><span class="hl-6">// ALL_CARD_INSTANCES に追加:</span><br/><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-1">SacredFireCard</span><span class="hl-0">(),</span>
+</code><button type="button">Copy</button></pre>
+
+<pre><code class="typescript"><span class="hl-6">// サーバー側: src/cards.ts + src/card-effects.ts に効果を追加</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h2 id="バックエンド構造（partykit）" class="tsd-anchor-link">バックエンド構造（PartyKit）<a href="#バックエンド構造（partykit）" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="ディレクトリ構成-1" class="tsd-anchor-link">ディレクトリ構成<a href="#ディレクトリ構成-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code><span class="hl-2">theomachia</span><span class="hl-0">/</span><span class="hl-2">src</span><span class="hl-0">/</span><br/><span class="hl-0">├── </span><span class="hl-2">server</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">         # </span><span class="hl-2">メインサーバー</span><span class="hl-0">（</span><span class="hl-2">接続管理</span><span class="hl-0">、</span><span class="hl-2">メッセージルーティング</span><span class="hl-0">）</span><br/><span class="hl-0">├── </span><span class="hl-2">game</span><span class="hl-0">-</span><span class="hl-2">actions</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">   # </span><span class="hl-2">ゲーム基本操作</span><span class="hl-0">（</span><span class="hl-2">ドロー</span><span class="hl-0">、</span><span class="hl-2">ダメージ</span><span class="hl-0">、</span><span class="hl-2">シールド等</span><span class="hl-0">）</span><br/><span class="hl-0">├── </span><span class="hl-2">card</span><span class="hl-0">-</span><span class="hl-2">effects</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">   # </span><span class="hl-2">カード効果定義</span><span class="hl-0">（</span><span class="hl-2">各カードの振る舞い</span><span class="hl-0">）</span><br/><span class="hl-0">├── </span><span class="hl-2">cards</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">          # </span><span class="hl-2">カードデータ定義</span><br/><span class="hl-0">├── </span><span class="hl-2">types</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">          # </span><span class="hl-2">サーバー側型定義</span><span class="hl-0">＋</span><span class="hl-2">定数</span><br/><span class="hl-0">└── </span><span class="hl-2">utils</span><span class="hl-0">.</span><span class="hl-2">ts</span><span class="hl-0">          # </span><span class="hl-2">ユーティリティ</span><span class="hl-0">（</span><span class="hl-2">shuffle等</span><span class="hl-0">）</span>
+</code><button>Copy</button></pre>
+
+<h3 id="クラス構造" class="tsd-anchor-link">クラス構造<a href="#クラス構造" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<h4 id="serverts" class="tsd-anchor-link"><code>TheoMachiaServer</code> (server.ts)<a href="#serverts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<p>PartyKitのメインサーバー。WebSocket接続管理とメッセージルーティングを担当。</p>
+<h4 id="game-actionsts" class="tsd-anchor-link"><code>GameActions</code> (game-actions.ts)<a href="#game-actionsts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<p>ゲームの基本操作を提供。カード効果から呼び出される低レベルな操作を集約。</p>
+<table>
+<thead>
+<tr>
+<th>メソッド</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>drawCards()</code></td>
+<td>山札からカードを引く</td>
+</tr>
+<tr>
+<td><code>dealDamage()</code></td>
+<td>ダメージ処理（反射・加護判定含む）</td>
+</tr>
+<tr>
+<td><code>selfDamage()</code></td>
+<td>自傷ダメージ</td>
+</tr>
+<tr>
+<td><code>gainShield()</code> / <code>useShield()</code></td>
+<td>シールド操作</td>
+</tr>
+<tr>
+<td><code>summonToField()</code> / <code>removeFromField()</code></td>
+<td>場操作</td>
+</tr>
+<tr>
+<td><code>swapZeusAndEris()</code></td>
+<td>変身の秘術</td>
+</tr>
+<tr>
+<td><code>showDeck()</code> / <code>selectFromDeck()</code></td>
+<td>神託</td>
+</tr>
+<tr>
+<td><code>showOpponentHand()</code></td>
+<td>千里眼</td>
+</tr>
+<tr>
+<td><code>requestGuess()</code> / <code>guessCard()</code></td>
+<td>真名看破</td>
+</tr>
+<tr>
+<td><code>requestDiscard()</code> / <code>discardCards()</code></td>
+<td>捨てカード選択</td>
+</tr>
+</tbody>
+</table>
+<h4 id="card-effectsts" class="tsd-anchor-link"><code>CardEffects</code> (card-effects.ts)<a href="#card-effectsts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<p>各カードの振る舞いを定義するオブジェクト。カードIDをキーにして、
+<code>canPlay</code>、<code>play</code>、<code>needsTarget</code> を持つ。</p>
+<hr>
+<h2 id="通信プロトコル" class="tsd-anchor-link">通信プロトコル<a href="#通信プロトコル" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="クライアント-→-サーバー-" class="tsd-anchor-link">クライアント → サーバー (<code>MessageToServer</code>)<a href="#クライアント-→-サーバー-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>説明</th>
+<th>パラメータ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>join</code></td>
+<td>ルーム参加</td>
+<td>name, turnChoice?, optionalCards?</td>
+</tr>
+<tr>
+<td><code>ready</code></td>
+<td>準備完了</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>play</code></td>
+<td>カードプレイ</td>
+<td>cardId, target?</td>
+</tr>
+<tr>
+<td><code>shield</code></td>
+<td>打ち消し</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>shieldCounter</code></td>
+<td>打ち消し返し</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>passShield</code></td>
+<td>打ち消しパス</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>passCounter</code></td>
+<td>打ち消し返しパス</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>discard</code></td>
+<td>捨てカード選択確定</td>
+<td>cardIds[]</td>
+</tr>
+<tr>
+<td><code>selectCard</code></td>
+<td>カード選択（神託/千里眼）</td>
+<td>cardId</td>
+</tr>
+<tr>
+<td><code>guessCard</code></td>
+<td>カード名宣言</td>
+<td>cardId</td>
+</tr>
+<tr>
+<td><code>endTurn</code></td>
+<td>ターン終了</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>rematch</code></td>
+<td>リマッチ要求</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="サーバー-→-クライアント-" class="tsd-anchor-link">サーバー → クライアント (<code>MessageFromServer</code>)<a href="#サーバー-→-クライアント-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>説明</th>
+<th>データ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>state</code></td>
+<td>ゲーム状態更新</td>
+<td>state</td>
+</tr>
+<tr>
+<td><code>joined</code></td>
+<td>参加成功</td>
+<td>playerId</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>エラー</td>
+<td>message</td>
+</tr>
+<tr>
+<td><code>showOpponentHand</code></td>
+<td>千里眼用手札公開</td>
+<td>hand[]</td>
+</tr>
+<tr>
+<td><code>showDeck</code></td>
+<td>神託用山札公開</td>
+<td>deck[]</td>
+</tr>
+<tr>
+<td><code>requestDiscard</code></td>
+<td>捨てカード要求</td>
+<td>count</td>
+</tr>
+<tr>
+<td><code>requestTarget</code></td>
+<td>ターゲット選択要求</td>
+<td>targetType</td>
+</tr>
+<tr>
+<td><code>requestGuess</code></td>
+<td>カード名宣言要求</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>peekHand</code></td>
+<td>手札公開（閲覧のみ）</td>
+<td>hand[], message</td>
+</tr>
+<tr>
+<td><code>attack</code></td>
+<td>攻撃カットイン</td>
+<td>card, damage, isReflect?</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="ゲーム定数-constantsts" class="tsd-anchor-link">ゲーム定数 (constants.ts)<a href="#ゲーム定数-constantsts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<table>
+<thead>
+<tr>
+<th>定数</th>
+<th>値</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INITIAL_SOULS</code></td>
+<td>4</td>
+<td>初期HP</td>
+</tr>
+<tr>
+<td><code>MAX_SOULS</code></td>
+<td>4</td>
+<td>最大HP</td>
+</tr>
+<tr>
+<td><code>INITIAL_SHIELDS</code></td>
+<td>2</td>
+<td>初期シールド</td>
+</tr>
+<tr>
+<td><code>MAX_SHIELDS</code></td>
+<td>3</td>
+<td>最大シールド</td>
+</tr>
+<tr>
+<td><code>INITIAL_SHIELD_STOCK</code></td>
+<td>2</td>
+<td>シールドストック初期値</td>
+</tr>
+<tr>
+<td><code>INITIAL_HAND_SIZE</code></td>
+<td>5</td>
+<td>初期手札枚数</td>
+</tr>
+<tr>
+<td><code>BASE_PLAYS_PER_TURN</code></td>
+<td>2</td>
+<td>1ターンのプレイ回数</td>
+</tr>
+<tr>
+<td><code>FIRST_TURN_PLAYS</code></td>
+<td>1</td>
+<td>1ターン目のプレイ回数</td>
+</tr>
+<tr>
+<td><code>COUNTER_SHIELD_COST</code></td>
+<td>2</td>
+<td>打ち消し返しのコスト</td>
+</tr>
+<tr>
+<td><code>MAX_OPTIONAL_CARDS</code></td>
+<td>4</td>
+<td>追加カード最大枚数</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="デプロイ" class="tsd-anchor-link">デプロイ<a href="#デプロイ" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="フロントエンド-nextjs-→-vercel" class="tsd-anchor-link">フロントエンド (Next.js → Vercel)<a href="#フロントエンド-nextjs-→-vercel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="bash"><span class="hl-1">cd</span><span class="hl-0"> </span><span class="hl-8">/home/fuga/fugaapp</span><br/><span class="hl-1">vercel</span><span class="hl-0"> </span><span class="hl-4">--prod</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="バックエンド-partykit" class="tsd-anchor-link">バックエンド (PartyKit)<a href="#バックエンド-partykit" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="bash"><span class="hl-1">cd</span><span class="hl-0"> </span><span class="hl-8">/home/fuga/theomachia</span><br/><span class="hl-1">npx</span><span class="hl-0"> </span><span class="hl-8">partykit</span><span class="hl-0"> </span><span class="hl-8">deploy</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="api-ドキュメント生成-typedoc" class="tsd-anchor-link">API ドキュメント生成 (TypeDoc)<a href="#api-ドキュメント生成-typedoc" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="bash"><span class="hl-1">cd</span><span class="hl-0"> </span><span class="hl-8">/home/fuga/fugaapp</span><br/><span class="hl-1">npx</span><span class="hl-0"> </span><span class="hl-8">typedoc</span><span class="hl-0"> </span><span class="hl-4">--entryPoints</span><span class="hl-0"> </span><span class="hl-8">lib/theomachia/cards/index.ts</span><span class="hl-0"> </span><span class="hl-8">lib/theomachia/types.ts</span><span class="hl-0"> </span><span class="hl-8">lib/theomachia/constants.ts</span><span class="hl-0"> </span><span class="hl-4">--out</span><span class="hl-0"> </span><span class="hl-8">docs/theomachia/api</span>
+</code><button type="button">Copy</button></pre>
+
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#テオマキア（theomachia）アーキテクチャ概要"><span>テオマキア（<wbr/>Theomachia）アーキテクチャ概要</span></a><ul><li><a href="#ゲーム概要"><span>ゲーム概要</span></a></li><li><ul><li><a href="#勝利条件"><span>勝利条件</span></a></li><li><a href="#ターンの流れ"><span>ターンの流れ</span></a></li></ul></li><li><a href="#システム構成"><span>システム構成</span></a></li><li><a href="#フロントエンド構造"><span>フロントエンド構造</span></a></li><li><ul><li><a href="#ディレクトリ構成"><span>ディレクトリ構成</span></a></li><li><a href="#カスタムフック"><span>カスタムフック</span></a></li><li><ul><li><a href="#"><span></span></a></li><li><a href="#-1"><span></span></a></li></ul></li><li><a href="#コンポーネント"><span>コンポーネント</span></a></li></ul></li><li><a href="#カードシステム（oop設計）"><span>カードシステム（<wbr/>OOP設計）</span></a></li><li><ul><li><a href="#クラス階層"><span>クラス階層</span></a></li><li><a href="#新しいカードの追加手順"><span>新しいカードの追加手順</span></a></li></ul></li><li><a href="#バックエンド構造（partykit）"><span>バックエンド構造（<wbr/>Party<wbr/>Kit）</span></a></li><li><ul><li><a href="#ディレクトリ構成-1"><span>ディレクトリ構成</span></a></li><li><a href="#クラス構造"><span>クラス構造</span></a></li><li><ul><li><a href="#serverts"><span> (server.ts)</span></a></li><li><a href="#game-actionsts"><span> (game-<wbr/>actions.ts)</span></a></li><li><a href="#card-effectsts"><span> (card-<wbr/>effects.ts)</span></a></li></ul></li></ul></li><li><a href="#通信プロトコル"><span>通信プロトコル</span></a></li><li><ul><li><a href="#クライアント-→-サーバー-"><span>クライアント → サーバー ()</span></a></li><li><a href="#サーバー-→-クライアント-"><span>サーバー → クライアント ()</span></a></li></ul></li><li><a href="#ゲーム定数-constantsts"><span>ゲーム定数 (constants.ts)</span></a></li><li><a href="#デプロイ"><span>デプロイ</span></a></li><li><ul><li><a href="#フロントエンド-nextjs-→-vercel"><span>フロントエンド (<wbr/>Next.js → <wbr/>Vercel)</span></a></li><li><a href="#バックエンド-partykit"><span>バックエンド (<wbr/>Party<wbr/>Kit)</span></a></li><li><a href="#api-ドキュメント生成-typedoc"><span>API ドキュメント生成 (<wbr/>Type<wbr/>Doc)</span></a></li></ul></li></ul></div></details></div><div class="site-menu"><nav id="tsd-sidebar-links" class="tsd-navigation"><a href="https://github.com/fuga-if" class="tsd-nav-link">GitHub</a></nav><nav class="tsd-navigation"><a href="modules.html">Theomachia API Documentation</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>

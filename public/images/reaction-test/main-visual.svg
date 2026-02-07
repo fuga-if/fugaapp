@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="40" fill="url(#bg)"/>
+  <text x="200" y="180" text-anchor="middle" font-size="120" fill="white">⚡</text>
+  <text x="200" y="270" text-anchor="middle" font-size="36" font-weight="bold" fill="white" font-family="sans-serif">反射神経テスト</text>
+  <text x="200" y="310" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.8)" font-family="sans-serif">何ミリ秒で反応できる？</text>
+</svg>
