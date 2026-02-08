@@ -93,7 +93,7 @@ export function WaitingRoom({
                     opacity: isCreator ? 1 : 0.7,
                   }}
                 >
-                  {choice === "first" ? "先攻" : choice === "second" ? "後攻" : ""}
+                  {choice === "first" ? "先攻" : choice === "second" ? "後攻" : "ランダム"}
                 </button>
               ))}
             </div>
@@ -104,7 +104,7 @@ export function WaitingRoom({
               {(gameState.optionalCards?.length || 0) > 0
                 ? `${gameState.optionalCards?.length}枚選択中`
                 : "なし"}
-              {isCreator && " "}
+              {isCreator && " >"}
             </button>
           </div>
         </div>
@@ -132,7 +132,7 @@ export function WaitingRoom({
             <div style={styles.modalHeader}>
               <h2 style={styles.modalTitle}>デッキ一覧</h2>
               <button onClick={() => setShowDeckModal(false)} style={styles.closeBtn}>
-                
+                X
               </button>
             </div>
             <div style={styles.modalBody}>
@@ -179,7 +179,7 @@ export function WaitingRoom({
                         {card.type === "summon" ? "召喚" : card.type === "spell" ? "儀式" : "スキル"}
                       </span>
                       <span style={styles.cardListName}>
-                        {isSelected && ""}
+                        {isSelected && <span style={{ color: "#C9A227", marginRight: 4 }}>[+]</span>}
                         {card.name}
                       </span>
                       <p style={styles.cardListDesc}>{card.description}</p>

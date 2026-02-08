@@ -8,6 +8,7 @@ import { CARDS, OPTIONAL_CARDS, BASE_DECK, CardId } from "@/lib/theomachia/cards
 
 const GameClient = dynamic(() => import("./GameClient"), { ssr: false });
 const SoloGameClient = dynamic(() => import("./SoloGameClient"), { ssr: false });
+const PracticeClient = dynamic(() => import("./PracticeClient"), { ssr: false });
 
 // ギリシャ神話風のランダム名
 const RANDOM_NAMES = [
@@ -20,6 +21,7 @@ function TheoContent() {
   const searchParams = useSearchParams();
   const roomFromUrl = searchParams.get("room");
   const soloMode = searchParams.get("solo") === "1";
+  const practiceMode = searchParams.get("practice") === "1";
   
   const [playerName, setPlayerName] = useState("");
   const [roomId, setRoomId] = useState(roomFromUrl || "");
@@ -90,6 +92,10 @@ function TheoContent() {
     });
   };
 
+  if (practiceMode) {
+    return <PracticeClient />;
+  }
+
   if (isJoined) {
     if (soloMode) {
       return <SoloGameClient roomId={roomId} />;
@@ -113,6 +119,16 @@ function TheoContent() {
           priority
         />
         <p style={styles.subtitle}>神々の戦い</p>
+      </div>
+
+      {/* プラクティスボタン */}
+      <div style={{ marginBottom: 16, width: "100%", maxWidth: 320 }}>
+        <button
+          onClick={() => (window.location.href = "/theomachia?practice=1")}
+          style={styles.secondaryButton}
+        >
+          プラクティス
+        </button>
       </div>
 
       {/* メインコンテンツ */}
@@ -216,7 +232,7 @@ function TheoContent() {
           <div style={styles.modal} onClick={e => e.stopPropagation()}>
             <div style={styles.modalHeader}>
               <h2 style={styles.modalTitle}>デッキ一覧</h2>
-              <button onClick={() => setShowDeckModal(false)} style={styles.closeButton}></button>
+              <button onClick={() => setShowDeckModal(false)} style={styles.closeButton}>X</button>
             </div>
             <div style={styles.modalContent}>
               {/* 基本カード */}
@@ -264,7 +280,7 @@ function TheoContent() {
                           {card.type === "summon" ? "召喚" : card.type === "spell" ? "儀式" : "スキル"}
                         </span>
                         <span style={styles.cardName}>
-                          {isSelected && ""}{card.name}
+                          {isSelected && <span style={{ color: "#C9A227", marginRight: 4 }}>[+]</span>}{card.name}
                         </span>
                       </div>
                       <p style={styles.cardDesc}>{card.description}</p>
@@ -283,41 +299,49 @@ function TheoContent() {
           <div style={styles.modal} onClick={e => e.stopPropagation()}>
             <div style={styles.modalHeader}>
               <h2 style={styles.modalTitle}>ルール</h2>
-              <button onClick={() => setShowRulesModal(false)} style={styles.closeButton}></button>
+              <button onClick={() => setShowRulesModal(false)} style={styles.closeButton}>X</button>
             </div>
             <div style={styles.modalContent}>
               <div style={styles.rulesSection}>
-                <h3>勝利条件</h3>
-                <p>相手のソウル（HP）を0にする</p>
+                <h3 style={styles.rulesSectionTitle}>勝利条件</h3>
+                <p style={styles.rulesText}>
+                  相手の<span style={styles.keywordGold}>ソウル</span>（HP）を<span style={styles.keywordRed}>0</span>にする
+                </p>
               </div>
+              <div style={styles.rulesDivider} />
               <div style={styles.rulesSection}>
-                <h3>ターンの流れ</h3>
+                <h3 style={styles.rulesSectionTitle}>ターンの流れ</h3>
                 <ul style={styles.rulesList}>
-                  <li>毎ターン、カードを2枚までプレイ可能</li>
-                  <li>2ターン目以降、ターン開始時に1枚ドロー</li>
-                  <li>場の召喚獣がターン開始時に自動で攻撃</li>
+                  <li>毎ターン、カードを<span style={styles.keywordGold}>2枚まで</span>プレイ可能</li>
+                  <li>2ターン目以降、ターン開始時に<span style={styles.keywordGold}>1枚ドロー</span></li>
+                  <li>場の<span style={styles.keywordSummon}>召喚獣</span>がターン開始時に自動で攻撃</li>
                 </ul>
               </div>
+              <div style={styles.rulesDivider} />
               <div style={styles.rulesSection}>
-                <h3>GUARD（シールド）</h3>
+                <h3 style={styles.rulesSectionTitle}>GUARD</h3>
                 <ul style={styles.rulesList}>
-                  <li>相手のカードを打ち消せる</li>
-                  <li>使用したGUARDはストックに戻る</li>
-                  <li>「神盾」でストックからGUARDを獲得</li>
+                  <li>相手のカードを<span style={styles.keywordGold}>打ち消せる</span>防御手段</li>
+                  <li>使用した<span style={styles.keywordGold}>GUARD</span>はストックに戻る</li>
+                  <li>「<span style={styles.keywordSkill}>神盾</span>」でストックからGUARDを獲得</li>
                 </ul>
               </div>
+              <div style={styles.rulesDivider} />
               <div style={styles.rulesSection}>
-                <h3>カードタイプ</h3>
+                <h3 style={styles.rulesSectionTitle}>カードタイプ</h3>
                 <ul style={styles.rulesList}>
-                  <li><b>召喚獣</b>：場に出て毎ターン攻撃</li>
-                  <li><b>儀式</b>：召喚に関する効果</li>
-                  <li><b>スキル</b>：補助効果</li>
+                  <li><span style={styles.keywordSummon}>召喚獣</span> -- 場に出て毎ターン攻撃する</li>
+                  <li><span style={styles.keywordSpell}>儀式</span> -- 召喚・蘇生に関する効果</li>
+                  <li><span style={styles.keywordSkill}>スキル</span> -- 補助・情報・妨害効果</li>
                 </ul>
               </div>
+              <div style={styles.rulesDivider} />
               <div style={styles.rulesSection}>
-                <h3>ゼウス</h3>
-                <p>最強の召喚獣。儀式でのみ召喚可能。<br/>
-                GUARDでしか防げない即死攻撃！</p>
+                <h3 style={styles.rulesSectionTitle}>ゼウス</h3>
+                <p style={styles.rulesText}>
+                  最強の<span style={styles.keywordSummon}>召喚獣</span>。<span style={styles.keywordSpell}>儀式</span>でのみ召喚可能。<br/>
+                  <span style={styles.keywordGold}>GUARD</span>でしか防げない<span style={styles.keywordRed}>即死攻撃</span>！
+                </p>
               </div>
             </div>
           </div>
@@ -338,12 +362,12 @@ export default function TheoPage() {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: "100dvh",
-    background: "linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%)",
+    background: "linear-gradient(180deg, #050508 0%, #0a0a1a 30%, #12122a 60%, #0a0a0f 100%)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    padding: 24,
+    padding: "32px 20px",
     fontFamily: "'Cinzel', 'Noto Serif JP', serif",
     position: "relative",
     overflow: "hidden",
@@ -351,138 +375,161 @@ const styles: Record<string, React.CSSProperties> = {
   bgPattern: {
     position: "absolute",
     inset: 0,
-    backgroundImage: `radial-gradient(circle at 50% 50%, rgba(201, 162, 39, 0.03) 0%, transparent 50%)`,
+    backgroundImage: `radial-gradient(ellipse 600px 400px at 50% 30%, rgba(201, 162, 39, 0.04) 0%, transparent 70%), radial-gradient(circle at 20% 80%, rgba(100, 80, 200, 0.03) 0%, transparent 50%)`,
     pointerEvents: "none",
   },
   logoArea: {
     textAlign: "center",
-    marginBottom: 32,
+    marginBottom: 40,
   },
   logoImage: {
     width: "100%",
-    maxWidth: 360,
+    maxWidth: 340,
     height: "auto",
     display: "block",
     margin: "0 auto",
-    filter: "drop-shadow(0 0 20px rgba(201, 162, 39, 0.3))",
+    filter: "drop-shadow(0 0 30px rgba(201, 162, 39, 0.4)) drop-shadow(0 0 60px rgba(201, 162, 39, 0.15))",
   },
   subtitle: {
-    fontSize: 14,
-    color: "#666",
-    letterSpacing: 12,
-    marginTop: 8,
+    fontSize: 13,
+    color: "rgba(201, 162, 39, 0.5)",
+    letterSpacing: 16,
+    marginTop: 12,
+    fontWeight: 400,
+    textTransform: "uppercase" as const,
   },
   content: {
     width: "100%",
-    maxWidth: 320,
+    maxWidth: 340,
     display: "flex",
     flexDirection: "column",
     gap: 16,
+    background: "rgba(10, 10, 20, 0.6)",
+    border: "1px solid rgba(201, 162, 39, 0.15)",
+    borderRadius: 12,
+    padding: "28px 24px",
+    backdropFilter: "blur(10px)",
+    boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(201, 162, 39, 0.1)",
   },
   inputGroup: {
     display: "flex",
     flexDirection: "column",
-    gap: 8,
+    gap: 6,
   },
   label: {
-    fontSize: 12,
-    color: "#888",
-    letterSpacing: 2,
+    fontSize: 11,
+    color: "rgba(201, 162, 39, 0.6)",
+    letterSpacing: 3,
+    textTransform: "uppercase" as const,
+    fontWeight: 600,
   },
   input: {
     width: "100%",
-    padding: 16,
+    padding: "14px 16px",
     fontSize: 16,
     background: "rgba(255,255,255,0.03)",
     border: "1px solid rgba(201, 162, 39, 0.2)",
-    borderRadius: 4,
+    borderRadius: 6,
     color: "#e0e0e0",
     outline: "none",
     fontFamily: "inherit",
+    transition: "border-color 0.2s, box-shadow 0.2s",
   },
   turnChoice: {
     display: "flex",
-    gap: 8,
-    marginTop: 8,
+    gap: 0,
+    marginTop: 4,
+    borderRadius: 6,
+    overflow: "hidden",
+    border: "1px solid rgba(201, 162, 39, 0.25)",
   },
   turnButton: {
     flex: 1,
-    padding: 12,
-    fontSize: 14,
+    padding: "12px 8px",
+    fontSize: 13,
     fontWeight: 600,
-    background: "rgba(255,255,255,0.05)",
-    color: "#666",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 4,
+    background: "rgba(255,255,255,0.03)",
+    color: "#555",
+    border: "none",
+    borderRight: "1px solid rgba(201, 162, 39, 0.15)",
     cursor: "pointer",
+    transition: "all 0.2s",
   },
   turnButtonActive: {
     flex: 1,
-    padding: 12,
-    fontSize: 14,
-    fontWeight: 600,
+    padding: "12px 8px",
+    fontSize: 13,
+    fontWeight: 700,
     background: "rgba(201, 162, 39, 0.2)",
     color: "#C9A227",
-    border: "1px solid #C9A227",
-    borderRadius: 4,
+    border: "none",
+    borderRight: "1px solid rgba(201, 162, 39, 0.15)",
     cursor: "pointer",
+    boxShadow: "inset 0 -2px 0 #C9A227",
+    transition: "all 0.2s",
   },
   primaryButton: {
     width: "100%",
-    padding: 18,
-    fontSize: 16,
+    padding: "16px 24px",
+    fontSize: 15,
     fontWeight: 700,
     letterSpacing: 4,
-    background: "linear-gradient(180deg, #C9A227 0%, #8B6914 100%)",
+    background: "linear-gradient(180deg, #C9A227 0%, #9B7B1A 100%)",
     color: "#000",
-    border: "none",
-    borderRadius: 4,
+    border: "1px solid rgba(255, 215, 0, 0.4)",
+    borderRadius: 6,
     cursor: "pointer",
-    marginTop: 8,
+    marginTop: 4,
+    boxShadow: "0 4px 16px rgba(201, 162, 39, 0.25), inset 0 1px 0 rgba(255,255,255,0.2)",
+    transition: "all 0.2s",
   },
   divider: {
     display: "flex",
     alignItems: "center",
     gap: 16,
-    margin: "8px 0",
+    margin: "4px 0",
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    background: "rgba(255,255,255,0.1)",
+    background: "linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.2), transparent)",
   },
   dividerText: {
-    fontSize: 12,
-    color: "#555",
+    fontSize: 11,
+    color: "#444",
+    letterSpacing: 2,
   },
   secondaryButton: {
     width: "100%",
-    padding: 16,
-    fontSize: 14,
+    padding: "14px 24px",
+    fontSize: 13,
     fontWeight: 600,
     letterSpacing: 2,
     background: "transparent",
-    color: "#888",
-    border: "1px solid rgba(255,255,255,0.2)",
-    borderRadius: 4,
+    color: "#777",
+    border: "1px solid rgba(201, 162, 39, 0.2)",
+    borderRadius: 6,
     cursor: "pointer",
+    transition: "all 0.2s",
   },
   infoButtons: {
     display: "flex",
     gap: 8,
-    marginTop: 8,
+    marginTop: 4,
   },
   infoButton: {
     flex: 1,
-    padding: 12,
-    fontSize: 13,
+    padding: "10px 12px",
+    fontSize: 12,
     fontWeight: 600,
-    background: "rgba(255,255,255,0.05)",
-    color: "#aaa",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 4,
+    background: "rgba(201, 162, 39, 0.05)",
+    color: "#999",
+    border: "1px solid rgba(201, 162, 39, 0.15)",
+    borderRadius: 6,
     cursor: "pointer",
     position: "relative" as const,
+    transition: "all 0.2s",
+    letterSpacing: 1,
   },
   badge: {
     marginLeft: 6,
@@ -497,7 +544,7 @@ const styles: Record<string, React.CSSProperties> = {
   modalOverlay: {
     position: "fixed" as const,
     inset: 0,
-    backgroundColor: "rgba(0,0,0,0.85)",
+    backgroundColor: "rgba(0,0,0,0.9)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -505,35 +552,39 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 16,
   },
   modal: {
-    backgroundColor: "#1a1a2e",
-    borderRadius: 8,
+    backgroundColor: "#111122",
+    borderRadius: 12,
     width: "100%",
     maxWidth: 480,
     maxHeight: "85vh",
     display: "flex",
     flexDirection: "column" as const,
-    border: "1px solid rgba(201, 162, 39, 0.3)",
+    border: "1px solid rgba(201, 162, 39, 0.25)",
+    boxShadow: "0 16px 48px rgba(0,0,0,0.6), 0 0 80px rgba(201, 162, 39, 0.05)",
   },
   modalHeader: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     padding: "16px 20px",
-    borderBottom: "1px solid rgba(255,255,255,0.1)",
+    borderBottom: "1px solid rgba(201, 162, 39, 0.15)",
   },
   modalTitle: {
     margin: 0,
     fontSize: 18,
     color: "#C9A227",
     fontWeight: 700,
+    letterSpacing: 2,
   },
   closeButton: {
     background: "none",
-    border: "none",
+    border: "1px solid rgba(255,255,255,0.15)",
     color: "#666",
-    fontSize: 20,
+    fontSize: 14,
     cursor: "pointer",
-    padding: 4,
+    padding: "4px 10px",
+    borderRadius: 4,
+    fontWeight: 600,
   },
   modalContent: {
     padding: 20,
@@ -588,13 +639,51 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.4,
   },
   rulesSection: {
-    marginBottom: 16,
+    marginBottom: 4,
   },
-  rulesList: {
-    margin: "8px 0 0 0",
-    paddingLeft: 20,
+  rulesSectionTitle: {
+    fontSize: 15,
+    color: "#C9A227",
+    margin: "0 0 8px 0",
+    fontWeight: 700,
+    letterSpacing: 1,
+  },
+  rulesText: {
     color: "#ccc",
     fontSize: 13,
-    lineHeight: 1.6,
+    lineHeight: 1.7,
+    margin: 0,
+  },
+  rulesDivider: {
+    height: 1,
+    background: "linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.2), transparent)",
+    margin: "12px 0",
+  },
+  rulesList: {
+    margin: "4px 0 0 0",
+    paddingLeft: 18,
+    color: "#ccc",
+    fontSize: 13,
+    lineHeight: 1.8,
+  },
+  keywordGold: {
+    color: "#C9A227",
+    fontWeight: 700,
+  },
+  keywordRed: {
+    color: "#FF6B6B",
+    fontWeight: 700,
+  },
+  keywordSummon: {
+    color: "#FF4444",
+    fontWeight: 700,
+  },
+  keywordSpell: {
+    color: "#9944FF",
+    fontWeight: 700,
+  },
+  keywordSkill: {
+    color: "#00BFFF",
+    fontWeight: 700,
   },
 };

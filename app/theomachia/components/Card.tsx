@@ -50,12 +50,7 @@ const CARD_IMAGES: Record<string, string> = {
   godspeed: "speed",
 };
 
-// タイプアイコン
-const TYPE_ICONS: Record<string, string> = {
-  summon: "",
-  spell: "",
-  skill: "",
-};
+// タイプアイコンは廃止（タイプ名テキストのみ使用）
 
 /**
  * カード画像コンポーネント（フォールバック付き）。
@@ -149,7 +144,7 @@ export function Card({ cardId, size = "md", onClick, selected, disabled }: CardP
             border: "2px solid #5a5a9a",
           }}
         >
-          <span style={{ fontSize: s.iconSize * 1.2, filter: "drop-shadow(0 0 4px #6a6aba)" }}></span>
+          <span style={{ fontSize: s.iconSize * 0.6, color: "#8a8aca", fontWeight: 900 }}>T</span>
         </div>
       </div>
     );
@@ -158,8 +153,6 @@ export function Card({ cardId, size = "md", onClick, selected, disabled }: CardP
   const card = CARDS[cardId];
   const typeColor = TYPE_COLORS[card.type];
   const imageName = CARD_IMAGES[cardId] || cardId;
-  const typeIcon = TYPE_ICONS[card.type];
-
   return (
     <div
       data-card={cardId}
@@ -241,7 +234,7 @@ export function Card({ cardId, size = "md", onClick, selected, disabled }: CardP
             pointerEvents: "none",
           }}
         >
-          <span style={{ fontSize: s.iconSize * 0.6 }}></span>
+          <span style={{ fontSize: s.iconSize * 0.5, color: "#fff", fontWeight: 700 }}>R</span>
         </div>
       )}
 
@@ -260,8 +253,6 @@ export function CardDetail({ cardId, onClose }: { cardId: CardId; onClose: () =>
   const card = CARDS[cardId];
   const typeColor = TYPE_COLORS[card.type];
   const imageName = CARD_IMAGES[cardId] || cardId;
-  const typeIcon = TYPE_ICONS[card.type];
-
   const typeNames: Record<string, string> = {
     summon: "召喚",
     spell: "儀式",
@@ -318,7 +309,6 @@ export function CardDetail({ cardId, onClose }: { cardId: CardId; onClose: () =>
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-            <span style={{ fontSize: 20 }}>{typeIcon}</span>
             <span style={{ color: typeColor, fontSize: 12, fontWeight: 600 }}>
               {typeNames[card.type]}
             </span>
