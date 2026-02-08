@@ -121,16 +121,6 @@ function TheoContent() {
         <p style={styles.subtitle}>神々の戦い</p>
       </div>
 
-      {/* プラクティスボタン */}
-      <div style={{ marginBottom: 16, width: "100%", maxWidth: 320 }}>
-        <button
-          onClick={() => (window.location.href = "/theomachia?practice=1")}
-          style={styles.secondaryButton}
-        >
-          プラクティス
-        </button>
-      </div>
-
       {/* メインコンテンツ */}
       <div style={styles.content}>
         {/* 名前入力 */}
@@ -224,6 +214,27 @@ function TheoContent() {
         >
           ルームに参加
         </button>
+
+        {/* プラクティス */}
+        <div style={{ marginTop: 16, textAlign: "center" as const }}>
+          <button
+            onClick={() => (window.location.href = "/theomachia?practice=1")}
+            style={{
+              background: "transparent",
+              color: "#C9A227",
+              border: "1px solid rgba(201, 162, 39, 0.4)",
+              borderRadius: 6,
+              padding: "10px 24px",
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: 2,
+              cursor: "pointer",
+              width: "100%",
+            }}
+          >
+            はじめての方はこちら - プラクティス
+          </button>
+        </div>
       </div>
 
       {/* デッキ一覧モーダル */}
