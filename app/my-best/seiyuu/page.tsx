@@ -264,7 +264,7 @@ export default function MyBestPage(): React.ReactElement {
   const [generating, setGenerating] = useState(false);
   const [ageRange, setAgeRange] = useState<string | null>(null);
   const [gender, setGender] = useState<string | null>(null);
-  const [showShareHint, setShowShareHint] = useState(false);
+
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const didAutoSelect = useRef(false);
@@ -697,15 +697,6 @@ export default function MyBestPage(): React.ReactElement {
       .catch(() => {});
   }
 
-  function downloadImage(): void {
-    if (!generatedImage || !selectedStaff) return;
-    const name = displayName(selectedStaff.name);
-    const a = document.createElement("a");
-    a.href = generatedImage;
-    a.download = `私のベスト${name}.png`;
-    a.click();
-  }
-
   async function shareToX(): Promise<void> {
     if (!selectedStaff || !generatedImage) return;
     const name = displayName(selectedStaff.name);
@@ -741,7 +732,6 @@ export default function MyBestPage(): React.ReactElement {
     a.download = `私のベスト${name}.png`;
     a.click();
 
-    setShowShareHint(true);
     const encoded = encodeURIComponent(`${text}\n${hashtags}`);
     setTimeout(() => {
       window.open(`https://x.com/intent/tweet?text=${encoded}`, "_blank");
@@ -1258,30 +1248,10 @@ export default function MyBestPage(): React.ReactElement {
               </svg>
               Xでシェア
             </button>
-            {showShareHint && (
-              <p className="text-center text-[11px] text-emerald-400 animate-pulse">
-                画像を保存しました — Xの投稿画面で添付してください
-              </p>
-            )}
-            <button
-              onClick={downloadImage}
-              className="w-full bg-transparent border border-neutral-800 text-neutral-400 text-sm py-3 rounded-lg active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                />
-              </svg>
-              画像を保存
-            </button>
+            <p className="text-center text-[11px] text-neutral-500 leading-relaxed">
+              シェアシートが表示されたら<br />
+              <span className="text-neutral-300 font-medium">X</span> を選んでください
+            </p>
           </div>
 
           <div className="px-4 pt-4 pb-8">
