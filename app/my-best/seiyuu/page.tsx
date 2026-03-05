@@ -33,8 +33,13 @@ const CANVAS_H = 630;
 const SKEW = 60;
 const SLASH_GAP = 6;
 
+const JP_RE = /[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/;
+function isJapanese(s: string | null | undefined): s is string {
+  return !!s && JP_RE.test(s);
+}
+
 function displayName(name: { full: string; native: string | null }): string {
-  return name.native || name.full;
+  return isJapanese(name.native) ? name.native : name.full;
 }
 
 function getCached<T>(key: string): T | null {
@@ -419,9 +424,9 @@ export default function MyBestPage(): React.ReactElement {
       for (const char of edge.characters) {
         roles.push({
           characterId: char.id,
-          characterName: char.name.native || char.name.full,
+          characterName: isJapanese(char.name.native) ? char.name.native! : char.name.full,
           characterImage: char.image.large,
-          animeTitle: edge.node.title.native || edge.node.title.romaji,
+          animeTitle: isJapanese(edge.node.title.native) ? edge.node.title.native! : edge.node.title.romaji,
         });
       }
     }
