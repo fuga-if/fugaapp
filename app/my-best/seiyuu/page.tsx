@@ -730,11 +730,12 @@ export default function MyBestPage(): React.ReactElement {
           return;
         }
       } catch {
-        // User cancelled or share failed, fall through
+        // User cancelled share — do nothing
+        return;
       }
     }
 
-    // Save image then open X
+    // Desktop fallback: save image then open X web intent
     const a = document.createElement("a");
     a.href = generatedImage;
     a.download = `私のベスト${name}.png`;
@@ -743,17 +744,7 @@ export default function MyBestPage(): React.ReactElement {
     setShowShareHint(true);
     const encoded = encodeURIComponent(`${text}\n${hashtags}`);
     setTimeout(() => {
-      // Try X app deep link first, fallback to web
-      const deepLink = `twitter://post?message=${encoded}`;
-      const webUrl = `https://x.com/intent/tweet?text=${encoded}`;
-      const start = Date.now();
-      window.location.href = deepLink;
-      setTimeout(() => {
-        // If still on page after 1.5s, app didn't open → use web
-        if (Date.now() - start < 2000) {
-          window.open(webUrl, "_blank");
-        }
-      }, 1500);
+      window.open(`https://x.com/intent/tweet?text=${encoded}`, "_blank");
     }, 800);
   }
 
