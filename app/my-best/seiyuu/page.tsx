@@ -580,33 +580,36 @@ export default function MyBestPage(): React.ReactElement {
       );
       const images = await Promise.all(dataUrls.map(loadImage));
 
+      const cw = count === 1 ? 800 : CANVAS_W;
+      const ch = count === 1 ? 1000 : count === 2 ? 800 : CANVAS_H;
+
       const canvas = document.createElement("canvas");
-      canvas.width = CANVAS_W;
-      canvas.height = CANVAS_H;
+      canvas.width = cw;
+      canvas.height = ch;
       const ctx = canvas.getContext("2d")!;
 
       ctx.fillStyle = "#000";
-      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+      ctx.fillRect(0, 0, cw, ch);
 
       const halfSkew = SKEW / 2;
       const halfGap = SLASH_GAP / 2;
 
       function buildPanels(n: number): number[][][] {
         if (n === 1) {
-          return [[[0, 0], [CANVAS_W, 0], [CANVAS_W, CANVAS_H], [0, CANVAS_H]]];
+          return [[[0, 0], [cw, 0], [cw, ch], [0, ch]]];
         }
         if (n === 2) {
-          const mid = CANVAS_W / 2;
+          const mid = cw / 2;
           return [
-            [[0, 0], [mid + halfSkew - halfGap, 0], [mid - halfSkew - halfGap, CANVAS_H], [0, CANVAS_H]],
-            [[mid + halfSkew + halfGap, 0], [CANVAS_W, 0], [CANVAS_W, CANVAS_H], [mid - halfSkew + halfGap, CANVAS_H]],
+            [[0, 0], [mid + halfSkew - halfGap, 0], [mid - halfSkew - halfGap, ch], [0, ch]],
+            [[mid + halfSkew + halfGap, 0], [cw, 0], [cw, ch], [mid - halfSkew + halfGap, ch]],
           ];
         }
-        const third = CANVAS_W / 3;
+        const third = cw / 3;
         return [
-          [[0, 0], [third + halfSkew - halfGap, 0], [third - halfSkew - halfGap, CANVAS_H], [0, CANVAS_H]],
-          [[third + halfSkew + halfGap, 0], [2 * third + halfSkew - halfGap, 0], [2 * third - halfSkew - halfGap, CANVAS_H], [third - halfSkew + halfGap, CANVAS_H]],
-          [[2 * third + halfSkew + halfGap, 0], [CANVAS_W, 0], [CANVAS_W, CANVAS_H], [2 * third - halfSkew + halfGap, CANVAS_H]],
+          [[0, 0], [third + halfSkew - halfGap, 0], [third - halfSkew - halfGap, ch], [0, ch]],
+          [[third + halfSkew + halfGap, 0], [2 * third + halfSkew - halfGap, 0], [2 * third - halfSkew - halfGap, ch], [third - halfSkew + halfGap, ch]],
+          [[2 * third + halfSkew + halfGap, 0], [cw, 0], [cw, ch], [2 * third - halfSkew + halfGap, ch]],
         ];
       }
 
@@ -630,16 +633,16 @@ export default function MyBestPage(): React.ReactElement {
         ctx.clip();
 
         const imgAspect = img.naturalWidth / img.naturalHeight;
-        const boxAspect = boxW / CANVAS_H;
+        const boxAspect = boxW / ch;
         let drawW: number, drawH: number;
         if (imgAspect > boxAspect) {
-          drawH = CANVAS_H;
-          drawW = CANVAS_H * imgAspect;
+          drawH = ch;
+          drawW = ch * imgAspect;
         } else {
           drawW = boxW;
           drawH = boxW / imgAspect;
         }
-        ctx.drawImage(img, minX + (boxW - drawW) / 2, 0, drawW, drawH);
+        ctx.drawImage(img, minX + (boxW - drawW) / 2, (ch - drawH) / 2, drawW, drawH);
         ctx.restore();
       }
 
@@ -1259,9 +1262,6 @@ export default function MyBestPage(): React.ReactElement {
                   </div>
                   <span className="text-[10px] text-white">X</span>
                   {/* Arrow pointing to X */}
-                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
-                    <span className="text-blue-400 text-lg">↑</span>
-                  </div>
                 </div>
                 <div className="flex flex-col items-center gap-1.5 opacity-30">
                   <div className="w-[52px] h-[52px] rounded-[13px] bg-[#ffdc58]" />
