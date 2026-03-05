@@ -214,7 +214,7 @@ const SEARCH_QUERY = `
 const VOICES_QUERY = `
   query ($id: Int, $page: Int) {
     Staff(id: $id) {
-      characterMedia(sort: [POPULARITY_DESC], perPage: 25, page: $page) {
+      characterMedia(sort: [POPULARITY_DESC], perPage: 50, page: $page) {
         pageInfo { hasNextPage }
         edges {
           characters {
@@ -253,7 +253,11 @@ export default function MyBestPage(): React.ReactElement {
   const [selectedStaff, setSelectedStaff] = useState<StaffResult | null>(null);
   const [voiceRoles, setVoiceRoles] = useState<VoiceRole[]>([]);
   const [rolesLoading, setRolesLoading] = useState(false);
+  const [rolesLoadingMore, setRolesLoadingMore] = useState(false);
   const [rolesError, setRolesError] = useState("");
+  const [rolesHasMore, setRolesHasMore] = useState(false);
+  const rolesPage = useRef(1);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const [selectedChars, setSelectedChars] = useState<SelectedCharacter[]>([]);
   const [charFilter, setCharFilter] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
@@ -384,6 +388,60 @@ export default function MyBestPage(): React.ReactElement {
     };
   }, [query, searchStaff]);
 
+  async function fetchVoiceRolesPage(
+    staffId: number,
+    page: number
+  ): Promise<{ roles: VoiceRole[]; hasMore: boolean }> {
+    const data = await anilistQuery<{
+      Staff: {
+        characterMedia: {
+          pageInfo: { hasNextPage: boolean };
+          edges: {
+            characters: {
+              id: number;
+              name: { full: string; native: string | null };
+              image: { large: string };
+            }[];
+            node: {
+              title: { native: string | null; romaji: string };
+            };
+          }[];
+        };
+      };
+    }>(VOICES_QUERY, { id: staffId, page });
+
+    const roles: VoiceRole[] = [];
+    for (const edge of data.Staff.characterMedia.edges) {
+      for (const char of edge.characters) {
+        roles.push({
+          characterId: char.id,
+          characterName: char.name.native || char.name.full,
+          characterImage: char.image.large,
+          animeTitle: edge.node.title.native || edge.node.title.romaji,
+        });
+      }
+    }
+    return { roles, hasMore: data.Staff.characterMedia.pageInfo.hasNextPage };
+  }
+
+  async function loadMoreRoles(): Promise<void> {
+    if (!selectedStaff || rolesLoadingMore || !rolesHasMore) return;
+    setRolesLoadingMore(true);
+    try {
+      const { roles, hasMore } = await fetchVoiceRolesPage(
+        selectedStaff.id,
+        rolesPage.current
+      );
+      setVoiceRoles((prev) => dedupeRoles([...prev, ...roles]));
+      setRolesHasMore(hasMore);
+      rolesPage.current++;
+    } catch {
+      // Silently fail, user can scroll again
+    } finally {
+      setRolesLoadingMore(false);
+    }
+  }
+
   async function handleSelectStaff(staff: StaffResult): Promise<void> {
     setSelectedStaff(staff);
     setSelectedChars([]);
@@ -399,49 +457,13 @@ export default function MyBestPage(): React.ReactElement {
 
     setRolesLoading(true);
     setRolesError("");
+    rolesPage.current = 1;
     try {
-      const allRoles: VoiceRole[] = [];
-      let page = 1;
-      let hasNext = true;
-
-      while (hasNext) {
-        const data = await anilistQuery<{
-          Staff: {
-            characterMedia: {
-              pageInfo: { hasNextPage: boolean };
-              edges: {
-                characters: {
-                  id: number;
-                  name: { full: string; native: string | null };
-                  image: { large: string };
-                }[];
-                node: {
-                  title: { native: string | null; romaji: string };
-                };
-              }[];
-            };
-          };
-        }>(VOICES_QUERY, { id: staff.id, page });
-
-        const edges = data.Staff.characterMedia.edges;
-        for (const edge of edges) {
-          for (const char of edge.characters) {
-            allRoles.push({
-              characterId: char.id,
-              characterName: char.name.native || char.name.full,
-              characterImage: char.image.large,
-              animeTitle: edge.node.title.native || edge.node.title.romaji,
-            });
-          }
-        }
-
-        hasNext = data.Staff.characterMedia.pageInfo.hasNextPage;
-        page++;
-      }
-
-      const deduped = dedupeRoles(allRoles);
+      const { roles, hasMore } = await fetchVoiceRolesPage(staff.id, 1);
+      const deduped = dedupeRoles(roles);
       setVoiceRoles(deduped);
-      setCache(cacheKey, deduped);
+      setRolesHasMore(hasMore);
+      rolesPage.current = 2;
     } catch (err) {
       setVoiceRoles([]);
       setRolesError(
@@ -474,6 +496,20 @@ export default function MyBestPage(): React.ReactElement {
       .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Infinite scroll: observe sentinel element
+  useEffect(() => {
+    if (!loadMoreRef.current || !rolesHasMore) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMoreRoles();
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(loadMoreRef.current);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rolesHasMore, rolesLoadingMore, selectedStaff]);
 
   function toggleCharacter(role: VoiceRole): void {
     const isAlreadySelected = selectedChars.some(
@@ -1116,6 +1152,13 @@ export default function MyBestPage(): React.ReactElement {
                   );
                 })}
               </div>
+              {rolesHasMore && (
+                <div ref={loadMoreRef} className="flex justify-center py-4">
+                  {rolesLoadingMore && (
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-700 border-t-neutral-400" />
+                  )}
+                </div>
+              )}
               <p className="text-center text-[10px] text-neutral-600 py-3">
                 ※ アニメ出演キャラのみ表示（ゲーム・吹替等は含みません）
               </p>
