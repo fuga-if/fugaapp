@@ -908,41 +908,28 @@ export default function MyBestPage(): React.ReactElement {
             </>
           )}
 
-          <div className="space-y-px">
+          <div className="grid grid-cols-3 gap-2 px-3">
             {staffResults.map((s) => (
               <button
                 key={s.id}
                 onClick={() => handleSelectStaff(s)}
-                className="flex w-full items-center gap-3 px-3 py-2.5 active:bg-neutral-800/60 transition-colors"
+                className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-neutral-800/60 transition-colors"
               >
                 <img
                   src={s.image.large}
                   alt={displayName(s.name)}
-                  className="h-10 w-10 rounded-full object-cover"
+                  className="h-16 w-16 rounded-full object-cover"
                 />
-                <div className="flex-1 text-left min-w-0">
-                  <div className="font-bold text-[13px] text-white truncate leading-tight">
+                <div className="text-center min-w-0 w-full px-1">
+                  <div className="font-bold text-[12px] text-white truncate leading-tight">
                     {displayName(s.name)}
                   </div>
                   {s.name.native && s.name.full && (
-                    <div className="text-[11px] text-neutral-500 truncate leading-tight mt-0.5">
+                    <div className="text-[10px] text-neutral-500 truncate leading-tight mt-0.5">
                       {s.name.full}
                     </div>
                   )}
                 </div>
-                <svg
-                  className="h-4 w-4 text-neutral-700 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
               </button>
             ))}
           </div>
@@ -1238,7 +1225,54 @@ export default function MyBestPage(): React.ReactElement {
             </div>
           </div>
 
-          <div className="px-4 mt-1 space-y-2">
+          <div className="px-4 mt-1 space-y-3">
+            {/* iOS share sheet guide */}
+            <div className="rounded-2xl bg-[#2c2c2e] overflow-hidden shadow-lg">
+              <p className="text-[11px] text-neutral-400 text-center pt-2.5 pb-2">
+                下のボタンで共有メニューが開きます
+              </p>
+              {/* File preview row */}
+              <div className="flex items-center gap-3 mx-3 mb-3 px-3 py-2.5 rounded-xl bg-[#1c1c1e]">
+                <div className="w-10 h-10 rounded-lg bg-[#3a3a3c] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[12px] text-white truncate">私のベスト○○.png</p>
+                  <p className="text-[10px] text-neutral-500">PNG画像</p>
+                </div>
+              </div>
+              {/* Divider */}
+              <div className="h-px bg-[#3a3a3c] mx-3" />
+              {/* App icons row */}
+              <div className="flex items-start px-4 py-3 gap-5">
+                <div className="flex flex-col items-center gap-1.5 relative">
+                  <div className="w-[52px] h-[52px] rounded-[13px] bg-black flex items-center justify-center ring-[2.5px] ring-blue-400">
+                    <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </div>
+                  <span className="text-[10px] text-white">X</span>
+                  {/* Arrow pointing to X */}
+                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
+                    <span className="text-blue-400 text-lg">↑</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-1.5 opacity-30">
+                  <div className="w-[52px] h-[52px] rounded-[13px] bg-[#ffdc58]" />
+                  <span className="text-[10px] text-neutral-500">メモ</span>
+                </div>
+                <div className="flex flex-col items-center gap-1.5 opacity-30">
+                  <div className="w-[52px] h-[52px] rounded-[13px] bg-[#3a3a3c]" />
+                  <span className="text-[10px] text-neutral-500">その他</span>
+                </div>
+              </div>
+              <p className="text-[11px] text-blue-400 text-center pb-3 font-medium">
+                ここをタップ！画像も自動で添付されます
+              </p>
+            </div>
+
             <button
               onClick={shareToX}
               className="w-full bg-white text-black text-sm font-bold py-3 rounded-lg active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
@@ -1248,32 +1282,6 @@ export default function MyBestPage(): React.ReactElement {
               </svg>
               Xでシェア
             </button>
-            <div className="mt-3 rounded-xl bg-neutral-900 border border-neutral-800 px-4 py-3">
-              <p className="text-[11px] text-neutral-400 text-center mb-3">
-                ボタンを押すと共有メニューが開きます
-              </p>
-              <div className="flex items-center justify-center gap-3">
-                <div className="flex flex-col items-center gap-1">
-                  <div className="w-11 h-11 rounded-xl bg-black ring-2 ring-blue-400 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                  </div>
-                  <span className="text-[10px] text-blue-400 font-medium">X</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 opacity-30">
-                  <div className="w-11 h-11 rounded-xl bg-neutral-700" />
-                  <span className="text-[10px] text-neutral-500">...</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 opacity-30">
-                  <div className="w-11 h-11 rounded-xl bg-neutral-700" />
-                  <span className="text-[10px] text-neutral-500">...</span>
-                </div>
-              </div>
-              <p className="text-[10px] text-blue-400 text-center mt-2.5">
-                ← ここをタップ！
-              </p>
-            </div>
           </div>
 
           <div className="px-4 pt-4 pb-8">
