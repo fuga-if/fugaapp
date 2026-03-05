@@ -293,6 +293,10 @@ export default function MyBestPage(): React.ReactElement {
         setSelectedChars([]);
         setCharFilter("");
         setGeneratedImage(null);
+        // Remove ?id= param so auto-select doesn't re-trigger on remount
+        if (window.location.search) {
+          history.replaceState({ step: "search" }, "", window.location.pathname);
+        }
       } else if (prev === "select") {
         setSelectedChars([]);
         setGeneratedImage(null);
@@ -887,19 +891,19 @@ export default function MyBestPage(): React.ReactElement {
               <p className="text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
                 POPULAR
               </p>
-              <div className="grid grid-cols-4 gap-1 pb-8">
+              <div className="grid grid-cols-3 gap-2 pb-8">
                 {popularSeiyuu.map((va) => (
                   <button
                     key={va.id}
                     onClick={() => handleSelectStaff(dailyToStaff(va))}
-                    className="flex flex-col items-center gap-1.5 py-2.5 active:bg-neutral-800/40 rounded-lg transition-colors"
+                    className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-neutral-800/60 transition-colors"
                   >
                     <img
                       src={va.image}
                       alt={va.name}
-                      className="w-11 h-11 rounded-full object-cover"
+                      className="w-16 h-16 rounded-full object-cover"
                     />
-                    <span className="text-[9px] text-neutral-500 truncate w-full text-center px-0.5">
+                    <span className="text-[11px] text-neutral-400 truncate w-full text-center px-1">
                       {va.name}
                     </span>
                   </button>
