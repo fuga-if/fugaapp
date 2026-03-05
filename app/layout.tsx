@@ -3,6 +3,7 @@ import { Zen_Maru_Gothic, Noto_Sans_JP } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import AdminFeedback from "./components/AdminFeedback";
+import KofiButton from "./components/KofiButton";
 
 const zenMaruGothic = Zen_Maru_Gothic({
   weight: ["400", "500", "700"],
@@ -62,6 +63,7 @@ export default function RootLayout({
       >
         {children}
         <AdminFeedback />
+        <KofiButton />
         <Analytics />
       </body>
     </html>
