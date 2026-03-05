@@ -428,8 +428,11 @@ export default function MyBestPage(): React.ReactElement {
     return { roles, hasMore: data.Staff.characterMedia.pageInfo.hasNextPage };
   }
 
+  const loadingMore = useRef(false);
+
   async function loadMoreRoles(): Promise<void> {
-    if (!selectedStaff || rolesLoadingMore || !rolesHasMore) return;
+    if (!selectedStaff || loadingMore.current || !rolesHasMore) return;
+    loadingMore.current = true;
     setRolesLoadingMore(true);
     try {
       const { roles, hasMore } = await fetchVoiceRolesPage(
@@ -438,10 +441,11 @@ export default function MyBestPage(): React.ReactElement {
       );
       setVoiceRoles((prev) => dedupeRoles([...prev, ...roles]));
       setRolesHasMore(hasMore);
-      rolesPage.current++;
+      if (hasMore) rolesPage.current++;
     } catch {
       // Silently fail, user can scroll again
     } finally {
+      loadingMore.current = false;
       setRolesLoadingMore(false);
     }
   }
@@ -456,6 +460,7 @@ export default function MyBestPage(): React.ReactElement {
     const cached = getCached<VoiceRole[]>(cacheKey);
     if (cached) {
       setVoiceRoles(dedupeRoles(cached));
+      setRolesHasMore(false);
       return;
     }
 
