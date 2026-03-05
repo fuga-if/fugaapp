@@ -741,9 +741,19 @@ export default function MyBestPage(): React.ReactElement {
     a.click();
 
     setShowShareHint(true);
+    const encoded = encodeURIComponent(`${text}\n${hashtags}`);
     setTimeout(() => {
-      const intentUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(`${text}\n${hashtags}`)}`;
-      window.open(intentUrl, "_blank");
+      // Try X app deep link first, fallback to web
+      const deepLink = `twitter://post?message=${encoded}`;
+      const webUrl = `https://x.com/intent/tweet?text=${encoded}`;
+      const start = Date.now();
+      window.location.href = deepLink;
+      setTimeout(() => {
+        // If still on page after 1.5s, app didn't open → use web
+        if (Date.now() - start < 2000) {
+          window.open(webUrl, "_blank");
+        }
+      }, 1500);
     }, 800);
   }
 
