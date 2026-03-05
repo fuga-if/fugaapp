@@ -7,7 +7,7 @@ export default function MyBestIndex(): React.ReactElement {
         MY BEST
       </h1>
       <p className="text-neutral-500 text-center text-xs mb-10">
-        声優メーカーを選んでXでシェアしよう
+        メーカーを選んでXでシェアしよう
       </p>
 
       <div className="max-w-sm mx-auto space-y-4">
@@ -35,6 +35,21 @@ export default function MyBestIndex(): React.ReactElement {
           </p>
           <p className="text-neutral-500 text-xs">
             9人の声優を選んで、あなたを構成する声優マップを作ろう
+          </p>
+        </Link>
+
+        <Link
+          href="/my-best/character-9"
+          className="block rounded-2xl bg-neutral-900 border border-neutral-800 p-5 active:bg-neutral-800 transition-colors relative overflow-hidden"
+        >
+          <span className="absolute top-3 right-3 text-[10px] font-bold bg-white text-black px-2 py-0.5 rounded-full">
+            NEW
+          </span>
+          <p className="text-white font-bold text-base mb-1">
+            私を構成する9つのキャラ
+          </p>
+          <p className="text-neutral-500 text-xs">
+            好きなアニメキャラを9人選んで、キャラマップを作ろう
           </p>
         </Link>
       </div>
