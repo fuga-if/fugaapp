@@ -708,7 +708,7 @@ export default function MyBestPage(): React.ReactElement {
       .map((c) => `${c.name} ─ ${c.anime_title}`)
       .join("\n");
     const text = `私のベスト【${name}】\n\n${charList}\n\nfugaapp.site/my-best/seiyuu?id=${selectedStaff.id}`;
-    const hashtags = `#私のベスト${name} #fugaapp `;
+    const hashtags = `#私のベスト${name} #mybest3character `;
 
     if (navigator.share && navigator.canShare) {
       try {
