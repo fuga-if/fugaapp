@@ -570,7 +570,8 @@ export default function MyBestPage(): React.ReactElement {
   }
 
   async function generateImage(): Promise<void> {
-    if (selectedChars.length !== MAX_CHARACTERS) return;
+    const count = selectedChars.length;
+    if (count < 1) return;
     setGenerating(true);
 
     try {
@@ -587,32 +588,31 @@ export default function MyBestPage(): React.ReactElement {
       ctx.fillStyle = "#000";
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-      const third = CANVAS_W / 3;
       const halfSkew = SKEW / 2;
       const halfGap = SLASH_GAP / 2;
 
-      const panels: number[][][] = [
-        [
-          [0, 0],
-          [third + halfSkew - halfGap, 0],
-          [third - halfSkew - halfGap, CANVAS_H],
-          [0, CANVAS_H],
-        ],
-        [
-          [third + halfSkew + halfGap, 0],
-          [2 * third + halfSkew - halfGap, 0],
-          [2 * third - halfSkew - halfGap, CANVAS_H],
-          [third - halfSkew + halfGap, CANVAS_H],
-        ],
-        [
-          [2 * third + halfSkew + halfGap, 0],
-          [CANVAS_W, 0],
-          [CANVAS_W, CANVAS_H],
-          [2 * third - halfSkew + halfGap, CANVAS_H],
-        ],
-      ];
+      function buildPanels(n: number): number[][][] {
+        if (n === 1) {
+          return [[[0, 0], [CANVAS_W, 0], [CANVAS_W, CANVAS_H], [0, CANVAS_H]]];
+        }
+        if (n === 2) {
+          const mid = CANVAS_W / 2;
+          return [
+            [[0, 0], [mid + halfSkew - halfGap, 0], [mid - halfSkew - halfGap, CANVAS_H], [0, CANVAS_H]],
+            [[mid + halfSkew + halfGap, 0], [CANVAS_W, 0], [CANVAS_W, CANVAS_H], [mid - halfSkew + halfGap, CANVAS_H]],
+          ];
+        }
+        const third = CANVAS_W / 3;
+        return [
+          [[0, 0], [third + halfSkew - halfGap, 0], [third - halfSkew - halfGap, CANVAS_H], [0, CANVAS_H]],
+          [[third + halfSkew + halfGap, 0], [2 * third + halfSkew - halfGap, 0], [2 * third - halfSkew - halfGap, CANVAS_H], [third - halfSkew + halfGap, CANVAS_H]],
+          [[2 * third + halfSkew + halfGap, 0], [CANVAS_W, 0], [CANVAS_W, CANVAS_H], [2 * third - halfSkew + halfGap, CANVAS_H]],
+        ];
+      }
 
-      for (let i = 0; i < 3; i++) {
+      const panels = buildPanels(count);
+
+      for (let i = 0; i < count; i++) {
         const poly = panels[i];
         const img = images[i];
         const xs = poly.map((p) => p[0]);
@@ -987,7 +987,7 @@ export default function MyBestPage(): React.ReactElement {
             </div>
 
             <div className="flex items-center gap-1.5 px-4 pb-2.5 pt-0.5">
-              {[0, 1, 2].map((i) => {
+              {Array.from({ length: MAX_CHARACTERS }, (_, i) => i).map((i) => {
                 const char = selectedChars[i];
                 return (
                   <div
@@ -1090,7 +1090,7 @@ export default function MyBestPage(): React.ReactElement {
           ) : (
             <>
               <div
-                className={`grid grid-cols-3 gap-px bg-neutral-900 ${selectedChars.length === MAX_CHARACTERS ? "pb-20" : "pb-4"}`}
+                className={`grid grid-cols-3 gap-px bg-neutral-900 ${selectedChars.length >= 1 ? "pb-20" : "pb-4"}`}
               >
                 {filteredRoles.map((role) => {
                   const isSelected = selectedChars.some(
@@ -1147,7 +1147,7 @@ export default function MyBestPage(): React.ReactElement {
             </>
           )}
 
-          {selectedChars.length === MAX_CHARACTERS && (
+          {selectedChars.length >= 1 && (
             <div className="fixed bottom-0 left-0 right-0 px-4 pb-5 pt-4 bg-gradient-to-t from-black via-black/95 to-transparent">
               <div className="flex items-center gap-1.5 justify-center mb-2.5 flex-wrap">
                 {["10代", "20代", "30代", "40代", "50代〜"].map((a) => (
