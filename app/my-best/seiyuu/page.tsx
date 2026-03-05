@@ -421,7 +421,9 @@ export default function MyBestPage(): React.ReactElement {
 
     const roles: VoiceRole[] = [];
     for (const edge of data.Staff.characterMedia.edges) {
+      if (!edge.node) continue;
       for (const char of edge.characters) {
+        if (!char) continue;
         roles.push({
           characterId: char.id,
           characterName: isJapanese(char.name.native)
