@@ -224,7 +224,7 @@ const VOICES_QUERY = `
         edges {
           characters {
             id
-            name { full native }
+            name { full native alternative }
             image { large }
           }
           node {
@@ -408,7 +408,7 @@ export default function MyBestPage(): React.ReactElement {
           edges: {
             characters: {
               id: number;
-              name: { full: string; native: string | null };
+              name: { full: string; native: string | null; alternative: string[] };
               image: { large: string };
             }[];
             node: {
@@ -424,7 +424,9 @@ export default function MyBestPage(): React.ReactElement {
       for (const char of edge.characters) {
         roles.push({
           characterId: char.id,
-          characterName: isJapanese(char.name.native) ? char.name.native! : char.name.full,
+          characterName: isJapanese(char.name.native)
+            ? char.name.native!
+            : char.name.alternative.find(isJapanese) || char.name.full,
           characterImage: char.image.large,
           animeTitle: isJapanese(edge.node.title.native) ? edge.node.title.native! : edge.node.title.romaji,
         });
