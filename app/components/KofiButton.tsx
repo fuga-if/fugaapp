@@ -20,10 +20,10 @@ export default function KofiButton(): React.ReactElement | null {
     const script = document.createElement("script");
     script.src = "https://storage.ko-fi.com/cdn/scripts/overlay-widget.js";
     script.onload = () => {
-      window.kofiWidgetOverlay?.draw("W7W71VF1Z0", {
+      window.kofiWidgetOverlay?.draw("fugaapp", {
         type: "floating-chat",
         "floating-chat.donateButton.text": "支援する",
-        "floating-chat.donateButton.background-color": "#72a4f2",
+        "floating-chat.donateButton.background-color": "#00b9fe",
         "floating-chat.donateButton.text-color": "#fff",
       });
     };
