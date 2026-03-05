@@ -687,6 +687,20 @@ export const diagnoses: DiagnosisInfo[] = [
     category: "shindan",
     createdAt: "2026-02-07",
   },
+  {
+    slug: "my-best",
+    title: "私のベスト声優",
+    shortTitle: "ベスト声優",
+    emoji: "🎙️",
+    description: "推し声優のベストキャラ3選を作ってシェアしよう！",
+    image: "/api/og/my-best",
+    gradient: "from-rose-400 to-violet-500",
+    bgGradient: "from-rose-50 to-violet-50",
+    border: "border-rose-200",
+    hoverBorder: "hover:border-rose-400",
+    category: "game",
+    createdAt: "2026-03-05",
+  },
 ];
 
 export function getOtherDiagnoses(currentSlug: string): DiagnosisInfo[] {
