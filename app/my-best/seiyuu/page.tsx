@@ -1248,10 +1248,32 @@ export default function MyBestPage(): React.ReactElement {
               </svg>
               Xでシェア
             </button>
-            <p className="text-center text-[11px] text-neutral-500 leading-relaxed">
-              シェアシートが表示されたら<br />
-              <span className="text-neutral-300 font-medium">X</span> を選んでください
-            </p>
+            <div className="mt-3 rounded-xl bg-neutral-900 border border-neutral-800 px-4 py-3">
+              <p className="text-[11px] text-neutral-400 text-center mb-3">
+                ボタンを押すと共有メニューが開きます
+              </p>
+              <div className="flex items-center justify-center gap-3">
+                <div className="flex flex-col items-center gap-1">
+                  <div className="w-11 h-11 rounded-xl bg-black ring-2 ring-blue-400 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </div>
+                  <span className="text-[10px] text-blue-400 font-medium">X</span>
+                </div>
+                <div className="flex flex-col items-center gap-1 opacity-30">
+                  <div className="w-11 h-11 rounded-xl bg-neutral-700" />
+                  <span className="text-[10px] text-neutral-500">...</span>
+                </div>
+                <div className="flex flex-col items-center gap-1 opacity-30">
+                  <div className="w-11 h-11 rounded-xl bg-neutral-700" />
+                  <span className="text-[10px] text-neutral-500">...</span>
+                </div>
+              </div>
+              <p className="text-[10px] text-blue-400 text-center mt-2.5">
+                ← ここをタップ！
+              </p>
+            </div>
           </div>
 
           <div className="px-4 pt-4 pb-8">
