@@ -52,6 +52,7 @@ const translations = {
     noRankingData: "まだランキングデータがありません",
     showMore: "もっと見る",
     picks: "{n}票",
+    findGoods: "グッズを探す",
   },
   en: {
     title: "My Best Voice Actor",
@@ -92,6 +93,7 @@ const translations = {
     noRankingData: "No ranking data yet",
     showMore: "Show more",
     picks: "{n} picks",
+    findGoods: "Find goods",
   },
   zh: {
     title: "我的最佳声优",
@@ -132,6 +134,7 @@ const translations = {
     noRankingData: "暂无排名数据",
     showMore: "查看更多",
     picks: "{n}票",
+    findGoods: "周边商品",
   },
   ko: {
     title: "나의 베스트 성우",
@@ -172,6 +175,7 @@ const translations = {
     noRankingData: "아직 랭킹 데이터가 없습니다",
     showMore: "더 보기",
     picks: "{n}표",
+    findGoods: "굿즈 찾기",
   },
 } as const;
 

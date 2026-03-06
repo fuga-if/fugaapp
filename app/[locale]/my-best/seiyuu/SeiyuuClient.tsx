@@ -1445,6 +1445,31 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
             </button>
           </div>
 
+          <div className="px-4 pt-3">
+            <div className="space-y-2">
+              {selectedChars.map((c) => (
+                <a
+                  key={c.id}
+                  href={`https://www.amazon.co.jp/s?k=${encodeURIComponent(c.name + " " + c.anime_title)}&tag=fuga03a-22`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-neutral-900 border border-neutral-800 active:bg-neutral-800 transition-colors"
+                >
+                  <img
+                    src={c.image_url}
+                    alt={c.name}
+                    className="w-9 h-9 rounded-full object-cover flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs text-white truncate">{c.name}</p>
+                    <p className="text-[10px] text-neutral-500 truncate">{c.anime_title}</p>
+                  </div>
+                  <span className="text-[10px] text-amber-500 flex-shrink-0 whitespace-nowrap">{i18n.findGoods} →</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
           <div className="px-4 pb-4">
             <CharacterRanking locale={locale} seiyuuMalId={selectedStaff.id} />
             <a
