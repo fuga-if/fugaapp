@@ -828,8 +828,9 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
     if (loadingExtra || noMoreExtraRef.current) return;
     setLoadingExtra(true);
     try {
-      // Fetch popular characters and extract their Japanese voice actors.
-      // This guarantees every result is a voice actor (unlike Staff query which includes directors etc.)
+      // Use Staff sorted by favourites, filter by characterMedia total > 10 to identify voice actors.
+      // Non-VAs (mangaka, directors, composers) have 0-1 character roles; VAs have 100+.
+      // Auto-fetch up to 3 pages per click to accumulate at least 12 new VAs.
       const collected: StaffResult[] = [];
       const maxPages = 3;
       let fetched = 0;
@@ -840,27 +841,26 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            query: `query ($page: Int) { Page(page: $page, perPage: 50) { pageInfo { hasNextPage } characters(sort: FAVOURITES_DESC) { media(perPage: 1, type: ANIME) { edges { voiceActors(language: JAPANESE) { id name { full native } image { large } } } } } } }`,
+            query: `query ($page: Int) { Page(page: $page, perPage: 50) { pageInfo { hasNextPage } staff(sort: FAVOURITES_DESC) { id name { full native } image { large } characterMedia(perPage: 0) { pageInfo { total } } } } }`,
             variables: { page },
           }),
         });
         if (!res.ok) throw new Error("fetch failed");
         const json = await res.json();
         const pageData = json?.data?.Page;
-        type CharData = { media: { edges: { voiceActors: { id: number; name: { full: string; native: string }; image: { large: string } }[] }[] } };
-        const characters = (pageData?.characters ?? []) as CharData[];
-        for (const char of characters) {
-          for (const edge of char.media?.edges ?? []) {
-            for (const va of edge.voiceActors ?? []) {
-              if (!knownIdsRef.current.has(va.id)) {
-                knownIdsRef.current.add(va.id);
-                collected.push({
-                  id: va.id,
-                  name: { full: va.name.full, native: va.name.native },
-                  image: { large: va.image.large },
-                });
-              }
-            }
+        type RawStaff = { id: number; name: { full: string; native: string }; image: { large: string }; characterMedia: { pageInfo: { total: number } } };
+        const staffList = (pageData?.staff ?? []) as RawStaff[];
+        for (const s of staffList) {
+          if (
+            !knownIdsRef.current.has(s.id) &&
+            s.characterMedia?.pageInfo?.total > 10
+          ) {
+            knownIdsRef.current.add(s.id);
+            collected.push({
+              id: s.id,
+              name: { full: s.name.full, native: s.name.native },
+              image: { large: s.image.large },
+            });
           }
         }
         extraPageRef.current = page + 1;
