@@ -14,7 +14,7 @@ interface TrendingSeiyuu extends TrendingEntry {
   image: string;
 }
 
-const ANILIST_URL = "https://graphql.anilist.co";
+const ANILIST_URL = "/api/my-best/anilist";
 const STAFF_QUERY = `query ($id: Int) { Staff(id: $id) { name { full native } image { large } } }`;
 
 async function fetchStaffInfo(staffId: number): Promise<{ image: string; name: string; nameNative: string }> {

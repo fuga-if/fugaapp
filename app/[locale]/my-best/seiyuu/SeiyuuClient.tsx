@@ -27,7 +27,7 @@ interface SelectedCharacter {
   anime_title: string;
 }
 
-const ANILIST_URL = "https://graphql.anilist.co";
+const ANILIST_URL = "/api/my-best/anilist";
 const CACHE_TTL = 24 * 60 * 60 * 1000;
 const MAX_CHARACTERS = 3;
 const DEBOUNCE_MS = 500;
