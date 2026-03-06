@@ -93,6 +93,12 @@ let lastAnilistCall = 0;
 let anilistChain: Promise<unknown> = Promise.resolve();
 const ANILIST_MIN_INTERVAL = 2000;
 
+// Module-level cache so extra staff persist across component remounts
+let _extraStaffCache: StaffResult[] = [];
+let _extraPage = 1;
+let _noMoreExtra = false;
+const _knownIds = new Set(DAILY_SEIYUU.map((s) => s.id));
+
 async function anilistQuery<T>(
   query: string,
   variables: Record<string, unknown>
@@ -318,17 +324,16 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
   const stepRef = useRef<Step>("search");
   const searchScrollY = useRef(0);
 
-  function goToStep(next: Step): void {
+  function goToStep(next: Step, url?: string): void {
     // Save scroll position when leaving search
     if (stepRef.current === "search") {
       searchScrollY.current = window.scrollY;
     }
     if (next !== stepRef.current) {
-      history.pushState({ step: next }, "");
+      history.pushState({ step: next }, "", url);
     }
     stepRef.current = next;
     setStep(next);
-    // Scroll to top when entering a new step
     window.scrollTo(0, 0);
   }
 
@@ -350,8 +355,6 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
         if (window.location.search) {
           history.replaceState({ step: "search" }, "", window.location.pathname);
         }
-        // Restore scroll position
-        requestAnimationFrame(() => window.scrollTo(0, searchScrollY.current));
       } else if (prev === "select") {
         setSelectedChars([]);
         setGeneratedImage(null);
@@ -361,6 +364,14 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
+
+  // Restore scroll position after React re-renders the search div
+  useEffect(() => {
+    if (step === "search" && searchScrollY.current > 0) {
+      const y = searchScrollY.current;
+      requestAnimationFrame(() => window.scrollTo(0, y));
+    }
+  }, [step]);
 
   const searchStaff = useCallback(async (q: string) => {
     if (q.trim().length < 1) {
@@ -523,7 +534,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
     setSelectedStaff(staff);
     setSelectedChars([]);
     setGeneratedImage(null);
-    goToStep("select");
+    goToStep("select", `${window.location.pathname}?id=${staff.id}`);
 
     const cacheKey = `mybest_voices_${staff.id}`;
     const cached = getCached<VoiceRole[]>(cacheKey);
@@ -842,40 +853,39 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
   const todayIndex = Math.floor(Date.now() / 86400000) % DAILY_SEIYUU.length;
   const todaySeiyuu = DAILY_SEIYUU[todayIndex];
   const popularSeiyuu = useMemo(() => DAILY_SEIYUU.filter((_, i) => i !== todayIndex), [todayIndex]);
-  const [extraStaff, setExtraStaff] = useState<StaffResult[]>([]);
+  const [extraStaff, setExtraStaff] = useState<StaffResult[]>(_extraStaffCache);
   const [loadingExtra, setLoadingExtra] = useState(false);
-  const extraPageRef = useRef(1);
-  const noMoreExtraRef = useRef(false);
-  const knownIdsRef = useRef(new Set(DAILY_SEIYUU.map((s) => s.id)));
 
   const loadMorePopular = useCallback(async () => {
-    if (noMoreExtraRef.current) return;
+    if (_noMoreExtra) return;
     setLoadingExtra(true);
     try {
-      // Use server-cached endpoint (CDN: 1h) instead of direct AniList
-      // to avoid sharing rate limit across all users
       const collected: StaffResult[] = [];
       const maxPages = 3;
       let fetched = 0;
 
-      while (collected.length < 12 && fetched < maxPages && !noMoreExtraRef.current) {
-        const page = extraPageRef.current;
+      while (collected.length < 12 && fetched < maxPages && !_noMoreExtra) {
+        const page = _extraPage;
         const res = await fetch(`/api/my-best/popular-va?page=${page}`);
         if (!res.ok) break;
         const { staff, hasNextPage } = await res.json();
         for (const s of staff ?? []) {
-          if (!knownIdsRef.current.has(s.id)) {
-            knownIdsRef.current.add(s.id);
+          if (!_knownIds.has(s.id)) {
+            _knownIds.add(s.id);
             collected.push(s);
           }
         }
-        extraPageRef.current = page + 1;
-        if (!hasNextPage) noMoreExtraRef.current = true;
+        _extraPage = page + 1;
+        if (!hasNextPage) _noMoreExtra = true;
         fetched++;
       }
 
       if (collected.length > 0) {
-        setExtraStaff((prev) => [...prev, ...collected]);
+        setExtraStaff((prev) => {
+          const next = [...prev, ...collected];
+          _extraStaffCache = next;
+          return next;
+        });
       }
     } catch {
       // silently fail
