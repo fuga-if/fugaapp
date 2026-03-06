@@ -10,7 +10,7 @@ interface StaffResult {
   id: number;
   name: { full: string; native: string | null };
   image: { large: string };
-  favourites: number;
+  favourites?: number;
 }
 
 interface VoiceRole {
@@ -817,7 +817,66 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
   const seiyuuName = selectedStaff ? displayName(selectedStaff.name, locale) : "";
   const todayIndex = Math.floor(Date.now() / 86400000) % DAILY_SEIYUU.length;
   const todaySeiyuu = DAILY_SEIYUU[todayIndex];
-  const popularSeiyuu = DAILY_SEIYUU.filter((_, i) => i !== todayIndex);
+  const popularSeiyuu = useMemo(() => DAILY_SEIYUU.filter((_, i) => i !== todayIndex), [todayIndex]);
+  const [extraStaff, setExtraStaff] = useState<StaffResult[]>([]);
+  const [loadingExtra, setLoadingExtra] = useState(false);
+  const extraPageRef = useRef(1);
+  const noMoreExtraRef = useRef(false);
+  const knownIdsRef = useRef(new Set(DAILY_SEIYUU.map((s) => s.id)));
+
+  const loadMorePopular = useCallback(async () => {
+    if (loadingExtra || noMoreExtraRef.current) return;
+    setLoadingExtra(true);
+    try {
+      // Fetch popular characters and extract their Japanese voice actors.
+      // This guarantees every result is a voice actor (unlike Staff query which includes directors etc.)
+      const collected: StaffResult[] = [];
+      const maxPages = 3;
+      let fetched = 0;
+
+      while (collected.length < 12 && fetched < maxPages && !noMoreExtraRef.current) {
+        const page = extraPageRef.current;
+        const res = await fetch(ANILIST_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: `query ($page: Int) { Page(page: $page, perPage: 50) { pageInfo { hasNextPage } characters(sort: FAVOURITES_DESC) { media(perPage: 1, type: ANIME) { edges { voiceActors(language: JAPANESE) { id name { full native } image { large } } } } } } }`,
+            variables: { page },
+          }),
+        });
+        if (!res.ok) throw new Error("fetch failed");
+        const json = await res.json();
+        const pageData = json?.data?.Page;
+        type CharData = { media: { edges: { voiceActors: { id: number; name: { full: string; native: string }; image: { large: string } }[] }[] } };
+        const characters = (pageData?.characters ?? []) as CharData[];
+        for (const char of characters) {
+          for (const edge of char.media?.edges ?? []) {
+            for (const va of edge.voiceActors ?? []) {
+              if (!knownIdsRef.current.has(va.id)) {
+                knownIdsRef.current.add(va.id);
+                collected.push({
+                  id: va.id,
+                  name: { full: va.name.full, native: va.name.native },
+                  image: { large: va.image.large },
+                });
+              }
+            }
+          }
+        }
+        extraPageRef.current = page + 1;
+        if (!pageData?.pageInfo?.hasNextPage) noMoreExtraRef.current = true;
+        fetched++;
+      }
+
+      if (collected.length > 0) {
+        setExtraStaff((prev) => [...prev, ...collected]);
+      }
+    } catch {
+      // silently fail
+    } finally {
+      setLoadingExtra(false);
+    }
+  }, [loadingExtra]);
 
   const filteredRoles = useMemo(() => {
     if (!charFilter.trim()) return voiceRoles;
@@ -970,8 +1029,8 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
               <p className="text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
                 {i18n.popular}
               </p>
-              <div className="grid grid-cols-3 gap-2 pb-8">
-                {popularSeiyuu.map((va) => (
+              <div className="grid grid-cols-3 gap-2">
+                {popularSeiyuu.map((va, idx) => (
                   <button
                     key={va.id}
                     onClick={() => handleSelectStaff(dailyToStaff(va, locale))}
@@ -981,12 +1040,39 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
                       src={va.image}
                       alt={locale === "ja" ? va.name : va.nameEn}
                       className="w-16 h-16 rounded-full object-cover"
+                      loading={idx >= 9 ? "lazy" : undefined}
                     />
                     <span className="text-[11px] text-neutral-400 truncate w-full text-center px-1">
                       {locale === "ja" ? va.name : va.nameEn}
                     </span>
                   </button>
                 ))}
+                {extraStaff.map((s) => (
+                  <button
+                    key={s.id}
+                    onClick={() => handleSelectStaff(s)}
+                    className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-neutral-800/60 transition-colors"
+                  >
+                    <img
+                      src={s.image.large}
+                      alt={displayName(s.name, locale)}
+                      className="w-16 h-16 rounded-full object-cover"
+                      loading="lazy"
+                    />
+                    <span className="text-[11px] text-neutral-400 truncate w-full text-center px-1">
+                      {displayName(s.name, locale)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              <div className="flex justify-center py-3 pb-8">
+                <button
+                  onClick={loadMorePopular}
+                  disabled={loadingExtra}
+                  className="text-xs text-neutral-500 border border-neutral-700 rounded-full px-4 py-1.5 active:bg-neutral-800 transition-colors disabled:opacity-40"
+                >
+                  {loadingExtra ? i18n.generating.replace("...", "") + "..." : i18n.showMore}
+                </button>
               </div>
             </>
           )}

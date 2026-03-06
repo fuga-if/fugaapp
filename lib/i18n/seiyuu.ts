@@ -52,6 +52,7 @@ const translations = {
     allFilter: "全体",
     seeOnX: "Xでみんなの選択を見る",
     noRankingData: "まだランキングデータがありません",
+    showMore: "もっと見る",
     picks: "{n}票",
   },
   en: {
@@ -93,6 +94,7 @@ const translations = {
     allFilter: "All",
     seeOnX: "See others' picks on X",
     noRankingData: "No ranking data yet",
+    showMore: "Show more",
     picks: "{n} picks",
   },
   zh: {
@@ -134,6 +136,7 @@ const translations = {
     allFilter: "全部",
     seeOnX: "在X上查看大家的选择",
     noRankingData: "暂无排名数据",
+    showMore: "查看更多",
     picks: "{n}票",
   },
   ko: {
@@ -175,6 +178,7 @@ const translations = {
     allFilter: "전체",
     seeOnX: "X에서 다른 사람들의 선택 보기",
     noRankingData: "아직 랭킹 데이터가 없습니다",
+    showMore: "더 보기",
     picks: "{n}표",
   },
 } as const;

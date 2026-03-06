@@ -43,5 +43,5 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 export default function SeiyuuLayout({ children }: { children: React.ReactNode }): React.ReactElement {
-  return <>{children}</>;
+  return <div className="min-h-screen bg-black">{children}</div>;
 }
