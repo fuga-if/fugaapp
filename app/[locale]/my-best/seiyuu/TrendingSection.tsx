@@ -15,17 +15,22 @@ interface TrendingSeiyuu extends TrendingEntry {
 }
 
 const ANILIST_URL = "https://graphql.anilist.co";
-const STAFF_IMAGE_QUERY = `query ($id: Int) { Staff(id: $id) { image { large } } }`;
+const STAFF_QUERY = `query ($id: Int) { Staff(id: $id) { name { full native } image { large } } }`;
 
-async function fetchStaffImage(staffId: number): Promise<string> {
+async function fetchStaffInfo(staffId: number): Promise<{ image: string; name: string; nameNative: string }> {
   const res = await fetch(ANILIST_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query: STAFF_IMAGE_QUERY, variables: { id: staffId } }),
+    body: JSON.stringify({ query: STAFF_QUERY, variables: { id: staffId } }),
   });
-  if (!res.ok) return "";
+  if (!res.ok) return { image: "", name: "", nameNative: "" };
   const json = await res.json();
-  return json?.data?.Staff?.image?.large ?? "";
+  const staff = json?.data?.Staff;
+  return {
+    image: staff?.image?.large ?? "",
+    name: staff?.name?.full ?? "",
+    nameNative: staff?.name?.native ?? "",
+  };
 }
 
 async function fetchInBatches<T, R>(
@@ -66,10 +71,13 @@ export default function TrendingSection({ locale, onSelectSeiyuu }: Props): Reac
         }
         const withImages = await fetchInBatches(data, 3, async (entry) => {
           const known = DAILY_SEIYUU.find((s) => s.id === entry.seiyuu_mal_id);
-          const image = known
-            ? known.image
-            : await fetchStaffImage(entry.seiyuu_mal_id).catch(() => "");
-          return { ...entry, image };
+          if (known) {
+            const displayName = locale === "ja" ? known.name : known.nameEn;
+            return { ...entry, seiyuu_name: displayName, image: known.image };
+          }
+          const info = await fetchStaffInfo(entry.seiyuu_mal_id).catch(() => ({ image: "", name: "", nameNative: "" }));
+          const displayName = locale === "ja" && info.nameNative ? info.nameNative : info.name || entry.seiyuu_name;
+          return { ...entry, seiyuu_name: displayName, image: info.image };
         });
         if (!cancelled) {
           setItems(withImages);
