@@ -27,7 +27,7 @@ interface SelectedCharacter {
   anime_title: string;
 }
 
-const ANILIST_URL = "/api/my-best/anilist";
+const ANILIST_URL = "https://graphql.anilist.co";
 const CACHE_TTL = 24 * 60 * 60 * 1000;
 const MAX_CHARACTERS = 3;
 const DEBOUNCE_MS = 500;
@@ -285,20 +285,6 @@ const STAFF_BY_ID_QUERY = `
     }
   }
 `;
-
-const EXTRA_STAFF_QUERY = `query ($page: Int) { Page(page: $page, perPage: 50) { pageInfo { hasNextPage } staff(sort: FAVOURITES_DESC) { id name { full native } image { large } characterMedia(perPage: 0) { pageInfo { total } } } } }`;
-
-type ExtraStaffPage = {
-  Page: {
-    pageInfo: { hasNextPage: boolean };
-    staff: {
-      id: number;
-      name: { full: string; native: string };
-      image: { large: string };
-      characterMedia: { pageInfo: { total: number } };
-    }[];
-  };
-};
 
 type Step = "search" | "select" | "result";
 
@@ -856,26 +842,25 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
     if (noMoreExtraRef.current) return;
     setLoadingExtra(true);
     try {
+      // Use server-cached endpoint (CDN: 1h) instead of direct AniList
+      // to avoid sharing rate limit across all users
       const collected: StaffResult[] = [];
       const maxPages = 3;
       let fetched = 0;
 
       while (collected.length < 12 && fetched < maxPages && !noMoreExtraRef.current) {
         const page = extraPageRef.current;
-        const data = await anilistQuery<ExtraStaffPage>(EXTRA_STAFF_QUERY, { page });
-        const pageData = data?.Page;
-        for (const s of pageData?.staff ?? []) {
-          if (!knownIdsRef.current.has(s.id) && s.characterMedia?.pageInfo?.total > 10) {
+        const res = await fetch(`/api/my-best/popular-va?page=${page}`);
+        if (!res.ok) break;
+        const { staff, hasNextPage } = await res.json();
+        for (const s of staff ?? []) {
+          if (!knownIdsRef.current.has(s.id)) {
             knownIdsRef.current.add(s.id);
-            collected.push({
-              id: s.id,
-              name: { full: s.name.full, native: s.name.native },
-              image: { large: s.image.large },
-            });
+            collected.push(s);
           }
         }
         extraPageRef.current = page + 1;
-        if (!pageData?.pageInfo?.hasNextPage) noMoreExtraRef.current = true;
+        if (!hasNextPage) noMoreExtraRef.current = true;
         fetched++;
       }
 
