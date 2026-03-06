@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { DAILY_SEIYUU } from "@/lib/daily-seiyuu";
 import { type Locale, t, LOCALES, LOCALE_LABELS } from "@/lib/i18n/seiyuu";
+import TrendingSection from "./TrendingSection";
+import CharacterRanking from "./CharacterRanking";
 
 interface StaffResult {
   id: number;
@@ -951,6 +953,22 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
                 </button>
               </div>
 
+              <TrendingSection
+                locale={locale}
+                onSelectSeiyuu={(id, name) => {
+                  const known = DAILY_SEIYUU.find((s) => s.id === id);
+                  const staff: StaffResult = known
+                    ? dailyToStaff(known, locale)
+                    : {
+                        id,
+                        name: { full: name, native: null },
+                        image: { large: "" },
+                        favourites: 0,
+                      };
+                  handleSelectStaff(staff);
+                }}
+              />
+
               <p className="text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
                 {i18n.popular}
               </p>
@@ -1207,6 +1225,9 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
 
           {selectedChars.length >= 1 && (
             <div className="fixed bottom-0 left-0 right-0 px-4 pb-5 pt-4 bg-gradient-to-t from-black via-black/95 to-transparent">
+              <p className="text-neutral-500 text-xs text-center mb-2">
+                {i18n.ageGenderHint}
+              </p>
               <div className="flex items-center gap-1.5 justify-center mb-2.5 flex-wrap">
                 {i18n.ageRanges.map((a, i) => {
                   const val = i18n.ageRangeValues[i];
@@ -1346,6 +1367,18 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
               </svg>
               {i18n.shareToX}
             </button>
+          </div>
+
+          <div className="px-4 pb-4">
+            <CharacterRanking locale={locale} seiyuuMalId={selectedStaff.id} />
+            <a
+              href={`https://x.com/search?q=%23mybest3character+${encodeURIComponent(selectedStaff.name.native ?? selectedStaff.name.full)}&f=live`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full text-center py-3 rounded-xl border border-neutral-700 text-neutral-300 text-sm hover:bg-neutral-800 transition-colors mt-4"
+            >
+              {i18n.seeOnX}
+            </a>
           </div>
 
           <div className="px-4 pt-4 pb-8">
