@@ -36,10 +36,12 @@ async function fetchStaffInfo(staffId: number): Promise<{ image: string; name: s
 async function fetchInBatches<T, R>(
   items: T[],
   batchSize: number,
-  fetchFn: (item: T) => Promise<R>
+  fetchFn: (item: T) => Promise<R>,
+  isCancelled?: () => boolean
 ): Promise<R[]> {
   const results: R[] = [];
   for (let i = 0; i < items.length; i += batchSize) {
+    if (isCancelled?.()) break;
     const batch = items.slice(i, i + batchSize);
     const batchResults = await Promise.all(batch.map(fetchFn));
     results.push(...batchResults);
@@ -78,7 +80,7 @@ export default function TrendingSection({ locale, onSelectSeiyuu }: Props): Reac
           const info = await fetchStaffInfo(entry.seiyuu_mal_id).catch(() => ({ image: "", name: "", nameNative: "" }));
           const displayName = locale === "ja" && info.nameNative ? info.nameNative : info.name || entry.seiyuu_name;
           return { ...entry, seiyuu_name: displayName, image: info.image };
-        });
+        }, () => cancelled);
         if (!cancelled) {
           setItems(withImages);
           setLoading(false);

@@ -9,8 +9,8 @@ export const LOCALE_LABELS: Record<Locale, string> = {
   ko: "한국어",
 };
 
-const AGE_RANGE_VALUES = ["teens", "20s", "30s", "40s", "50s+"] as const;
-const GENDER_VALUES = ["male", "female", "other"] as const;
+export const AGE_RANGE_VALUES = ["teens", "20s", "30s", "40s", "50s+"] as const;
+export const GENDER_VALUES = ["male", "female", "other"] as const;
 
 const translations = {
   ja: {
@@ -42,9 +42,7 @@ const translations = {
     todaysPick: "TODAY'S PICK",
     popular: "POPULAR",
     ageRanges: ["10代", "20代", "30代", "40代", "50代〜"] as string[],
-    ageRangeValues: [...AGE_RANGE_VALUES] as string[],
     genders: ["男性", "女性", "他"] as string[],
-    genderValues: [...GENDER_VALUES] as string[],
     trending: "TRENDING",
     trendingShares: "{n}回シェア",
     charRankingTitle: "この声優で人気のキャラ TOP10",
@@ -84,9 +82,7 @@ const translations = {
     todaysPick: "TODAY'S PICK",
     popular: "POPULAR",
     ageRanges: ["Teens", "20s", "30s", "40s", "50s+"] as string[],
-    ageRangeValues: [...AGE_RANGE_VALUES] as string[],
     genders: ["Male", "Female", "Other"] as string[],
-    genderValues: [...GENDER_VALUES] as string[],
     trending: "TRENDING",
     trendingShares: "{n} shares",
     charRankingTitle: "Top 10 Popular Characters",
@@ -126,9 +122,7 @@ const translations = {
     todaysPick: "今日推荐",
     popular: "人气声优",
     ageRanges: ["10多岁", "20多岁", "30多岁", "40多岁", "50岁以上"] as string[],
-    ageRangeValues: [...AGE_RANGE_VALUES] as string[],
     genders: ["男性", "女性", "其他"] as string[],
-    genderValues: [...GENDER_VALUES] as string[],
     trending: "热门趋势",
     trendingShares: "{n}次分享",
     charRankingTitle: "此声优人气角色 TOP10",
@@ -168,9 +162,7 @@ const translations = {
     todaysPick: "오늘의 추천",
     popular: "인기 성우",
     ageRanges: ["10대", "20대", "30대", "40대", "50대 이상"] as string[],
-    ageRangeValues: [...AGE_RANGE_VALUES] as string[],
     genders: ["남성", "여성", "기타"] as string[],
-    genderValues: [...GENDER_VALUES] as string[],
     trending: "트렌딩",
     trendingShares: "{n}회 공유",
     charRankingTitle: "이 성우 인기 캐릭터 TOP10",

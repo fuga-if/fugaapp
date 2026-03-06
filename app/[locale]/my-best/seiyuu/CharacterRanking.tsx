@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type Locale, t } from "@/lib/i18n/seiyuu";
+import { type Locale, t, AGE_RANGE_VALUES, GENDER_VALUES } from "@/lib/i18n/seiyuu";
 
 interface RankingEntry {
   mal_id: number;
@@ -45,9 +45,9 @@ export default function CharacterRanking({ locale, seiyuuMalId }: Props): React.
     return () => { cancelled = true; };
   }, [seiyuuMalId, ageFilter, genderFilter]);
 
-  const ageOptions = [null, ...i18n.ageRangeValues];
+  const ageOptions = [null, ...AGE_RANGE_VALUES];
   const ageLabels = [i18n.allFilter, ...i18n.ageRanges];
-  const genderOptions = [null, ...i18n.genderValues];
+  const genderOptions = [null, ...GENDER_VALUES];
   const genderLabels = [i18n.allFilter, ...i18n.genders];
 
   function pillClass(isActive: boolean): string {

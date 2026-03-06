@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { DAILY_SEIYUU } from "@/lib/daily-seiyuu";
-import { type Locale, t, LOCALES, LOCALE_LABELS } from "@/lib/i18n/seiyuu";
+import { type Locale, t, LOCALES, LOCALE_LABELS, AGE_RANGE_VALUES, GENDER_VALUES } from "@/lib/i18n/seiyuu";
 import TrendingSection from "./TrendingSection";
 import CharacterRanking from "./CharacterRanking";
 
@@ -89,30 +89,36 @@ class RateLimitError extends Error {
 }
 
 let lastAnilistCall = 0;
+let anilistChain: Promise<unknown> = Promise.resolve();
 const ANILIST_MIN_INTERVAL = 2000;
 
 async function anilistQuery<T>(
   query: string,
   variables: Record<string, unknown>
 ): Promise<T> {
-  const now = Date.now();
-  const wait = ANILIST_MIN_INTERVAL - (now - lastAnilistCall);
-  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-  lastAnilistCall = Date.now();
+  // Serialize all calls through a promise chain to prevent concurrent requests
+  const result = anilistChain.then(async () => {
+    const now = Date.now();
+    const wait = ANILIST_MIN_INTERVAL - (now - lastAnilistCall);
+    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+    lastAnilistCall = Date.now();
 
-  const res = await fetch(ANILIST_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables }),
+    const res = await fetch(ANILIST_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, variables }),
+    });
+    if (res.status === 429) {
+      const retry = Number(res.headers.get("retry-after")) || 60;
+      throw new RateLimitError(retry);
+    }
+    if (!res.ok) throw new Error("AniList API error");
+    const json = await res.json();
+    if (json.errors) throw new Error(json.errors[0]?.message || "GraphQL error");
+    return json.data as T;
   });
-  if (res.status === 429) {
-    const retry = Number(res.headers.get("retry-after")) || 60;
-    throw new RateLimitError(retry);
-  }
-  if (!res.ok) throw new Error("AniList API error");
-  const json = await res.json();
-  if (json.errors) throw new Error(json.errors[0]?.message || "GraphQL error");
-  return json.data as T;
+  anilistChain = result.catch(() => {});
+  return result;
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {
@@ -123,6 +129,27 @@ function loadImage(src: string): Promise<HTMLImageElement> {
     img.onerror = reject;
     img.src = src;
   });
+}
+
+function buildPanels(n: number, cw: number, ch: number): number[][][] {
+  const halfSkew = SKEW / 2;
+  const halfGap = SLASH_GAP / 2;
+  if (n === 1) {
+    return [[[0, 0], [cw, 0], [cw, ch], [0, ch]]];
+  }
+  if (n === 2) {
+    const mid = cw / 2;
+    return [
+      [[0, 0], [mid + halfSkew - halfGap, 0], [mid - halfSkew - halfGap, ch], [0, ch]],
+      [[mid + halfSkew + halfGap, 0], [cw, 0], [cw, ch], [mid - halfSkew + halfGap, ch]],
+    ];
+  }
+  const third = cw / 3;
+  return [
+    [[0, 0], [third + halfSkew - halfGap, 0], [third - halfSkew - halfGap, ch], [0, ch]],
+    [[third + halfSkew + halfGap, 0], [2 * third + halfSkew - halfGap, 0], [2 * third - halfSkew - halfGap, ch], [third - halfSkew + halfGap, ch]],
+    [[2 * third + halfSkew + halfGap, 0], [cw, 0], [cw, ch], [2 * third - halfSkew + halfGap, ch]],
+  ];
 }
 
 const KANA_COMBOS: Record<string, string> = {
@@ -258,6 +285,20 @@ const STAFF_BY_ID_QUERY = `
     }
   }
 `;
+
+const EXTRA_STAFF_QUERY = `query ($page: Int) { Page(page: $page, perPage: 50) { pageInfo { hasNextPage } staff(sort: FAVOURITES_DESC) { id name { full native } image { large } characterMedia(perPage: 0) { pageInfo { total } } } } }`;
+
+type ExtraStaffPage = {
+  Page: {
+    pageInfo: { hasNextPage: boolean };
+    staff: {
+      id: number;
+      name: { full: string; native: string };
+      image: { large: string };
+      characterMedia: { pageInfo: { total: number } };
+    }[];
+  };
+};
 
 type Step = "search" | "select" | "result";
 
@@ -618,8 +659,15 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
       );
       const images = await Promise.all(dataUrls.map(loadImage));
 
-      const cw = count === 1 ? 800 : CANVAS_W;
-      const ch = count === 1 ? 1000 : count === 2 ? 800 : CANVAS_H;
+      let cw: number;
+      let ch: number;
+      if (count === 1) {
+        cw = 800; ch = 1000;
+      } else if (count === 2) {
+        cw = CANVAS_W; ch = 800;
+      } else {
+        cw = CANVAS_W; ch = CANVAS_H;
+      }
 
       const canvas = document.createElement("canvas");
       canvas.width = cw;
@@ -629,29 +677,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
       ctx.fillStyle = "#000";
       ctx.fillRect(0, 0, cw, ch);
 
-      const halfSkew = SKEW / 2;
-      const halfGap = SLASH_GAP / 2;
-
-      function buildPanels(n: number): number[][][] {
-        if (n === 1) {
-          return [[[0, 0], [cw, 0], [cw, ch], [0, ch]]];
-        }
-        if (n === 2) {
-          const mid = cw / 2;
-          return [
-            [[0, 0], [mid + halfSkew - halfGap, 0], [mid - halfSkew - halfGap, ch], [0, ch]],
-            [[mid + halfSkew + halfGap, 0], [cw, 0], [cw, ch], [mid - halfSkew + halfGap, ch]],
-          ];
-        }
-        const third = cw / 3;
-        return [
-          [[0, 0], [third + halfSkew - halfGap, 0], [third - halfSkew - halfGap, ch], [0, ch]],
-          [[third + halfSkew + halfGap, 0], [2 * third + halfSkew - halfGap, 0], [2 * third - halfSkew - halfGap, ch], [third - halfSkew + halfGap, ch]],
-          [[2 * third + halfSkew + halfGap, 0], [cw, 0], [cw, ch], [2 * third - halfSkew + halfGap, ch]],
-        ];
-      }
-
-      const panels = buildPanels(count);
+      const panels = buildPanels(count, cw, ch);
 
       for (let i = 0; i < count; i++) {
         const poly = panels[i];
@@ -750,25 +776,19 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
       .join("\n");
     const url = `https://fugaapp.site/${locale}/my-best/seiyuu?id=${selectedStaff.id}`;
 
-    let text: string;
-    let hashtags: string;
-    if (locale === "en") {
-      text = `My Best【${name}】\n\n${charList}\n\n${url}`;
-      hashtags = `#MyBest${name.replace(/\s/g, "")} #mybest3character `;
-    } else if (locale === "zh") {
-      text = `我的最佳【${name}】\n\n${charList}\n\n${url}`;
-      hashtags = `#我的最佳${name} #mybest3character `;
-    } else if (locale === "ko") {
-      text = `나의베스트【${name}】\n\n${charList}\n\n${url}`;
-      hashtags = `#나의베스트${name} #mybest3character `;
-    } else {
-      text = `私のベスト【${name}】\n\n${charList}\n\n${url}`;
-      hashtags = `#私のベスト${name} #mybest3character `;
-    }
+    const shareTextByLocale: Record<Locale, { prefix: string; hashPrefix: string }> = {
+      ja: { prefix: "私のベスト", hashPrefix: "#私のベスト" },
+      en: { prefix: "My Best", hashPrefix: `#MyBest${name.replace(/\s/g, "")}` },
+      zh: { prefix: "我的最佳", hashPrefix: "#我的最佳" },
+      ko: { prefix: "나의베스트", hashPrefix: "#나의베스트" },
+    };
+    const { prefix, hashPrefix } = shareTextByLocale[locale];
+    const text = `${prefix}【${name}】\n\n${charList}\n\n${url}`;
+    const hashtags = locale === "en"
+      ? `${hashPrefix} #mybest3character `
+      : `${hashPrefix}${name} #mybest3character `;
 
-    const fileName = locale === "ja"
-      ? `${i18n.myBest}${name}.png`
-      : `MyBest_${name}.png`;
+    const fileName = locale === "ja" ? `${i18n.myBest}${name}.png` : `MyBest_${name}.png`;
 
     if (navigator.share && navigator.canShare) {
       try {
@@ -833,29 +853,19 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
   const knownIdsRef = useRef(new Set(DAILY_SEIYUU.map((s) => s.id)));
 
   const loadMorePopular = useCallback(async () => {
-    if (loadingExtra || noMoreExtraRef.current) return;
+    if (noMoreExtraRef.current) return;
     setLoadingExtra(true);
     try {
-      // Use Staff sorted by favourites, filter by characterMedia total > 10 to identify voice actors.
-      // Non-VAs (mangaka, directors, composers) have 0-1 character roles; VAs have 100+.
-      // Auto-fetch up to 3 pages per click to accumulate at least 12 new VAs.
       const collected: StaffResult[] = [];
       const maxPages = 3;
       let fetched = 0;
 
-      const EXTRA_STAFF_QUERY = `query ($page: Int) { Page(page: $page, perPage: 50) { pageInfo { hasNextPage } staff(sort: FAVOURITES_DESC) { id name { full native } image { large } characterMedia(perPage: 0) { pageInfo { total } } } } }`;
-      type ExtraPage = { Page: { pageInfo: { hasNextPage: boolean }; staff: { id: number; name: { full: string; native: string }; image: { large: string }; characterMedia: { pageInfo: { total: number } } }[] } };
-
       while (collected.length < 12 && fetched < maxPages && !noMoreExtraRef.current) {
         const page = extraPageRef.current;
-        const data = await anilistQuery<ExtraPage>(EXTRA_STAFF_QUERY, { page });
+        const data = await anilistQuery<ExtraStaffPage>(EXTRA_STAFF_QUERY, { page });
         const pageData = data?.Page;
-        const staffList = pageData?.staff ?? [];
-        for (const s of staffList) {
-          if (
-            !knownIdsRef.current.has(s.id) &&
-            s.characterMedia?.pageInfo?.total > 10
-          ) {
+        for (const s of pageData?.staff ?? []) {
+          if (!knownIdsRef.current.has(s.id) && s.characterMedia?.pageInfo?.total > 10) {
             knownIdsRef.current.add(s.id);
             collected.push({
               id: s.id,
@@ -877,7 +887,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
     } finally {
       setLoadingExtra(false);
     }
-  }, [loadingExtra]);
+  }, []);
 
   const filteredRoles = useMemo(() => {
     if (!charFilter.trim()) return voiceRoles;
@@ -1315,7 +1325,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
               </p>
               <div className="flex items-center gap-1.5 justify-center mb-2.5 flex-wrap">
                 {i18n.ageRanges.map((a, i) => {
-                  const val = i18n.ageRangeValues[i];
+                  const val = AGE_RANGE_VALUES[i];
                   return (
                     <button
                       key={val}
@@ -1328,7 +1338,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
                 })}
                 <span className="text-neutral-800 text-[10px]">|</span>
                 {i18n.genders.map((g, i) => {
-                  const val = i18n.genderValues[i];
+                  const val = GENDER_VALUES[i];
                   return (
                     <button
                       key={val}
