@@ -15,13 +15,13 @@ interface TrendingSeiyuu extends TrendingEntry {
 }
 
 const ANILIST_URL = "https://graphql.anilist.co";
+const STAFF_IMAGE_QUERY = `query ($id: Int) { Staff(id: $id) { image { large } } }`;
 
-async function fetchAnilistImage(malId: number): Promise<string> {
-  const query = `query ($id: Int) { Staff(id: $id) { image { large } } }`;
+async function fetchStaffImage(staffId: number): Promise<string> {
   const res = await fetch(ANILIST_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables: { id: malId } }),
+    body: JSON.stringify({ query: STAFF_IMAGE_QUERY, variables: { id: staffId } }),
   });
   if (!res.ok) return "";
   const json = await res.json();
@@ -47,7 +47,7 @@ interface Props {
   onSelectSeiyuu: (id: number, name: string) => void;
 }
 
-export default function TrendingSection({ locale, onSelectSeiyuu }: Props) {
+export default function TrendingSection({ locale, onSelectSeiyuu }: Props): React.ReactElement | null {
   const [items, setItems] = useState<TrendingSeiyuu[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -68,7 +68,7 @@ export default function TrendingSection({ locale, onSelectSeiyuu }: Props) {
           const known = DAILY_SEIYUU.find((s) => s.id === entry.seiyuu_mal_id);
           const image = known
             ? known.image
-            : await fetchAnilistImage(entry.seiyuu_mal_id).catch(() => "");
+            : await fetchStaffImage(entry.seiyuu_mal_id).catch(() => "");
           return { ...entry, image };
         });
         if (!cancelled) {
@@ -92,7 +92,7 @@ export default function TrendingSection({ locale, onSelectSeiyuu }: Props) {
           {i18n.trending}
         </p>
         <div className="flex gap-3 overflow-x-auto px-0 pb-2">
-          {[...Array(5)].map((_, i) => (
+          {Array.from({ length: 5 }, (_, i) => (
             <div key={i} className="flex-shrink-0 w-20 animate-pulse">
               <div className="w-14 h-14 rounded-full bg-neutral-800 mx-auto" />
               <div className="h-3 bg-neutral-800 rounded mt-2 w-14 mx-auto" />

@@ -4,14 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DAILY_SEIYUU } from "@/lib/daily-seiyuu";
 
-const getLocale = (): string => {
+type LPLocale = "ja" | "en" | "zh" | "ko";
+
+function detectLocale(): LPLocale {
   if (typeof window === "undefined") return "ja";
   const lang = navigator.language.toLowerCase();
   if (lang.startsWith("ko")) return "ko";
   if (lang.startsWith("zh")) return "zh";
   if (lang.startsWith("en")) return "en";
   return "ja";
-};
+}
 
 const lpTranslations = {
   ja: {
@@ -109,17 +111,19 @@ const lpTranslations = {
 };
 
 const IMAGE_PROXY = "/api/my-best/image-proxy?url=";
+const HERO_SEIYUU = DAILY_SEIYUU.slice(0, 12);
+const POPULAR_SEIYUU = DAILY_SEIYUU.slice(0, 20);
 
-const heroImages = DAILY_SEIYUU.slice(0, 12);
-const popularSeiyuu = DAILY_SEIYUU.slice(0, 20);
+function proxyUrl(url: string): string {
+  return IMAGE_PROXY + encodeURIComponent(url);
+}
 
 export default function MyBestLP(): React.ReactElement {
-  const [locale, setLocale] = useState<"ja" | "en" | "zh" | "ko">("ja");
+  const [locale, setLocale] = useState<LPLocale>("ja");
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const detected = getLocale() as "ja" | "en" | "zh" | "ko";
-    setLocale(detected);
+    setLocale(detectLocale());
   }, []);
 
   useEffect(() => {
@@ -142,14 +146,12 @@ export default function MyBestLP(): React.ReactElement {
 
   return (
     <div ref={containerRef} className="bg-black text-white min-h-screen">
-      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background grid of seiyuu images */}
         <div className="absolute inset-0 grid grid-cols-4 grid-rows-3 gap-0">
-          {heroImages.map((s, index) => (
+          {HERO_SEIYUU.map((s, index) => (
             <div key={s.id} className="relative overflow-hidden animate-float" style={{ animationDelay: `${(index * 0.15) % 2}s` }}>
               <img
-                src={IMAGE_PROXY + encodeURIComponent(s.image)}
+                src={proxyUrl(s.image)}
                 alt={s.name}
                 loading="lazy"
                 className="w-full h-full object-cover blur-sm scale-110"
@@ -157,10 +159,8 @@ export default function MyBestLP(): React.ReactElement {
             </div>
           ))}
         </div>
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/70" />
 
-        {/* Hero content */}
         <div className="relative z-10 text-center px-6">
           <h1 className="text-7xl md:text-9xl font-black tracking-widest mb-4 animate-shimmer">
             {t.heroTitle}
@@ -177,7 +177,6 @@ export default function MyBestLP(): React.ReactElement {
         </div>
       </section>
 
-      {/* How It Works */}
       <section className="py-24 px-6">
         <h2 className="text-center text-xs tracking-[0.3em] text-neutral-500 mb-16 scroll-reveal">
           {t.howItWorksTitle}
@@ -203,52 +202,40 @@ export default function MyBestLP(): React.ReactElement {
         </div>
       </section>
 
-      {/* Features */}
       <section className="py-24 px-6 bg-neutral-950">
         <h2 className="text-center text-xs tracking-[0.3em] text-neutral-500 mb-16 scroll-reveal">
           {t.featuresTitle}
         </h2>
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Link
-            href={`/${locale}/my-best/seiyuu`}
-            className="block bg-neutral-900 border border-neutral-800 rounded-2xl p-6 hover:border-neutral-600 transition-colors scroll-reveal"
-            style={{ transitionDelay: "100ms" }}
-          >
-            <h3 className="text-white font-bold text-base mb-2">{t.feature1Title}</h3>
-            <p className="text-neutral-500 text-sm">{t.feature1Desc}</p>
-          </Link>
-          <Link
-            href="/my-best/seiyuu-9"
-            className="block bg-neutral-900 border border-neutral-800 rounded-2xl p-6 hover:border-neutral-600 transition-colors relative overflow-hidden scroll-reveal"
-            style={{ transitionDelay: "200ms" }}
-          >
-            <span className="absolute top-3 right-3 text-[10px] font-bold bg-white text-black px-2 py-0.5 rounded-full">
-              NEW
-            </span>
-            <h3 className="text-white font-bold text-base mb-2">{t.feature2Title}</h3>
-            <p className="text-neutral-500 text-sm">{t.feature2Desc}</p>
-          </Link>
-          <Link
-            href="/my-best/character-9"
-            className="block bg-neutral-900 border border-neutral-800 rounded-2xl p-6 hover:border-neutral-600 transition-colors relative overflow-hidden scroll-reveal"
-            style={{ transitionDelay: "300ms" }}
-          >
-            <span className="absolute top-3 right-3 text-[10px] font-bold bg-white text-black px-2 py-0.5 rounded-full">
-              NEW
-            </span>
-            <h3 className="text-white font-bold text-base mb-2">{t.feature3Title}</h3>
-            <p className="text-neutral-500 text-sm">{t.feature3Desc}</p>
-          </Link>
+          {[
+            { href: `/${locale}/my-best/seiyuu`, title: t.feature1Title, desc: t.feature1Desc, delay: "100ms" },
+            { href: "/my-best/seiyuu-9", title: t.feature2Title, desc: t.feature2Desc, delay: "200ms", isNew: true },
+            { href: "/my-best/character-9", title: t.feature3Title, desc: t.feature3Desc, delay: "300ms", isNew: true },
+          ].map((feature) => (
+            <Link
+              key={feature.href}
+              href={feature.href}
+              className={`block bg-neutral-900 border border-neutral-800 rounded-2xl p-6 hover:border-neutral-600 transition-colors scroll-reveal ${feature.isNew ? "relative overflow-hidden" : ""}`}
+              style={{ transitionDelay: feature.delay }}
+            >
+              {feature.isNew && (
+                <span className="absolute top-3 right-3 text-[10px] font-bold bg-white text-black px-2 py-0.5 rounded-full">
+                  NEW
+                </span>
+              )}
+              <h3 className="text-white font-bold text-base mb-2">{feature.title}</h3>
+              <p className="text-neutral-500 text-sm">{feature.desc}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* Popular Voice Actors */}
       <section className="py-24">
         <h2 className="text-center text-xs tracking-[0.3em] text-neutral-500 mb-12 px-6 scroll-reveal">
           {t.popularTitle}
         </h2>
         <div className="flex gap-6 overflow-x-auto scrollbar-hide px-6 pb-4">
-          {popularSeiyuu.map((s) => (
+          {POPULAR_SEIYUU.map((s) => (
             <Link
               key={s.id}
               href={`/${locale}/my-best/seiyuu?id=${s.id}`}
@@ -256,7 +243,7 @@ export default function MyBestLP(): React.ReactElement {
             >
               <div className="w-16 h-16 rounded-full overflow-hidden border border-neutral-800">
                 <img
-                  src={IMAGE_PROXY + encodeURIComponent(s.image)}
+                  src={proxyUrl(s.image)}
                   alt={s.name}
                   loading="lazy"
                   className="w-full h-full object-cover"
@@ -270,7 +257,6 @@ export default function MyBestLP(): React.ReactElement {
         </div>
       </section>
 
-      {/* Final CTA */}
       <section className="py-32 px-6 text-center scroll-reveal">
         <Link
           href={`/${locale}/my-best/seiyuu`}
@@ -280,7 +266,6 @@ export default function MyBestLP(): React.ReactElement {
         </Link>
       </section>
 
-      {/* Footer */}
       <footer className="pb-12 text-center text-[10px] text-neutral-600 space-y-1">
         <p>
           <Link href="/my-best/terms" className="underline hover:text-neutral-400">
