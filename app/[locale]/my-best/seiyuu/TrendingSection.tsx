@@ -28,6 +28,20 @@ async function fetchAnilistImage(malId: number): Promise<string> {
   return json?.data?.Staff?.image?.large ?? "";
 }
 
+async function fetchInBatches<T, R>(
+  items: T[],
+  batchSize: number,
+  fetchFn: (item: T) => Promise<R>
+): Promise<R[]> {
+  const results: R[] = [];
+  for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    const batchResults = await Promise.all(batch.map(fetchFn));
+    results.push(...batchResults);
+  }
+  return results;
+}
+
 interface Props {
   locale: Locale;
   onSelectSeiyuu: (id: number, name: string) => void;
@@ -35,30 +49,61 @@ interface Props {
 
 export default function TrendingSection({ locale, onSelectSeiyuu }: Props) {
   const [items, setItems] = useState<TrendingSeiyuu[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const i18n = t(locale);
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
+    setError(false);
     fetch("/api/my-best/trending")
       .then((r) => r.json())
       .then(async (data: TrendingEntry[]) => {
-        if (cancelled || !Array.isArray(data) || data.length === 0) return;
-        const withImages: TrendingSeiyuu[] = await Promise.all(
-          data.map(async (entry) => {
-            const known = DAILY_SEIYUU.find((s) => s.id === entry.seiyuu_mal_id);
-            const image = known
-              ? known.image
-              : await fetchAnilistImage(entry.seiyuu_mal_id).catch(() => "");
-            return { ...entry, image };
-          })
-        );
-        if (!cancelled) setItems(withImages);
+        if (cancelled || !Array.isArray(data) || data.length === 0) {
+          if (!cancelled) setLoading(false);
+          return;
+        }
+        const withImages = await fetchInBatches(data, 3, async (entry) => {
+          const known = DAILY_SEIYUU.find((s) => s.id === entry.seiyuu_mal_id);
+          const image = known
+            ? known.image
+            : await fetchAnilistImage(entry.seiyuu_mal_id).catch(() => "");
+          return { ...entry, image };
+        });
+        if (!cancelled) {
+          setItems(withImages);
+          setLoading(false);
+        }
       })
-      .catch(() => {});
+      .catch(() => {
+        if (!cancelled) {
+          setError(true);
+          setLoading(false);
+        }
+      });
     return () => { cancelled = true; };
   }, []);
 
-  if (items.length === 0) return null;
+  if (loading) {
+    return (
+      <div className="mb-6">
+        <p className="text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
+          {i18n.trending}
+        </p>
+        <div className="flex gap-3 overflow-x-auto px-0 pb-2">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex-shrink-0 w-20 animate-pulse">
+              <div className="w-14 h-14 rounded-full bg-neutral-800 mx-auto" />
+              <div className="h-3 bg-neutral-800 rounded mt-2 w-14 mx-auto" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error || items.length === 0) return null;
 
   return (
     <div className="mb-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DAILY_SEIYUU } from "@/lib/daily-seiyuu";
 
@@ -115,6 +115,7 @@ const popularSeiyuu = DAILY_SEIYUU.slice(0, 20);
 
 export default function MyBestLP(): React.ReactElement {
   const [locale, setLocale] = useState<"ja" | "en" | "zh" | "ko">("ja");
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const detected = getLocale() as "ja" | "en" | "zh" | "ko";
@@ -122,6 +123,7 @@ export default function MyBestLP(): React.ReactElement {
   }, []);
 
   useEffect(() => {
+    if (!containerRef.current) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -132,23 +134,24 @@ export default function MyBestLP(): React.ReactElement {
       },
       { threshold: 0.1 }
     );
-    document.querySelectorAll(".scroll-reveal").forEach((el) => observer.observe(el));
+    containerRef.current.querySelectorAll(".scroll-reveal").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
   const t = lpTranslations[locale];
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div ref={containerRef} className="bg-black text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background grid of seiyuu images */}
         <div className="absolute inset-0 grid grid-cols-4 grid-rows-3 gap-0">
-          {heroImages.map((s) => (
-            <div key={s.id} className="relative overflow-hidden animate-float" style={{ animationDelay: `${Math.random() * 2}s` }}>
+          {heroImages.map((s, index) => (
+            <div key={s.id} className="relative overflow-hidden animate-float" style={{ animationDelay: `${(index * 0.15) % 2}s` }}>
               <img
                 src={IMAGE_PROXY + encodeURIComponent(s.image)}
                 alt={s.name}
+                loading="lazy"
                 className="w-full h-full object-cover blur-sm scale-110"
               />
             </div>
@@ -166,7 +169,7 @@ export default function MyBestLP(): React.ReactElement {
             {t.heroSubtitle}
           </p>
           <Link
-            href="/my-best/seiyuu"
+            href={`/${locale}/my-best/seiyuu`}
             className="inline-block bg-white text-black font-bold px-10 py-4 rounded-full text-lg animate-glow-pulse hover:bg-neutral-200 transition-colors"
           >
             {t.heroCta}
@@ -207,7 +210,7 @@ export default function MyBestLP(): React.ReactElement {
         </h2>
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link
-            href="/my-best/seiyuu"
+            href={`/${locale}/my-best/seiyuu`}
             className="block bg-neutral-900 border border-neutral-800 rounded-2xl p-6 hover:border-neutral-600 transition-colors scroll-reveal"
             style={{ transitionDelay: "100ms" }}
           >
@@ -248,13 +251,14 @@ export default function MyBestLP(): React.ReactElement {
           {popularSeiyuu.map((s) => (
             <Link
               key={s.id}
-              href={`/my-best/seiyuu?id=${s.id}`}
+              href={`/${locale}/my-best/seiyuu?id=${s.id}`}
               className="flex-none flex flex-col items-center gap-2"
             >
               <div className="w-16 h-16 rounded-full overflow-hidden border border-neutral-800">
                 <img
                   src={IMAGE_PROXY + encodeURIComponent(s.image)}
                   alt={s.name}
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -269,7 +273,7 @@ export default function MyBestLP(): React.ReactElement {
       {/* Final CTA */}
       <section className="py-32 px-6 text-center scroll-reveal">
         <Link
-          href="/my-best/seiyuu"
+          href={`/${locale}/my-best/seiyuu`}
           className="inline-block bg-white text-black font-bold px-12 py-5 rounded-full text-xl animate-glow-pulse hover:bg-neutral-200 transition-colors"
         >
           {t.finalCta}

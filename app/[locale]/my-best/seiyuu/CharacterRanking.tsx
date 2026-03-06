@@ -18,6 +18,7 @@ interface Props {
 export default function CharacterRanking({ locale, seiyuuMalId }: Props) {
   const [data, setData] = useState<RankingEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [ageFilter, setAgeFilter] = useState<string | null>(null);
   const [genderFilter, setGenderFilter] = useState<string | null>(null);
   const i18n = t(locale);
@@ -25,6 +26,7 @@ export default function CharacterRanking({ locale, seiyuuMalId }: Props) {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
+    setError(false);
     const params = new URLSearchParams({ seiyuu_mal_id: String(seiyuuMalId) });
     if (ageFilter) params.set("age_range", ageFilter);
     if (genderFilter) params.set("gender", genderFilter);
@@ -33,7 +35,12 @@ export default function CharacterRanking({ locale, seiyuuMalId }: Props) {
       .then((d: RankingEntry[]) => {
         if (!cancelled) setData(Array.isArray(d) ? d : []);
       })
-      .catch(() => { if (!cancelled) setData([]); })
+      .catch(() => {
+        if (!cancelled) {
+          setData([]);
+          setError(true);
+        }
+      })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [seiyuuMalId, ageFilter, genderFilter]);
@@ -74,6 +81,8 @@ export default function CharacterRanking({ locale, seiyuuMalId }: Props) {
         <div className="flex justify-center py-8">
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-700 border-t-neutral-400" />
         </div>
+      ) : error ? (
+        <p className="text-center text-xs text-neutral-600 py-6">データの取得に失敗しました</p>
       ) : data.length === 0 ? (
         <p className="text-center text-xs text-neutral-600 py-6">{i18n.noRankingData}</p>
       ) : (
