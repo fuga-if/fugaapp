@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { DAILY_SEIYUU } from "@/lib/daily-seiyuu";
+import { type Locale, t, LOCALES, LOCALE_LABELS } from "@/lib/i18n/seiyuu";
 
 interface StaffResult {
   id: number;
@@ -38,8 +39,11 @@ function isJapanese(s: string | null | undefined): s is string {
   return !!s && JP_RE.test(s);
 }
 
-function displayName(name: { full: string; native: string | null }): string {
-  return isJapanese(name.native) ? name.native : name.full;
+function displayName(name: { full: string; native: string | null }, loc: Locale): string {
+  if (loc === "ja") {
+    return isJapanese(name.native) ? name.native! : name.full;
+  }
+  return name.full || name.native || "";
 }
 
 function getCached<T>(key: string): T | null {
@@ -81,9 +85,6 @@ class RateLimitError extends Error {
     this.retryAfter = retryAfter;
   }
 }
-
-const RATE_LIMIT_MSG =
-  "AniList APIが規制中です。しばらくお待ちください。";
 
 async function anilistQuery<T>(
   query: string,
@@ -194,10 +195,11 @@ function filterStaffByQuery(
   return results.filter((s) => (s.name.native ?? "").includes(q));
 }
 
-function dailyToStaff(va: (typeof DAILY_SEIYUU)[number]): StaffResult {
+function dailyToStaff(va: (typeof DAILY_SEIYUU)[number], loc: Locale): StaffResult {
+  const displayFullName = loc === "ja" ? va.name : va.nameEn;
   return {
     id: va.id,
-    name: { full: va.name, native: va.name },
+    name: { full: displayFullName, native: va.name },
     image: { large: va.image },
     favourites: 0,
   };
@@ -228,7 +230,7 @@ const VOICES_QUERY = `
             image { large }
           }
           node {
-            title { native romaji }
+            title { native romaji english }
           }
         }
       }
@@ -249,7 +251,9 @@ const STAFF_BY_ID_QUERY = `
 
 type Step = "search" | "select" | "result";
 
-export default function MyBestPage(): React.ReactElement {
+export default function SeiyuuClient({ locale }: { locale: Locale }): React.ReactElement {
+  const i18n = t(locale);
+
   const [step, setStep] = useState<Step>("search");
   const [query, setQuery] = useState("");
   const [staffResults, setStaffResults] = useState<StaffResult[]>([]);
@@ -269,7 +273,6 @@ export default function MyBestPage(): React.ReactElement {
   const [generating, setGenerating] = useState(false);
   const [ageRange, setAgeRange] = useState<string | null>(null);
   const [gender, setGender] = useState<string | null>(null);
-
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const didAutoSelect = useRef(false);
@@ -381,13 +384,14 @@ export default function MyBestPage(): React.ReactElement {
       setStaffResults([]);
       setSearchError(
         err instanceof RateLimitError
-          ? RATE_LIMIT_MSG
-          : "検索に失敗しました。少し時間をおいて再度お試しください。"
+          ? i18n.rateLimitMsg
+          : i18n.searchError
       );
     } finally {
       setSearchLoading(false);
     }
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -412,7 +416,7 @@ export default function MyBestPage(): React.ReactElement {
               image: { large: string };
             }[];
             node: {
-              title: { native: string | null; romaji: string };
+              title: { native: string | null; romaji: string; english: string | null };
             };
           }[];
         };
@@ -424,13 +428,21 @@ export default function MyBestPage(): React.ReactElement {
       if (!edge.node) continue;
       for (const char of edge.characters) {
         if (!char) continue;
+        const characterName = locale === "ja"
+          ? (isJapanese(char.name.native)
+            ? char.name.native!
+            : char.name.alternative.find(isJapanese) || char.name.full)
+          : char.name.full;
+
+        const animeTitle = locale === "ja"
+          ? (isJapanese(edge.node.title.native) ? edge.node.title.native! : edge.node.title.romaji)
+          : (edge.node.title.english || edge.node.title.romaji);
+
         roles.push({
           characterId: char.id,
-          characterName: isJapanese(char.name.native)
-            ? char.name.native!
-            : char.name.alternative.find(isJapanese) || char.name.full,
+          characterName,
           characterImage: char.image.large,
-          animeTitle: isJapanese(edge.node.title.native) ? edge.node.title.native! : edge.node.title.romaji,
+          animeTitle,
         });
       }
     }
@@ -486,8 +498,8 @@ export default function MyBestPage(): React.ReactElement {
       setVoiceRoles([]);
       setRolesError(
         err instanceof RateLimitError
-          ? RATE_LIMIT_MSG
-          : "キャラクター情報の取得に失敗しました。少し時間をおいて再度お試しください。"
+          ? i18n.rateLimitMsg
+          : i18n.rolesError
       );
     } finally {
       setRolesLoading(false);
@@ -505,7 +517,7 @@ export default function MyBestPage(): React.ReactElement {
 
     const daily = DAILY_SEIYUU.find((va) => va.id === staffId);
     if (daily) {
-      handleSelectStaff(dailyToStaff(daily));
+      handleSelectStaff(dailyToStaff(daily, locale));
       return;
     }
 
@@ -664,7 +676,7 @@ export default function MyBestPage(): React.ReactElement {
       goToStep("result");
       fireShareApi();
     } catch {
-      alert("画像の生成に失敗しました。もう一度お試しください。");
+      alert(i18n.generateError);
     } finally {
       setGenerating(false);
     }
@@ -693,7 +705,7 @@ export default function MyBestPage(): React.ReactElement {
   function fireShareApi(): void {
     if (!selectedStaff || hasFiredShare.current) return;
     hasFiredShare.current = true;
-    const seiyuuName = displayName(selectedStaff.name);
+    const seiyuuName = displayName(selectedStaff.name, locale);
     generateToken()
       .then((token) =>
         fetch("/api/my-best/share", {
@@ -720,18 +732,37 @@ export default function MyBestPage(): React.ReactElement {
 
   async function shareToX(): Promise<void> {
     if (!selectedStaff || !generatedImage) return;
-    const name = displayName(selectedStaff.name);
+    const name = displayName(selectedStaff.name, locale);
     const charList = selectedChars
       .map((c) => `${c.name} ─ ${c.anime_title}`)
       .join("\n");
-    const text = `私のベスト【${name}】\n\n${charList}\n\nfugaapp.site/my-best/seiyuu?id=${selectedStaff.id}`;
-    const hashtags = `#私のベスト${name} #mybest3character `;
+    const url = `https://fugaapp.site/${locale}/my-best/seiyuu?id=${selectedStaff.id}`;
+
+    let text: string;
+    let hashtags: string;
+    if (locale === "en") {
+      text = `My Best【${name}】\n\n${charList}\n\n${url}`;
+      hashtags = `#MyBest${name.replace(/\s/g, "")} #mybest3character `;
+    } else if (locale === "zh") {
+      text = `我的最佳【${name}】\n\n${charList}\n\n${url}`;
+      hashtags = `#我的最佳${name} #mybest3character `;
+    } else if (locale === "ko") {
+      text = `나의베스트【${name}】\n\n${charList}\n\n${url}`;
+      hashtags = `#나의베스트${name} #mybest3character `;
+    } else {
+      text = `私のベスト【${name}】\n\n${charList}\n\n${url}`;
+      hashtags = `#私のベスト${name} #mybest3character `;
+    }
+
+    const fileName = locale === "ja"
+      ? `${i18n.myBest}${name}.png`
+      : `MyBest_${name}.png`;
 
     if (navigator.share && navigator.canShare) {
       try {
         const res = await fetch(generatedImage);
         const blob = await res.blob();
-        const file = new File([blob], `私のベスト${name}.png`, {
+        const file = new File([blob], fileName, {
           type: "image/png",
         });
         if (navigator.canShare({ files: [file] })) {
@@ -750,7 +781,7 @@ export default function MyBestPage(): React.ReactElement {
     // Desktop fallback: save image then open X web intent
     const a = document.createElement("a");
     a.href = generatedImage;
-    a.download = `私のベスト${name}.png`;
+    a.download = fileName;
     a.click();
 
     const encoded = encodeURIComponent(`${text}\n${hashtags}`);
@@ -779,7 +810,7 @@ export default function MyBestPage(): React.ReactElement {
     }
   }
 
-  const seiyuuName = selectedStaff ? displayName(selectedStaff.name) : "";
+  const seiyuuName = selectedStaff ? displayName(selectedStaff.name, locale) : "";
   const todayIndex = Math.floor(Date.now() / 86400000) % DAILY_SEIYUU.length;
   const todaySeiyuu = DAILY_SEIYUU[todayIndex];
   const popularSeiyuu = DAILY_SEIYUU.filter((_, i) => i !== todayIndex);
@@ -796,8 +827,19 @@ export default function MyBestPage(): React.ReactElement {
 
   const footer = (
     <footer className="px-4 py-6 mt-8 border-t border-neutral-800/50 text-center text-[10px] text-neutral-600 space-y-1">
+      <div className="flex items-center justify-center gap-2 text-[11px] mb-3">
+        {LOCALES.map((loc) => (
+          <a
+            key={loc}
+            href={`/${loc}/my-best/seiyuu${typeof window !== "undefined" ? window.location.search : ""}`}
+            className={loc === locale ? "text-white font-bold" : "text-neutral-500 hover:text-neutral-300"}
+          >
+            {LOCALE_LABELS[loc]}
+          </a>
+        ))}
+      </div>
       <p>
-        データ提供:{" "}
+        {i18n.dataProvider}{" "}
         <a
           href="https://anilist.co"
           target="_blank"
@@ -809,11 +851,11 @@ export default function MyBestPage(): React.ReactElement {
       </p>
       <p>
         <a href="/my-best/terms" className="underline hover:text-neutral-400">
-          利用規約
+          {i18n.terms}
         </a>
         {" | "}
         <a href="/privacy" className="underline hover:text-neutral-400">
-          プライバシーポリシー
+          {i18n.privacy}
         </a>
       </p>
       <p>&copy; 2026 fugaapp</p>
@@ -825,10 +867,10 @@ export default function MyBestPage(): React.ReactElement {
       {step === "search" && (
         <div className="px-4 pt-12 pb-8">
           <h1 className="text-xl font-bold text-center text-white tracking-tight">
-            私のベスト声優
+            {i18n.title}
           </h1>
           <p className="text-neutral-500 text-center text-[11px] mt-1 mb-6">
-            推しキャラ3選を作ってXでシェア
+            {i18n.subtitle}
           </p>
 
           <div className="relative mb-4">
@@ -849,7 +891,7 @@ export default function MyBestPage(): React.ReactElement {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="声優名を入力"
+              placeholder={i18n.searchPlaceholder}
               className="w-full bg-neutral-900 border border-neutral-800 rounded-lg pl-9 pr-4 py-2.5 text-white text-sm placeholder-neutral-600 outline-none focus:border-neutral-600 transition-colors"
               autoFocus
             />
@@ -870,23 +912,23 @@ export default function MyBestPage(): React.ReactElement {
             <>
               <div className="mb-6">
                 <p className="text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
-                  TODAY&apos;S PICK
+                  {i18n.todaysPick}
                 </p>
                 <button
-                  onClick={() => handleSelectStaff(dailyToStaff(todaySeiyuu))}
+                  onClick={() => handleSelectStaff(dailyToStaff(todaySeiyuu, locale))}
                   className="flex items-center gap-3 w-full px-3 py-3 bg-neutral-900/80 rounded-xl active:bg-neutral-800 transition-colors"
                 >
                   <img
                     src={todaySeiyuu.image}
-                    alt={todaySeiyuu.name}
+                    alt={locale === "ja" ? todaySeiyuu.name : todaySeiyuu.nameEn}
                     className="w-14 h-14 rounded-full object-cover ring-2 ring-white/10"
                   />
                   <div className="flex-1 text-left">
                     <p className="text-white font-bold text-sm">
-                      {todaySeiyuu.name}
+                      {locale === "ja" ? todaySeiyuu.name : todaySeiyuu.nameEn}
                     </p>
                     <p className="text-neutral-500 text-[11px]">
-                      今日のお題で作ってみよう
+                      {i18n.todayPrompt}
                     </p>
                   </div>
                   <svg
@@ -906,22 +948,22 @@ export default function MyBestPage(): React.ReactElement {
               </div>
 
               <p className="text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
-                POPULAR
+                {i18n.popular}
               </p>
               <div className="grid grid-cols-3 gap-2 pb-8">
                 {popularSeiyuu.map((va) => (
                   <button
                     key={va.id}
-                    onClick={() => handleSelectStaff(dailyToStaff(va))}
+                    onClick={() => handleSelectStaff(dailyToStaff(va, locale))}
                     className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-neutral-800/60 transition-colors"
                   >
                     <img
                       src={va.image}
-                      alt={va.name}
+                      alt={locale === "ja" ? va.name : va.nameEn}
                       className="w-16 h-16 rounded-full object-cover"
                     />
                     <span className="text-[11px] text-neutral-400 truncate w-full text-center px-1">
-                      {va.name}
+                      {locale === "ja" ? va.name : va.nameEn}
                     </span>
                   </button>
                 ))}
@@ -938,12 +980,12 @@ export default function MyBestPage(): React.ReactElement {
               >
                 <img
                   src={s.image.large}
-                  alt={displayName(s.name)}
+                  alt={displayName(s.name, locale)}
                   className="h-16 w-16 rounded-full object-cover"
                 />
                 <div className="text-center min-w-0 w-full px-1">
                   <div className="font-bold text-[12px] text-white truncate leading-tight">
-                    {displayName(s.name)}
+                    {displayName(s.name, locale)}
                   </div>
                   {s.name.native && s.name.full && (
                     <div className="text-[10px] text-neutral-500 truncate leading-tight mt-0.5">
@@ -960,7 +1002,7 @@ export default function MyBestPage(): React.ReactElement {
             !searchError &&
             staffResults.length === 0 && (
               <p className="text-center text-xs text-neutral-600 py-16">
-                該当する声優が見つかりませんでした
+                {i18n.noResults}
               </p>
             )}
 
@@ -1084,7 +1126,7 @@ export default function MyBestPage(): React.ReactElement {
                     type="text"
                     value={charFilter}
                     onChange={(e) => setCharFilter(e.target.value)}
-                    placeholder="絞り込み"
+                    placeholder={i18n.filterPlaceholder}
                     className="w-full bg-neutral-900 border border-neutral-800 rounded-md pl-8 pr-3 py-1.5 text-white text-xs placeholder-neutral-600 outline-none focus:border-neutral-600 transition-colors"
                   />
                 </div>
@@ -1102,7 +1144,7 @@ export default function MyBestPage(): React.ReactElement {
             </p>
           ) : voiceRoles.length === 0 ? (
             <p className="text-center text-xs text-neutral-600 py-12">
-              キャラクターデータが見つかりませんでした
+              {i18n.noCharData}
             </p>
           ) : (
             <>
@@ -1111,9 +1153,6 @@ export default function MyBestPage(): React.ReactElement {
               >
                 {filteredRoles.map((role) => {
                   const isSelected = selectedChars.some(
-                    (c) => c.id === role.characterId
-                  );
-                  const selectedIndex = selectedChars.findIndex(
                     (c) => c.id === role.characterId
                   );
                   const isDisabled =
@@ -1159,7 +1198,7 @@ export default function MyBestPage(): React.ReactElement {
                 </div>
               )}
               <p className="text-center text-[10px] text-neutral-600 py-3">
-                ※ アニメ出演キャラのみ表示（ゲーム・吹替等は含みません）
+                {i18n.animeOnly}
               </p>
             </>
           )}
@@ -1167,32 +1206,38 @@ export default function MyBestPage(): React.ReactElement {
           {selectedChars.length >= 1 && (
             <div className="fixed bottom-0 left-0 right-0 px-4 pb-5 pt-4 bg-gradient-to-t from-black via-black/95 to-transparent">
               <div className="flex items-center gap-1.5 justify-center mb-2.5 flex-wrap">
-                {["10代", "20代", "30代", "40代", "50代〜"].map((a) => (
-                  <button
-                    key={a}
-                    onClick={() => setAgeRange(ageRange === a ? null : a)}
-                    className={`px-2 py-1 rounded-full text-[10px] border transition-colors ${ageRange === a ? "bg-white text-black border-white" : "text-neutral-500 border-neutral-700 active:border-neutral-500"}`}
-                  >
-                    {a}
-                  </button>
-                ))}
+                {i18n.ageRanges.map((a, i) => {
+                  const val = i18n.ageRangeValues[i];
+                  return (
+                    <button
+                      key={val}
+                      onClick={() => setAgeRange(ageRange === val ? null : val)}
+                      className={`px-2 py-1 rounded-full text-[10px] border transition-colors ${ageRange === val ? "bg-white text-black border-white" : "text-neutral-500 border-neutral-700 active:border-neutral-500"}`}
+                    >
+                      {a}
+                    </button>
+                  );
+                })}
                 <span className="text-neutral-800 text-[10px]">|</span>
-                {["男性", "女性", "他"].map((g) => (
-                  <button
-                    key={g}
-                    onClick={() => setGender(gender === g ? null : g)}
-                    className={`px-2 py-1 rounded-full text-[10px] border transition-colors ${gender === g ? "bg-white text-black border-white" : "text-neutral-500 border-neutral-700 active:border-neutral-500"}`}
-                  >
-                    {g}
-                  </button>
-                ))}
+                {i18n.genders.map((g, i) => {
+                  const val = i18n.genderValues[i];
+                  return (
+                    <button
+                      key={val}
+                      onClick={() => setGender(gender === val ? null : val)}
+                      className={`px-2 py-1 rounded-full text-[10px] border transition-colors ${gender === val ? "bg-white text-black border-white" : "text-neutral-500 border-neutral-700 active:border-neutral-500"}`}
+                    >
+                      {g}
+                    </button>
+                  );
+                })}
               </div>
               <button
                 onClick={generateImage}
                 disabled={generating}
                 className="w-full bg-white text-black text-sm font-bold py-3 rounded-lg active:scale-[0.98] transition-transform disabled:opacity-50"
               >
-                {generating ? "生成中..." : "画像を生成する"}
+                {generating ? i18n.generating : i18n.generateBtn}
               </button>
             </div>
           )}
@@ -1224,7 +1269,7 @@ export default function MyBestPage(): React.ReactElement {
                 </svg>
               </button>
               <p className="text-sm font-bold text-white">
-                私のベスト{seiyuuName}
+                {i18n.myBest}{seiyuuName}
               </p>
               <div className="w-7" />
             </div>
@@ -1232,7 +1277,7 @@ export default function MyBestPage(): React.ReactElement {
             <div className="overflow-hidden rounded-lg">
               <img
                 src={generatedImage}
-                alt={`私のベスト${seiyuuName}`}
+                alt={`${i18n.myBest}${seiyuuName}`}
                 className="w-full block"
               />
             </div>
@@ -1250,7 +1295,7 @@ export default function MyBestPage(): React.ReactElement {
             {/* iOS share sheet guide */}
             <div className="rounded-2xl bg-[#2c2c2e] overflow-hidden shadow-lg">
               <p className="text-[11px] text-neutral-400 text-center pt-2.5 pb-2">
-                下のボタンで共有メニューが開きます
+                {i18n.shareGuide}
               </p>
               {/* File preview row */}
               <div className="flex items-center gap-3 mx-3 mb-3 px-3 py-2.5 rounded-xl bg-[#1c1c1e]">
@@ -1260,8 +1305,8 @@ export default function MyBestPage(): React.ReactElement {
                   </svg>
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[12px] text-white truncate">私のベスト○○.png</p>
-                  <p className="text-[10px] text-neutral-500">PNG画像</p>
+                  <p className="text-[12px] text-white truncate">{i18n.myBest}○○.png</p>
+                  <p className="text-[10px] text-neutral-500">{i18n.pngImage}</p>
                 </div>
               </div>
               {/* Divider */}
@@ -1275,19 +1320,18 @@ export default function MyBestPage(): React.ReactElement {
                     </svg>
                   </div>
                   <span className="text-[10px] text-white">X</span>
-                  {/* Arrow pointing to X */}
                 </div>
                 <div className="flex flex-col items-center gap-1.5 opacity-30">
                   <div className="w-[52px] h-[52px] rounded-[13px] bg-[#ffdc58]" />
-                  <span className="text-[10px] text-neutral-500">メモ</span>
+                  <span className="text-[10px] text-neutral-500">{i18n.memo}</span>
                 </div>
                 <div className="flex flex-col items-center gap-1.5 opacity-30">
                   <div className="w-[52px] h-[52px] rounded-[13px] bg-[#3a3a3c]" />
-                  <span className="text-[10px] text-neutral-500">その他</span>
+                  <span className="text-[10px] text-neutral-500">{i18n.other}</span>
                 </div>
               </div>
               <p className="text-[11px] text-blue-400 text-center pb-3 font-medium">
-                ここをタップ！画像も自動で添付されます
+                {i18n.tapHere}
               </p>
             </div>
 
@@ -1298,7 +1342,7 @@ export default function MyBestPage(): React.ReactElement {
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
-              Xでシェア
+              {i18n.shareToX}
             </button>
           </div>
 
@@ -1307,7 +1351,7 @@ export default function MyBestPage(): React.ReactElement {
               onClick={reset}
               className="w-full text-neutral-600 text-[11px] py-3 active:text-neutral-300 transition-colors"
             >
-              別の声優で作る
+              {i18n.tryAnother}
             </button>
           </div>
 

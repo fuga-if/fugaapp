@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
 
-const VALID_AGE_RANGES = new Set(["10代", "20代", "30代", "40代", "50代〜"]);
-const VALID_GENDERS = new Set(["男性", "女性", "他"]);
+const VALID_AGE_RANGES = new Set(["teens", "20s", "30s", "40s", "50s+"]);
+const VALID_GENDERS = new Set(["male", "female", "other"]);
 const MAX_CHARACTERS = 3;
 const MAX_NAME_LENGTH = 200;
 const TOKEN_SECRET = "mybest-k8x2v";
