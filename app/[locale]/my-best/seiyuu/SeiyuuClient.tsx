@@ -316,13 +316,20 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const didAutoSelect = useRef(false);
   const stepRef = useRef<Step>("search");
+  const searchScrollY = useRef(0);
 
   function goToStep(next: Step): void {
+    // Save scroll position when leaving search
+    if (stepRef.current === "search") {
+      searchScrollY.current = window.scrollY;
+    }
     if (next !== stepRef.current) {
       history.pushState({ step: next }, "");
     }
     stepRef.current = next;
     setStep(next);
+    // Scroll to top when entering a new step
+    window.scrollTo(0, 0);
   }
 
   useEffect(() => {
@@ -343,6 +350,8 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
         if (window.location.search) {
           history.replaceState({ step: "search" }, "", window.location.pathname);
         }
+        // Restore scroll position
+        requestAnimationFrame(() => window.scrollTo(0, searchScrollY.current));
       } else if (prev === "select") {
         setSelectedChars([]);
         setGeneratedImage(null);
@@ -924,8 +933,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
 
   return (
     <div>
-      {step === "search" && (
-        <div className="px-4 pt-12 pb-8">
+      <div className={`px-4 pt-12 pb-8${step !== "search" ? " hidden" : ""}`}>
           <h1 className="text-xl font-bold text-center text-white tracking-tight">
             {i18n.title}
           </h1>
@@ -1110,8 +1118,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
             )}
 
           {footer}
-        </div>
-      )}
+      </div>
 
       {step === "select" && selectedStaff && (
         <div>
