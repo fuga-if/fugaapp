@@ -5,6 +5,7 @@ import { DAILY_SEIYUU } from "@/lib/daily-seiyuu";
 import { type Locale, t, LOCALES, LOCALE_LABELS, AGE_RANGE_VALUES, GENDER_VALUES } from "@/lib/i18n/seiyuu";
 import TrendingSection from "./TrendingSection";
 import CharacterRanking from "./CharacterRanking";
+import XTimeline from "./XTimeline";
 
 interface StaffResult {
   id: number;
@@ -1472,14 +1473,15 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
 
           <div className="px-4 pb-4">
             <CharacterRanking locale={locale} seiyuuMalId={selectedStaff.id} />
-            <a
-              href={`https://x.com/search?q=%23mybest3character+${encodeURIComponent(selectedStaff.name.native ?? selectedStaff.name.full)}&f=live`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full text-center py-3 rounded-xl border border-neutral-700 text-neutral-300 text-sm hover:bg-neutral-800 transition-colors mt-4"
-            >
-              {i18n.seeOnX}
-            </a>
+            <XTimeline
+              locale={locale}
+              hashtag={(() => {
+                const name = displayName(selectedStaff.name, locale);
+                const prefixes: Record<Locale, string> = { ja: "私のベスト", en: "MyBest", zh: "我的最佳", ko: "나의베스트" };
+                return `#${prefixes[locale]}${locale === "en" ? name.replace(/\s/g, "") : name}`;
+              })()}
+              label={i18n.seeOnX}
+            />
           </div>
 
           <div className="px-4 pt-4 pb-8">
