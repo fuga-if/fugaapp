@@ -265,6 +265,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
   const [rolesLoadingMore, setRolesLoadingMore] = useState(false);
   const [rolesError, setRolesError] = useState("");
   const [rolesHasMore, setRolesHasMore] = useState(false);
+  const rolesHasMoreRef = useRef(false);
   const rolesPage = useRef(1);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const [selectedChars, setSelectedChars] = useState<SelectedCharacter[]>([]);
@@ -452,7 +453,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
   const loadingMore = useRef(false);
 
   async function loadMoreRoles(): Promise<void> {
-    if (!selectedStaff || loadingMore.current || !rolesHasMore) return;
+    if (!selectedStaff || loadingMore.current || !rolesHasMoreRef.current) return;
     loadingMore.current = true;
     setRolesLoadingMore(true);
     try {
@@ -461,6 +462,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
         rolesPage.current
       );
       setVoiceRoles((prev) => dedupeRoles([...prev, ...roles]));
+      rolesHasMoreRef.current = hasMore;
       setRolesHasMore(hasMore);
       if (hasMore) rolesPage.current++;
     } catch {
@@ -481,6 +483,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
     const cached = getCached<VoiceRole[]>(cacheKey);
     if (cached) {
       setVoiceRoles(dedupeRoles(cached));
+      rolesHasMoreRef.current = false;
       setRolesHasMore(false);
       return;
     }
@@ -492,6 +495,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
       const { roles, hasMore } = await fetchVoiceRolesPage(staff.id, 1);
       const deduped = dedupeRoles(roles);
       setVoiceRoles(deduped);
+      rolesHasMoreRef.current = hasMore;
       setRolesHasMore(hasMore);
       rolesPage.current = 2;
     } catch (err) {
@@ -831,7 +835,7 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
         {LOCALES.map((loc) => (
           <a
             key={loc}
-            href={`/${loc}/my-best/seiyuu${typeof window !== "undefined" ? window.location.search : ""}`}
+            href={`/${loc}/my-best/seiyuu`}
             className={loc === locale ? "text-white font-bold" : "text-neutral-500 hover:text-neutral-300"}
           >
             {LOCALE_LABELS[loc]}
@@ -1190,13 +1194,11 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
                   );
                 })}
               </div>
-              {rolesHasMore && (
-                <div ref={loadMoreRef} className="flex justify-center py-4">
-                  {rolesLoadingMore && (
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-700 border-t-neutral-400" />
-                  )}
-                </div>
-              )}
+              <div ref={loadMoreRef} className={`flex justify-center py-4 ${rolesHasMore ? "" : "hidden"}`}>
+                {rolesLoadingMore && (
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-700 border-t-neutral-400" />
+                )}
+              </div>
               <p className="text-center text-[10px] text-neutral-600 py-3">
                 {i18n.animeOnly}
               </p>
