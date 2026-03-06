@@ -88,10 +88,18 @@ class RateLimitError extends Error {
   }
 }
 
+let lastAnilistCall = 0;
+const ANILIST_MIN_INTERVAL = 2000;
+
 async function anilistQuery<T>(
   query: string,
   variables: Record<string, unknown>
 ): Promise<T> {
+  const now = Date.now();
+  const wait = ANILIST_MIN_INTERVAL - (now - lastAnilistCall);
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastAnilistCall = Date.now();
+
   const res = await fetch(ANILIST_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -835,21 +843,14 @@ export default function SeiyuuClient({ locale }: { locale: Locale }): React.Reac
       const maxPages = 3;
       let fetched = 0;
 
+      const EXTRA_STAFF_QUERY = `query ($page: Int) { Page(page: $page, perPage: 50) { pageInfo { hasNextPage } staff(sort: FAVOURITES_DESC) { id name { full native } image { large } characterMedia(perPage: 0) { pageInfo { total } } } } }`;
+      type ExtraPage = { Page: { pageInfo: { hasNextPage: boolean }; staff: { id: number; name: { full: string; native: string }; image: { large: string }; characterMedia: { pageInfo: { total: number } } }[] } };
+
       while (collected.length < 12 && fetched < maxPages && !noMoreExtraRef.current) {
         const page = extraPageRef.current;
-        const res = await fetch(ANILIST_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            query: `query ($page: Int) { Page(page: $page, perPage: 50) { pageInfo { hasNextPage } staff(sort: FAVOURITES_DESC) { id name { full native } image { large } characterMedia(perPage: 0) { pageInfo { total } } } } }`,
-            variables: { page },
-          }),
-        });
-        if (!res.ok) throw new Error("fetch failed");
-        const json = await res.json();
-        const pageData = json?.data?.Page;
-        type RawStaff = { id: number; name: { full: string; native: string }; image: { large: string }; characterMedia: { pageInfo: { total: number } } };
-        const staffList = (pageData?.staff ?? []) as RawStaff[];
+        const data = await anilistQuery<ExtraPage>(EXTRA_STAFF_QUERY, { page });
+        const pageData = data?.Page;
+        const staffList = pageData?.staff ?? [];
         for (const s of staffList) {
           if (
             !knownIdsRef.current.has(s.id) &&
